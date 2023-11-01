@@ -5,12 +5,12 @@ import Navbar from "../components/Navbar";
 
 export default function SupplierPage() {
   const [suppliers, setSuppliers] = useState([]);
-  const [manage, setManage] = useState(false);
+  const [manage, setManage] = useState(null);
 
-  const [idSupplier, setIdSupplier] = useState(0);
-  const [nameSupplier, setNameSupplier] = useState("");
-  const [phone, setPhone] = useState(0);
-  const [address, setAddress] = useState("");
+  const [idSupplier, setIdSupplier] = useState(null);
+  const [nameSupplier, setNameSupplier] = useState(null);
+  const [phone, setPhone] = useState(null);
+  const [address, setAddress] = useState(null);
 
   useEffect(() => {
     getSuppliers();
@@ -18,25 +18,28 @@ export default function SupplierPage() {
 
   const getSuppliers = async () => {
     const response = await axios.get("http://localhost:8080/api/supplier");
-    setSuppliers(response.data.data);
+    if (response.status === 200) {
+      setSuppliers(response.data.data);
+    } else alert("Supplier gagal diambil");
   };
 
   const addSupplier = async () => {
+    if (!validateSupplier()) return;
     const response = await axios.post("http://localhost:8080/api/supplier", {
       ID: null,
       name_supplier: nameSupplier,
-      phone: parseInt(phone),
+      phone: parseInt(phone) === 0 ? null : parseInt(phone),
       address: address,
     });
     if (response.status === 201) {
       alert("Supplier berhasil ditambahkan");
       getSuppliers();
-    } else {
-      alert("Supplier gagal ditambahkan");
-    }
+    } else alert("Supplier gagal ditambahkan");
+    closeManage();
   };
 
   const updateSupplier = async (id) => {
+    if (!validateSupplier()) return;
     const response = await axios.put(
       `http://localhost:8080/api/supplier/${id}`,
       {
@@ -49,9 +52,8 @@ export default function SupplierPage() {
     if (response.status === 200) {
       alert("Supplier berhasil diupdate");
       getSuppliers();
-    } else {
-      alert("Supplier gagal diupdate");
-    }
+    } else alert("Supplier gagal diupdate");
+    closeManage();
   };
 
   const deleteSupplier = async (id) => {
@@ -61,126 +63,177 @@ export default function SupplierPage() {
     if (response.status === 200) {
       alert("Supplier berhasil dihapus");
       getSuppliers();
-    } else {
-      alert("Supplier gagal dihapus");
+    } else alert("Supplier gagal dihapus");
+  };
+
+  const closeManage = () => {
+    setIdSupplier(null);
+    setNameSupplier(null);
+    setPhone(null);
+    setAddress(null);
+    setManage(null);
+  };
+
+  const validateSupplier = () => {
+    if (nameSupplier === null || nameSupplier === "") {
+      alert("Nama supplier tidak boleh kosong");
+      return false;
+    } else if (phone === null || phone === "" || phone === 0) {
+      alert("Telepon tidak boleh kosong");
+      return false;
+    } else if (address === null || address === "") {
+      alert("Alamat tidak boleh kosong");
+      return false;
     }
+    return true;
   };
 
   return (
     <>
       <Navbar />
-      <div className="flex flex-col py-32 min-h-screen text-center px-40">
+      <div className="flex flex-col py-32 min-h-screen text-center px-12">
         <h1>Daftar Supplier</h1>
-        <div className="h-8" />
-        {manage ? (
-          <div className="w-full flex flex-row justify-center">
-            <div className="flex flex-col w-1/3">
-              <div className="flex flex-row justify-between">
-                <label>ID Supplier</label>
-                <input
-                  type="number"
-                  className="border border-dark_green"
-                  onChange={(e) => setIdSupplier(e.target.value)}
-                />
-              </div>
-              <div className="h-4" />
-              <div className="flex flex-row justify-between">
-                <label>Name Supplier</label>
-                <input
-                  type="text"
-                  className="border border-dark_green"
-                  onChange={(e) => setNameSupplier(e.target.value)}
-                />
-              </div>
-              <div className="h-4" />
-              <div className="flex flex-row justify-between">
-                <label>Telepon</label>
-                <input
-                  type="number"
-                  className="border border-dark_green"
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </div>
-              <div className="h-4" />
-              <div className="flex flex-row justify-between">
-                <label>Alamat</label>
-                <input
-                  type="text"
-                  className="border border-dark_green"
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="w-12" />
-            <div className="flex flex-col justify-between w-min">
-              <button
-                className="border border-dark_green rounded-md py-1 px-3"
-                onClick={() => addSupplier()}
-              >
-                Tambah
-              </button>
-              <button
-                className="border border-dark_green rounded-md py-1 px-3"
-                onClick={() => deleteSupplier(idSupplier)}
-              >
-                Hapus
-              </button>
-              <button
-                className="border border-dark_green rounded-md py-1 px-3"
-                onClick={() => updateSupplier(idSupplier)}
-              >
-                Simpan
-              </button>
-              <button
-                className="border border-dark_green rounded-md py-1 px-3"
-                onClick={() => setManage(false)}
-              >
-                Batal
-              </button>
-            </div>
-          </div>
-        ) : (
-          <button
-            className="border border-dark_green px-4 py-1 flex flex-row items-center justify-center w-min space-x-4"
-            onClick={() => setManage(true)}
-          >
-            <p className="text-2xl">+</p>
-            <p>Aksi</p>
-          </button>
-        )}
+        <div className="h-12" />
+        <button
+          className="border border-dark_green py-1 px-3 w-1/4 hover:bg-dark_green/25 hover:text-white self-end"
+          onClick={() => setManage("add")}
+        >
+          Tambah Supplier
+        </button>
         <div className="h-4" />
-        <table className="table-auto border border-dark_green">
+        <table className="table-auto border-collapse border border-dark_green">
           <thead>
             <tr>
-              <th className="border border-dark_green px-4 py-2">
+              <th className="px-4 py-2 border border-dark_green">
                 ID Supplier
               </th>
-              <th className="border border-dark_green px-4 py-2">
+              <th className="px-4 py-2 border border-dark_green">
                 Nama Supplier
               </th>
-              <th className="border border-dark_green px-4 py-2">Telepon</th>
-              <th className="border border-dark_green px-4 py-2">Alamat</th>
+              <th className="px-4 py-2 border border-dark_green">Telepon</th>
+              <th className="px-4 py-2 border border-dark_green">Alamat</th>
+              <th className="px-4 py-2 border border-dark_green">Aksi</th>
             </tr>
           </thead>
           <tbody>
+            {suppliers.length === 0 ? (
+              <tr>
+                <td className="px-4 py-2" colSpan="5">
+                  Tidak ada data
+                </td>
+              </tr>
+            ) : null}
             {suppliers.map((supplier) => (
               <tr key={supplier.id}>
-                <td className="border border-dark_green px-4 py-2">
+                <td className="px-4 py-2 border border-dark_green">
                   {supplier.ID}
                 </td>
-                <td className="border border-dark_green px-4 py-2">
+                <td className="px-4 py-2 border border-dark_green">
                   {supplier.name_supplier}
                 </td>
-                <td className="border border-dark_green px-4 py-2">
+                <td className="px-4 py-2 border border-dark_green">
                   {supplier.phone}
                 </td>
-                <td className="border border-dark_green px-4 py-2">
+                <td className="px-4 py-2 border border-dark_green">
                   {supplier.address}
+                </td>
+                <td className="px-4 py-2 flex border-y-[0.1px] border-dark_green">
+                  <button
+                    className="border border-dark_green rounded-md py-1 px-3 w-full hover:bg-dark_green/25 hover:text-white"
+                    onClick={() => deleteSupplier(supplier.ID)}
+                  >
+                    Delete
+                  </button>
+                  <div className="w-4"></div>
+                  <button
+                    className="border border-dark_green rounded-md py-1 px-3 w-full hover:bg-dark_green/25 hover:text-white"
+                    onClick={() => {
+                      setIdSupplier(supplier.ID);
+                      setNameSupplier(supplier.name_supplier);
+                      setPhone(supplier.phone);
+                      setAddress(supplier.address);
+                      setManage("edit");
+                    }}
+                  >
+                    Edit
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {manage !== null ? (
+          <div className="w-1/2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 fixed z-[1] flex flex-col justify-center items-center bg-white rounded-md shadow-md border border-dark_green px-10 py-10">
+            <button
+              className="absolute top-4 right-4 text-red-500"
+              onClick={() => closeManage()}
+            >
+              X
+            </button>
+            <label className="text-2xl">
+              {manage === "add"
+                ? "Tambah Supplier"
+                : manage === "edit"
+                ? "Ubah Supplier"
+                : "Supplier"}
+            </label>
+            {manage === "add" ? null : (
+              <>
+                <div className="h-4" />
+                <div className="flex flex-col w-1/2">
+                  <label className="text-left">ID Supplier</label>
+                  <input
+                    className="border border-dark_green rounded-md py-1 px-3 w-full"
+                    type="number"
+                    value={idSupplier}
+                    onChange={(e) => setIdSupplier(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+            <div className="h-4" />
+            <div className="flex flex-col w-1/2">
+              <label className="text-left">Nama Supplier</label>
+              <input
+                className="border border-dark_green rounded-md py-1 px-3 w-full"
+                value={nameSupplier}
+                onChange={(e) => setNameSupplier(e.target.value)}
+              />
+            </div>
+            <div className="h-4" />
+            <div className="flex flex-col w-1/2">
+              <label className="text-left">Telepon</label>
+              <input
+                type="number"
+                className="border border-dark_green rounded-md py-1 px-3 w-full"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
+            <div className="h-4" />
+            <div className="flex flex-col w-1/2">
+              <label className="text-left">Alamat</label>
+              <input
+                className="border border-dark_green rounded-md py-1 px-3 w-full"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+            </div>
+            <div className="h-4" />
+            <button
+              className="border border-dark_green rounded-md py-1 px-3 w-1/2 hover:bg-dark_green/25 hover:text-white"
+              onClick={() =>
+                manage === "add" ? addSupplier() : updateSupplier(idSupplier)
+              }
+            >
+              {manage === "add"
+                ? "Tambah"
+                : manage === "edit"
+                ? "Ubah"
+                : "Simpan"}
+            </button>
+          </div>
+        ) : null}
       </div>
       <Footer />
     </>
