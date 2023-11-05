@@ -1,24 +1,33 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 
-export default function DetailOrderPage() {
+export default function CreateOrder() {
   const [orders, setOrders] = useState([]);
   const [detailOrders, setDetailOrders] = useState([]);
+  const [supplier, setSupplier] = useState([]);
+
   const [manage, setManage] = useState(null);
 
   const [idDetailOrder, setIdDetailOrder] = useState(null);
-  const [idOrder, setIdOrder] = useState(null);
   const [nameProduct, setNameProduct] = useState(null);
   const [unitProduct, setUnitProduct] = useState(null);
   const [typeProduct, setTypeProduct] = useState(null);
   const [priceProduct, setPriceProduct] = useState(null);
   const [totalOrder, setTotalOrder] = useState(null);
 
+  const [idOrder, setIdOrder] = useState(null);
+  const [dateTransaction, setDateTransaction] = useState(null);
+  const [idSupplier, setIdSupplier] = useState(null);
+  const [typeTransaction, setTypeTransaction] = useState(null);
+
+  const totalPrice = 0;
+
   useEffect(() => {
     getOrders();
-    getDetailOrders();
+    // getDetailOrders();
+    getSupplier();
   }, []);
 
   const getOrders = async () => {
@@ -31,6 +40,12 @@ export default function DetailOrderPage() {
     const response = await axios.get("http://localhost:8080/api/detail-order");
     if (response.status === 200) setDetailOrders(response.data.data);
     else alert("Detail order gagal diambil");
+  };
+
+  const getSupplier = async () => {
+    const response = await axios.get("http://localhost:8080/api/supplier");
+    if (response.status === 200) setSupplier(response.data.data);
+    else alert("Supplier gagal diambil");
   };
 
   const addDetailOrder = async () => {
@@ -52,6 +67,20 @@ export default function DetailOrderPage() {
       getDetailOrders();
     } else alert("Order gagal ditambahkan");
     closeManage();
+  };
+
+  const tapEditDetailOrder = (id) => {
+    const detailOrder = detailOrders.find(
+      (detailOrder) => detailOrder.ID === id
+    );
+    setIdDetailOrder(detailOrder.ID);
+    setIdOrder(detailOrder.id_order);
+    setNameProduct(detailOrder.name_product);
+    setUnitProduct(detailOrder.unit_product);
+    setTypeProduct(detailOrder.type_product);
+    setPriceProduct(detailOrder.price_product);
+    setTotalOrder(detailOrder.total_order);
+    setManage("edit");
   };
 
   const updateDetailOder = async (id) => {
@@ -96,20 +125,6 @@ export default function DetailOrderPage() {
     setManage(null);
   };
 
-  const tapEditDetailOrder = (id) => {
-    const detailOrder = detailOrders.find(
-      (detailOrder) => detailOrder.ID === id
-    );
-    setIdDetailOrder(detailOrder.ID);
-    setIdOrder(detailOrder.id_order);
-    setNameProduct(detailOrder.name_product);
-    setUnitProduct(detailOrder.unit_product);
-    setTypeProduct(detailOrder.type_product);
-    setPriceProduct(detailOrder.price_product);
-    setTotalOrder(detailOrder.total_order);
-    setManage("edit");
-  };
-
   const validateDetailOrder = () => {
     if (idOrder === null || idOrder === "") {
       alert("ID Order tidak boleh kosong");
@@ -139,19 +154,122 @@ export default function DetailOrderPage() {
   };
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="flex flex-col py-32 min-h-screen text-center px-12">
-        <h1>Daftar Detail Order</h1>
+      <div className="flex flex-col py-32 text-center px-12 grow">
+        <h1>FORM PEMESANAN</h1>
         <div className="h-12" />
-        <button
+        {/* <button
           className="border border-dark_green py-1 px-3 w-1/4 hover:bg-dark_green/25 hover:text-white self-end"
           onClick={() => setManage("add")}
         >
           Tambah Detail Order
-        </button>
+        </button> */}
         <div className="h-4" />
-        <table className="table-auto border border-dark_green">
+
+        <div className="border border-dark_green rounded-2xl w-full py-8">
+          <div className="flex flex-col px-12">
+            <div className="flex flex-col">
+              <div className="flex items-center bg-yellow-400">
+                <div className="flex-1 bg-blue-400">
+                  <label className="w-80">Tanggal Transaksi</label>
+                  <input
+                    className="border border-dark_green rounded-md py-1 px-3 ml-4"
+                    value={dateTransaction}
+                    onChange={(e) => setDateTransaction(e.target.value)}
+                  />
+                </div>
+                <div className="w-32" />
+                <div className="flex-1 bg-red-400">
+                  <label className="w-80">Purchase Order</label>
+                  <input
+                    className="border border-dark_green rounded-md py-1 px-3 ml-4"
+                    value={idOrder}
+                    onChange={(e) => setIdOrder(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="h-4" />
+              <div className="flex items-center bg-yellow-400">
+                <div className="flex-1 bg-blue-400">
+                  <label className="w-80">Jenis Pembayaran</label>
+                  <input
+                    className="border border-dark_green rounded-md py-1 px-3 ml-4"
+                    value={idOrder}
+                    onChange={(e) => setIdOrder(e.target.value)}
+                  />
+                </div>
+                <div className="w-32" />
+                <div className="flex-1 bg-red-400">
+                  <label className="w-80">Name Supplier</label>
+                  <select
+                    className="border border-dark_green rounded-md py-1 px-3 ml-4"
+                    defaultValue={"Pilih Supplier"}
+                    value={idSupplier}
+                    onChange={(e) => setIdSupplier(e.target.value)}
+                  >
+                    {supplier.map((supplier) => (
+                      <option
+                        key={supplier.ID}
+                        value={supplier.ID}
+                        selected={supplier.ID}
+                      >
+                        {supplier.name_supplier}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-green my-4 py-2">
+            <p className="text-center text-white">Daftar item yang dipesan</p>
+          </div>
+          <table className="table-auto w-full">
+            <thead className="border-b border-dark_green">
+              <tr>
+                <th className="px-4 py-2">Kode Barang</th>
+                <th className="px-4 py-2">Nama</th>
+                <th className="px-4 py-2">Satuan</th>
+                <th className="px-4 py-2">Jenis</th>
+                <th className="px-4 py-2">Harga</th>
+                <th className="px-4 py-2">Jumlah</th>
+              </tr>
+            </thead>
+            <tbody>
+              {detailOrders.length === 0 ? (
+                <tr className="border-b border-dark_green">
+                  <td className="px-4 py-2 text-center" colSpan={7}>
+                    Tidak ada data
+                  </td>
+                </tr>
+              ) : null}
+              {detailOrders.map((detailOrder) => (
+                <tr key={detailOrder.id} className="border-b border-dark_green">
+                  <td className="px-4 py-2">{detailOrder.ID}</td>
+                  <td className="px-4 py-2">{detailOrder.name_product}</td>
+                  <td className="px-4 py-2">{detailOrder.unit_product}</td>
+                  <td className="px-4 py-2">{detailOrder.type_product}</td>
+                  <td className="px-4 py-2">{detailOrder.price_product}</td>
+                  <td className="px-4 py-2">{detailOrder.total_order}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="h-4" />
+          <div className="flex w-full items-center px-16">
+            <button className="border border-dark_green rounded-md py-1 px-3 hover:bg-dark_green/25 hover:text-white">
+              + Baru
+            </button>
+            <div className="grow" />
+            <p>Total Harga {totalPrice}</p>
+          </div>
+          <button className="border border-dark_green rounded-md py-1 px-3 hover:bg-dark_green/25 hover:text-black bg-dark_green text-white mr-16 float-right">
+            Ajukan
+          </button>
+        </div>
+
+        {/* <table className="table-auto border border-dark_green">
           <thead>
             <tr>
               <th className="border border-dark_green px-4 py-2">
@@ -214,7 +332,7 @@ export default function DetailOrderPage() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table> */}
         {manage !== null ? (
           <div className="w-1/2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 fixed z-[1] flex flex-col justify-center items-center bg-white rounded-md shadow-md border border-dark_green px-10 py-10">
             <button
@@ -325,6 +443,6 @@ export default function DetailOrderPage() {
         ) : null}
       </div>
       <Footer />
-    </>
+    </div>
   );
 }

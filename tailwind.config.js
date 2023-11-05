@@ -12,6 +12,9 @@ module.exports = {
       borderColor: {
         dark_green: "#40513B",
       },
+      textColor: {
+        dark_green: "#40513B",
+      },
     },
   },
   plugins: [],
