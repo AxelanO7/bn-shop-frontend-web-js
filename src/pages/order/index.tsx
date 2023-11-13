@@ -1,11 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Footer from "../../components/Footer";
-import Navbar from "../../components/Navbar";
+import BaseLayout from "../../layouts/base";
+import HeaderPage from "../../components/header_page";
+
+interface Order {
+  ID: number;
+  date_transaction: string;
+  id_supplier: number;
+  type_transaction: string;
+  supplier: Supplier;
+}
+
+interface Supplier {
+  ID: number;
+  name_supplier: string;
+  phone: number;
+  address: string;
+}
 
 export default function OrderPage() {
-  const [orders, setOrders] = useState([]);
-  // const [suppliers, setSuppliers] = useState([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   // const [manage, setManage] = useState(null);
 
   // const [idOrder, setIdOrder] = useState(null);
@@ -104,63 +119,61 @@ export default function OrderPage() {
   // };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <div className="flex flex-col py-32 text-center px-12 grow">
-        <h1>TRANSAKSI PEMESANAN</h1>
-        <div className="h-12" />
-        <button
-          className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white self-end flex items-center"
-          // onClick={() => setManage("add")}
-          onClick={() => {
-            window.location.href = "/add-order";
-          }}
-        >
-          + Pesanan Baru
-        </button>
-        <div className="h-4" />
-        <table className="table-auto">
-          <thead>
+    <BaseLayout padding={12}>
+      <HeaderPage>TRANSAKSI PEMESANAN</HeaderPage>
+      <div className="h-12" />
+      <button
+        className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white self-end flex items-center"
+        // onClick={() => setManage("add")}
+        onClick={() => {
+          window.location.href = "/add-order";
+        }}
+      >
+        + Pesanan Baru
+      </button>
+      <div className="h-4" />
+      <table className="table-auto text-center">
+        <thead>
+          <tr>
+            <th className="px-4 py-2 border border-dark_green">
+              Tanggal Transaksi
+            </th>
+            <th className="px-4 py-2 border border-dark_green">
+              Purchase Order
+            </th>
+            <th className="px-4 py-2 border border-dark_green">
+              Name Supplier
+            </th>
+            <th className="px-4 py-2 border border-dark_green">Status</th>
+            {/* <th className="border border-dark_green px-4 py-2">Aksi</th> */}
+          </tr>
+        </thead>
+        <tbody className="border border-dark_green">
+          {orders.length === 0 ? (
             <tr>
-              <th className="border border-dark_green px-4 py-2">
-                Tanggal Transaksi
-              </th>
-              <th className="border border-dark_green px-4 py-2">
-                Purchase Order
-              </th>
-              <th className="border border-dark_green px-4 py-2">
-                Name Supplier
-              </th>
-              <th className="border border-dark_green px-4 py-2">Status</th>
-              {/* <th className="border border-dark_green px-4 py-2">Aksi</th> */}
+              <td
+                className="border border-dark_green px-4 py-2 text-center"
+                colSpan={5}
+              >
+                Tidak ada data
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {orders.length === 0 ? (
-              <tr>
-                <td
-                  className="border border-dark_green px-4 py-2 text-center"
-                  colSpan={5}
-                >
-                  Tidak ada data
-                </td>
-              </tr>
-            ) : null}
-            {orders.map((order) => (
-              <tr key={order.id}>
-                <td className="border border-dark_green px-4 py-2">
-                  {order.date_transaction}
-                </td>
-                <td className="border border-dark_green px-4 py-2">
-                  {order.ID}
-                </td>
-                <td className="border border-dark_green px-4 py-2">
-                  {order.supplier.name_supplier}
-                </td>
-                <td className="border border-dark_green px-4 py-2">
-                  {order.type_transaction}
-                </td>
-                {/* <td className="border border-dark_green px-4 py-2 flex flex-row">
+          ) : null}
+          {orders.map((order) => (
+            <tr key={order.ID}>
+              <td className="px-4 py-2 border-x border-dark_green">
+                {order.date_transaction}
+              </td>
+              <td className="px-4 py-2 border-x border-dark_green">
+                {order.ID}
+              </td>
+              <td className="px-4 py-2 border-x border-dark_green">
+                {order.supplier.name_supplier}
+              </td>
+              <td className="px-4 py-2 border-x border-dark_green">
+                {order.type_transaction}
+              </td>
+              {/* <td className="border border-dark_green px-4 py-2 flex flex-row">
                   <button
                     className="border border-dark_green rounded-md py-1 px-3 w-full hover:bg-dark_green/25 hover:text-white"
                     onClick={() => deleteOrder(order.ID)}
@@ -184,11 +197,11 @@ export default function OrderPage() {
                     Edit
                   </button>
                 </td> */}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* {manage !== null ? (
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {/* {manage !== null ? (
           <div className="w-1/2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 fixed z-[1] flex flex-col justify-center items-center bg-white rounded-md shadow-md border border-dark_green px-10 py-10">
             <button
               className="absolute top-4 right-4 text-red-500"
@@ -270,8 +283,6 @@ export default function OrderPage() {
             </button>
           </div>
         ) : null} */}
-      </div>
-      <Footer />
-    </div>
+    </BaseLayout>
   );
 }

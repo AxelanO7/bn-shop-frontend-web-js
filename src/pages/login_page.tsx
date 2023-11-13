@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+interface Login {
+  username: string;
+  password: string;
+}
+
 export default function LoginPage() {
   const [failedLoginPopup, setFailedLoginPopup] = useState(false);
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const login = async () => {
     const response = await axios.post("http://localhost:8080/api/login/login", {
@@ -18,29 +23,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center bg-t_white-100">
-      <h1>SISTEM OPERASIONAL</h1>
-      <h2>BN SHOP UBUD</h2>
+    <div className="h-screen flex flex-col justify-center items-center bg-t_white">
+      <h1 className="font-medium text-3xl">SISTEM OPERASIONAL</h1>
+      <div className="h-2" />
+      <h2 className="font-light text-2xl">BN SHOP UBUD</h2>
       <div className="h-10" />
-      <div className="bg-light_green py-6 px-8 flex flex-col rounded-lg w-1/2">
-        <h2 className="text-center">LOGIN</h2>
+      <div className="bg-light_green py-6 px-8 flex flex-col rounded-3xl	w-1/2">
+        <h2 className="text-center font-normal text-2xl">LOGIN</h2>
         <div className="h-8" />
         <input
           className="rounded-lg px-3 py-1"
           placeholder="Username"
-          value={username}
+          value={username!}
           onChange={(e) => setUsername(e.target.value)}
         />
         <div className="h-6" />
         <input
           className="rounded-lg px-3 py-1"
           placeholder="Password"
-          value={password}
+          value={password!}
           onChange={(e) => setPassword(e.target.value)}
         />
         <div className="h-8" />
         <button
-          className="bg-dark_green rounded-lg px-4 py-2 w-min self-end text-white"
+          className="bg-dark_green rounded-2xl px-8 py-2 w-min self-end text-white font-medium"
           onClick={() => login()}
         >
           LOGIN

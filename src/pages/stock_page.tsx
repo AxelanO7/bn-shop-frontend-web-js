@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import Footer from "../layouts/footer";
+import Navbar from "../layouts/navbar";
+
+interface Stock {
+  ID: number;
+  name_product: string;
+  unit_product: string;
+  total_product: number;
+  type_product: string;
+  price_product: number;
+}
 
 export default function StockPage() {
-  const [stocks, setStocks] = useState([]);
-  const [manage, setManage] = useState(null);
+  const [stocks, setStocks] = useState<Stock[]>([]);
+  const [manage, setManage] = useState<string | null>(null);
 
-  const [idStock, setIdStock] = useState(null);
-  const [nameStock, setNameStock] = useState(null);
-  const [unitStock, setUnitStock] = useState(null);
-  const [totalStock, setTotalStock] = useState(null);
-  const [typeStock, setTypeStock] = useState(null);
-  const [priceStock, setPriceStock] = useState(null);
+  const [idStock, setIdStock] = useState<number | null>(null);
+  const [nameStock, setNameStock] = useState<string | null>(null);
+  const [unitStock, setUnitStock] = useState<string | null>(null);
+  const [totalStock, setTotalStock] = useState<number | null>(null);
+  const [typeStock, setTypeStock] = useState<string | null>(null);
+  const [priceStock, setPriceStock] = useState<number | null>(null);
 
   useEffect(() => {
     getStocks();
@@ -31,9 +40,9 @@ export default function StockPage() {
       ID: null,
       name_product: nameStock,
       unit_product: unitStock,
-      total_product: parseInt(totalStock) === 0 ? null : parseInt(totalStock),
+      total_product: totalStock === 0 ? null : totalStock,
       type_product: typeStock,
-      price_product: parseInt(priceStock) === 0 ? null : parseInt(priceStock),
+      price_product: priceStock === 0 ? null : priceStock,
     });
     if (response.status === 201) {
       alert("Stock berhasil ditambahkan");
@@ -42,16 +51,19 @@ export default function StockPage() {
     closeManage();
   };
 
-  const updateStock = async (id) => {
+  const updateStock = async (idProps: string) => {
     if (!validateStock()) return;
-    const response = await axios.put(`http://localhost:8080/api/stock/${id}`, {
-      ID: parseInt(id),
-      name_product: nameStock,
-      unit_product: unitStock,
-      total_product: parseInt(totalStock),
-      type_product: typeStock,
-      price_product: parseInt(priceStock),
-    });
+    const response = await axios.put(
+      `http://localhost:8080/api/stock/${idProps}`,
+      {
+        ID: parseInt(idProps),
+        name_product: nameStock,
+        unit_product: unitStock,
+        total_product: totalStock,
+        type_product: typeStock,
+        price_product: priceStock,
+      }
+    );
     if (response.status === 200) {
       alert("Stock berhasil diupdate");
       getStocks();
@@ -59,9 +71,9 @@ export default function StockPage() {
     closeManage();
   };
 
-  const deleteStock = async (id) => {
+  const deleteStock = async (idProps: string) => {
     const response = await axios.delete(
-      `http://localhost:8080/api/stock/${id}`
+      `http://localhost:8080/api/stock/${idProps}`
     );
     if (response.status === 200) {
       alert("Stock berhasil dihapus");
@@ -79,14 +91,16 @@ export default function StockPage() {
     setManage(null);
   };
 
-  const tapEdit = async (id) => {
-    const index = stocks.findIndex((stock) => stock.ID === id);
-    setIdStock(id);
-    setNameStock(stocks[index].name_product);
-    setUnitStock(stocks[index].unit_product);
-    setTotalStock(stocks[index].total_product);
-    setTypeStock(stocks[index].type_product);
-    setPriceStock(stocks[index].price_product);
+  const tapEdit = async (idProps: number) => {
+    // const index = stocks.findIndex((stock) => stock.ID === id);
+    const stock = stocks.find((stock) => stock.ID === idProps);
+    if (stock === undefined) return;
+    setIdStock(stock.ID);
+    setNameStock(stock.name_product);
+    setUnitStock(stock.unit_product);
+    setTotalStock(stock.total_product);
+    setTypeStock(stock.type_product);
+    setPriceStock(stock.price_product);
     setManage("edit");
   };
 
@@ -99,7 +113,7 @@ export default function StockPage() {
       alert("Unit stock harus diisi");
       return false;
     }
-    if (totalStock === null || totalStock === "") {
+    if (totalStock === null) {
       alert("Total stock harus diisi");
       return false;
     }
@@ -107,7 +121,7 @@ export default function StockPage() {
       alert("Type stock harus diisi");
       return false;
     }
-    if (priceStock === null || priceStock === "") {
+    if (priceStock === null) {
       alert("Price stock harus diisi");
       return false;
     }
@@ -145,13 +159,13 @@ export default function StockPage() {
           <tbody>
             {stocks.length === 0 ? (
               <tr>
-                <td className="px-4 py-2" colSpan="5">
+                <td className="px-4 py-2" colSpan={5}>
                   Tidak ada data
                 </td>
               </tr>
             ) : null}
             {stocks.map((stock) => (
-              <tr key={stock.id}>
+              <tr key={stock.ID}>
                 <td className="px-4 py-2 border border-dark_green">
                   {stock.ID}
                 </td>
@@ -170,7 +184,7 @@ export default function StockPage() {
                 <td className="px-4 py-2 flex border-y-[0.1px] border-dark_green">
                   <button
                     className="border border-dark_green rounded-md py-1 px-3 w-full hover:bg-dark_green/25 hover:text-white"
-                    onClick={() => deleteStock(stock.ID)}
+                    onClick={() => deleteStock(stock.ID.toString())}
                   >
                     Delete
                   </button>
@@ -220,8 +234,8 @@ export default function StockPage() {
                   <input
                     className="border border-dark_green rounded-md py-1 px-3 w-full"
                     type="number"
-                    value={idStock}
-                    onChange={(e) => setIdStock(e.target.value)}
+                    value={idStock!}
+                    onChange={(e) => setIdStock(parseInt(e.target.value))}
                   />
                 </div>
               </>
@@ -231,7 +245,7 @@ export default function StockPage() {
               <label className="text-left">Nama Barang</label>
               <input
                 className="border border-dark_green rounded-md py-1 px-3 w-full"
-                value={nameStock}
+                value={nameStock!}
                 onChange={(e) => setNameStock(e.target.value)}
               />
             </div>
@@ -240,7 +254,7 @@ export default function StockPage() {
               <label className="text-left">Satuan Barang</label>
               <input
                 className="border border-dark_green rounded-md py-1 px-3 w-full"
-                value={unitStock}
+                value={unitStock!}
                 onChange={(e) => setUnitStock(e.target.value)}
               />
             </div>
@@ -250,8 +264,8 @@ export default function StockPage() {
               <input
                 type="number"
                 className="border border-dark_green rounded-md py-1 px-3 w-full"
-                value={totalStock}
-                onChange={(e) => setTotalStock(e.target.value)}
+                value={totalStock!}
+                onChange={(e) => setTotalStock(parseInt(e.target.value))}
               />
             </div>
             <div className="h-4" />
@@ -259,7 +273,7 @@ export default function StockPage() {
               <label className="text-left">Jenis Barang</label>
               <input
                 className="border border-dark_green rounded-md py-1 px-3 w-full"
-                value={typeStock}
+                value={typeStock!}
                 onChange={(e) => setTypeStock(e.target.value)}
               />
             </div>
@@ -269,15 +283,15 @@ export default function StockPage() {
               <input
                 type="number"
                 className="border border-dark_green rounded-md py-1 px-3 w-full"
-                value={priceStock}
-                onChange={(e) => setPriceStock(e.target.value)}
+                value={priceStock!}
+                onChange={(e) => setPriceStock(parseInt(e.target.value))}
               />
             </div>
             <div className="h-8" />
             <button
               className="border border-dark_green rounded-md py-1 px-3 w-1/2 hover:bg-dark_green/25 hover:text-white"
               onClick={() =>
-                manage === "add" ? addStock() : updateStock(idStock)
+                manage === "add" ? addStock() : updateStock(idStock!.toString())
               }
             >
               {manage === "add"

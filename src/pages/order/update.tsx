@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import Navbar from "../../layouts/navbar";
+import Footer from "../../layouts/footer";
 
 export default function UpdateOrderPage() {
   return (

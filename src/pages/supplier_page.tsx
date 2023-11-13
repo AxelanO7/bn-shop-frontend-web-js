@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import Base from "../layouts/base";
+
+interface Supplier {
+  ID: number;
+  name_supplier: string;
+  phone: number;
+  address: string;
+}
 
 export default function SupplierPage() {
-  const [suppliers, setSuppliers] = useState([]);
-  const [manage, setManage] = useState(null);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [manage, setManage] = useState<string | null>(null);
 
-  const [idSupplier, setIdSupplier] = useState(null);
-  const [nameSupplier, setNameSupplier] = useState(null);
-  const [phone, setPhone] = useState(null);
-  const [address, setAddress] = useState(null);
+  const [idSupplier, setIdSupplier] = useState<number | null>(null);
+  const [nameSupplier, setNameSupplier] = useState<string | null>(null);
+  const [phone, setPhone] = useState<number | null>(null);
+  const [address, setAddress] = useState<string | null>(null);
 
   useEffect(() => {
     getSuppliers();
@@ -28,7 +34,7 @@ export default function SupplierPage() {
     const response = await axios.post("http://localhost:8080/api/supplier", {
       ID: null,
       name_supplier: nameSupplier,
-      phone: parseInt(phone) === 0 ? null : parseInt(phone),
+      phone: phone === 0 ? null : phone,
       address: address,
     });
     if (response.status === 201) {
@@ -38,14 +44,14 @@ export default function SupplierPage() {
     closeManage();
   };
 
-  const updateSupplier = async (id) => {
+  const updateSupplier = async (idProps: number) => {
     if (!validateSupplier()) return;
     const response = await axios.put(
-      `http://localhost:8080/api/supplier/${id}`,
+      `http://localhost:8080/api/supplier/${idProps}`,
       {
-        ID: parseInt(id),
+        ID: idProps,
         name_supplier: nameSupplier,
-        phone: parseInt(phone),
+        phone: phone,
         address: address,
       }
     );
@@ -56,9 +62,9 @@ export default function SupplierPage() {
     closeManage();
   };
 
-  const deleteSupplier = async (id) => {
+  const deleteSupplier = async (idProps: string) => {
     const response = await axios.delete(
-      `http://localhost:8080/api/supplier/${id}`
+      `http://localhost:8080/api/supplier/${idProps}`
     );
     if (response.status === 200) {
       alert("Supplier berhasil dihapus");
@@ -78,7 +84,7 @@ export default function SupplierPage() {
     if (nameSupplier === null || nameSupplier === "") {
       alert("Nama supplier tidak boleh kosong");
       return false;
-    } else if (phone === null || phone === "" || phone === 0) {
+    } else if (phone === null || phone === 0) {
       alert("Telepon tidak boleh kosong");
       return false;
     } else if (address === null || address === "") {
@@ -89,9 +95,8 @@ export default function SupplierPage() {
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="flex flex-col py-32 min-h-screen text-center px-12">
+    <Base>
+      <div className="flex flex-col justify-center p-12">
         <h1>Daftar Supplier</h1>
         <div className="h-12" />
         <button
@@ -118,13 +123,13 @@ export default function SupplierPage() {
           <tbody>
             {suppliers.length === 0 ? (
               <tr>
-                <td className="px-4 py-2" colSpan="5">
+                <td className="px-4 py-2" colSpan={5}>
                   Tidak ada data
                 </td>
               </tr>
             ) : null}
             {suppliers.map((supplier) => (
-              <tr key={supplier.id}>
+              <tr key={supplier.ID}>
                 <td className="px-4 py-2 border border-dark_green">
                   {supplier.ID}
                 </td>
@@ -140,7 +145,7 @@ export default function SupplierPage() {
                 <td className="px-4 py-2 flex border-y-[0.1px] border-dark_green">
                   <button
                     className="border border-dark_green rounded-md py-1 px-3 w-full hover:bg-dark_green/25 hover:text-white"
-                    onClick={() => deleteSupplier(supplier.ID)}
+                    onClick={() => deleteSupplier(supplier.ID.toString())}
                   >
                     Delete
                   </button>
@@ -185,8 +190,8 @@ export default function SupplierPage() {
                   <input
                     className="border border-dark_green rounded-md py-1 px-3 w-full"
                     type="number"
-                    value={idSupplier}
-                    onChange={(e) => setIdSupplier(e.target.value)}
+                    value={idSupplier!}
+                    onChange={(e) => setIdSupplier(parseInt(e.target.value))}
                   />
                 </div>
               </>
@@ -196,7 +201,7 @@ export default function SupplierPage() {
               <label className="text-left">Nama Supplier</label>
               <input
                 className="border border-dark_green rounded-md py-1 px-3 w-full"
-                value={nameSupplier}
+                value={nameSupplier!}
                 onChange={(e) => setNameSupplier(e.target.value)}
               />
             </div>
@@ -206,8 +211,8 @@ export default function SupplierPage() {
               <input
                 type="number"
                 className="border border-dark_green rounded-md py-1 px-3 w-full"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                value={phone!}
+                onChange={(e) => setPhone(parseInt(e.target.value))}
               />
             </div>
             <div className="h-4" />
@@ -215,7 +220,7 @@ export default function SupplierPage() {
               <label className="text-left">Alamat</label>
               <input
                 className="border border-dark_green rounded-md py-1 px-3 w-full"
-                value={address}
+                value={address!}
                 onChange={(e) => setAddress(e.target.value)}
               />
             </div>
@@ -223,7 +228,7 @@ export default function SupplierPage() {
             <button
               className="border border-dark_green rounded-md py-1 px-3 w-1/2 hover:bg-dark_green/25 hover:text-white"
               onClick={() =>
-                manage === "add" ? addSupplier() : updateSupplier(idSupplier)
+                manage === "add" ? addSupplier() : updateSupplier(idSupplier!)
               }
             >
               {manage === "add"
@@ -235,7 +240,6 @@ export default function SupplierPage() {
           </div>
         ) : null}
       </div>
-      <Footer />
-    </>
+    </Base>
   );
 }

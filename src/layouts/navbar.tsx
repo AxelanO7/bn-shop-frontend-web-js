@@ -21,7 +21,7 @@ export default function Navbar() {
           </div>
         </nav>
         {navSide ? (
-          <div className="h-screen bg-dark_green/75 w-80 text-white py-6 px-10 fixed mt-14 space-y-4">
+          <div className="bg-dark_green/75 w-80 text-white py-6 px-10 space-y-4 h-screen">
             <h1>MAIN NAVIGATION</h1>
             <p>Dashboard</p>
             <p>Pemesanan Barang</p>
