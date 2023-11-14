@@ -50,7 +50,7 @@ export default function OrderPage() {
         + Pesanan Baru
       </button>
       <div className="h-4" />
-      <table className="table-auto text-center">
+      <table className="table-auto text-center text-white bg-green">
         <thead>
           <tr>
             <th className="px-4 py-2 border border-dark_green">
