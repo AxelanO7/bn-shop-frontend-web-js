@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/base";
 
 export default function DashboardPage() {
   return (
-    <BaseLayout>
+    <BaseLayout padding={12}>
       <h1>AKSES CEPAT</h1>
       <p>silahkan klik dibawah ini</p>
       <div className="h-16" />
