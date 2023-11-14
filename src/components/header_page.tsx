@@ -6,7 +6,7 @@ interface HeaderPageProps {
 
 export default function HeaderPage({ children }: HeaderPageProps) {
   return (
-    <h1 className="text-stone-500 font-normal text-center text-3xl">
+    <h1 className="text-stone_5 font-normal text-center text-3xl">
       {children}
     </h1>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Base from "../layouts/base";
+import Base from "../../layouts/base";
 
 interface Supplier {
   ID: number;

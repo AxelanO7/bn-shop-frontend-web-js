@@ -14,6 +14,7 @@ module.exports = {
       },
       textColor: {
         dark_green: "#40513B",
+        stone_5: "#616F5C",
       },
     },
   },

@@ -31,8 +31,31 @@ interface Supplier {
 
 export default function CreateOrder() {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [detailOrders, setDetailOrders] = useState<DetailOrder[]>([]);
+  // const [detailOrders, setDetailOrders] = useState<DetailOrder[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [detailOrdersTemp, setDetailOrdersTemp] = useState<DetailOrder[]>([
+    {
+      ID: 1,
+      id_order: 1,
+      order: {
+        ID: 1,
+        date_transaction: "",
+        id_supplier: 1,
+        supplier: {
+          ID: 1,
+          name_supplier: "",
+          phone: 0,
+          address: "",
+        },
+        type_transaction: "",
+      },
+      name_product: "",
+      unit_product: "",
+      type_product: "",
+      price_product: 0,
+      total_order: 0,
+    },
+  ]);
 
   const [manage, setManage] = useState(null);
 
@@ -55,52 +78,32 @@ export default function CreateOrder() {
   useEffect(() => {
     getOrders();
     // getDetailOrders();
-    setDetailOrders(detailOrdersStatic);
+    // setDetailOrdersTemp(detailOrderStatic);
+    // setDetailOrdersTemp(detailOrderStatic);
     getSupplier();
   }, []);
 
-  const detailOrdersStatic: DetailOrder[] = [
+  const detailOrderStatic: DetailOrder[] = [
     {
       ID: 1,
       id_order: 1,
       order: {
         ID: 1,
-        date_transaction: "2021-08-01",
+        date_transaction: "",
         id_supplier: 1,
         supplier: {
           ID: 1,
-          name_supplier: "PT. ABC",
-          phone: 123456789,
-          address: "Jl. ABC",
+          name_supplier: "",
+          phone: 0,
+          address: "",
         },
-        type_transaction: "Pembelian",
+        type_transaction: "",
       },
-      name_product: "Kain",
-      unit_product: "Kg",
-      type_product: "Kain",
-      price_product: 10000,
-      total_order: 100,
-    },
-    {
-      ID: 2,
-      id_order: 1,
-      order: {
-        ID: 1,
-        date_transaction: "2021-08-01",
-        id_supplier: 1,
-        supplier: {
-          ID: 1,
-          name_supplier: "PT. ABC",
-          phone: 123456789,
-          address: "Jl. ABC",
-        },
-        type_transaction: "Pembelian",
-      },
-      name_product: "Benang",
-      unit_product: "Kg",
-      type_product: "Benang",
-      price_product: 10000,
-      total_order: 100,
+      name_product: "",
+      unit_product: "",
+      type_product: "",
+      price_product: 0,
+      total_order: 0,
     },
   ];
 
@@ -112,8 +115,8 @@ export default function CreateOrder() {
 
   const getDetailOrders = async () => {
     const response = await axios.get("http://localhost:8080/api/detail-order");
-    if (response.status === 200) setDetailOrders(response.data.data);
-    else alert("Detail order gagal diambil");
+    // if (response.status === 200) setDetailOrders(response.data.data);
+    // else alert("Detail order gagal diambil");
   };
 
   const getSupplier = async () => {
@@ -228,27 +231,9 @@ export default function CreateOrder() {
   };
 
   const addOrderList = () => {
-    detailOrders.push({
-      ID: 1,
-      id_order: 1,
-      order: {
-        ID: 1,
-        date_transaction: "2021-08-01",
-        id_supplier: 1,
-        supplier: {
-          ID: 1,
-          name_supplier: "PT. ABC",
-          phone: 123456789,
-          address: "Jl. ABC",
-        },
-        type_transaction: "Pembelian",
-      },
-      name_product: "Kain",
-      unit_product: "Kg",
-      type_product: "Kain",
-      price_product: 10000,
-      total_order: 100,
-    });
+    // detailOrdersTemp.push(detailOrderStatic[0]);
+    setDetailOrdersTemp([...detailOrdersTemp, detailOrderStatic[0]]);
+    console.log(detailOrdersTemp);
   };
 
   return (
@@ -265,14 +250,14 @@ export default function CreateOrder() {
 
       <div className="border border-dark_green rounded-2xl w-full py-8">
         <div className="flex flex-col px-12">
-          <div className="flex">
+          <div className="flex space-x-4">
             <div className="flex-1 flex-col items-center space-y-6">
               <div className="flex items-center">
                 <div className="w-36">
                   <label>Tanggal Transaksi</label>
                 </div>
                 <input
-                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-64"
+                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
                   value={dateTransaction!}
                   onChange={(e) => setDateTransaction(e.target.value)}
                 />
@@ -282,7 +267,7 @@ export default function CreateOrder() {
                   <label>Jenis Pembayaran</label>
                 </div>
                 <input
-                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-64"
+                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
                   value={idOrder!}
                   onChange={(e) => setIdOrder(parseInt(e.target.value))}
                 />
@@ -294,7 +279,7 @@ export default function CreateOrder() {
                   <label>Purchase Order</label>
                 </div>
                 <input
-                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-64"
+                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
                   value={idOrder!}
                   onChange={(e) => setIdOrder(parseInt(e.target.value))}
                 />
@@ -304,7 +289,7 @@ export default function CreateOrder() {
                   <label>Name Supplier</label>
                 </div>
                 <select
-                  className="border border-dark_green rounded-md py-1.5 px-3 ml-4 w-64"
+                  className="border border-dark_green rounded-md py-1.5 px-3 ml-4 w-60"
                   defaultValue={"Pilih Supplier"}
                   value={idSupplier!}
                   onChange={(e) => setIdSupplier(parseInt(e.target.value))}
@@ -334,7 +319,7 @@ export default function CreateOrder() {
             </tr>
           </thead>
           <tbody>
-            {detailOrders.map((detailOrder) => (
+            {detailOrdersTemp.map((detailOrder) => (
               <tr key={detailOrder.ID} className="border-b border-dark_green">
                 <td className="px-4 py-2">
                   <p>{detailOrder.ID}</p>
@@ -346,82 +331,40 @@ export default function CreateOrder() {
                   <input
                     type="text"
                     className="border border-dark_green rounded-md py-1 px-3 w-full"
-                    value={detailOrder.unit_product}
+                    onChange={(e) =>
+                      (detailOrder.unit_product = e.target.value)
+                    }
                   />
                 </td>
                 <td className="px-4 py-2">
                   <input
                     type="text"
                     className="border border-dark_green rounded-md py-1 px-3 w-full"
-                    value={detailOrder.type_product}
+                    onChange={(e) =>
+                      (detailOrder.type_product = e.target.value)
+                    }
                   />
                 </td>
                 <td className="px-4 py-2">
                   <input
                     type="number"
                     className="border border-dark_green rounded-md py-1 px-3 w-full"
-                    value={detailOrder.price_product}
+                    onChange={(e) =>
+                      (detailOrder.price_product = parseInt(e.target.value))
+                    }
                   />
                 </td>
                 <td className="px-4 py-2">
                   <input
                     type="number"
                     className="border border-dark_green rounded-md py-1 px-3 w-full"
-                    value={detailOrder.total_order}
+                    onChange={(e) =>
+                      (detailOrder.total_order = parseInt(e.target.value))
+                    }
                   />
                 </td>
               </tr>
             ))}
-            {/* <tr>
-              <td className="px-4">
-                <p>B001</p>
-              </td>
-              <td className="px-4">
-                <p>[RLSW-Lycra R 40s] Maroon</p>
-              </td>
-              <td className="px-4">
-                <input
-                  type="text"
-                  className="border border-dark_green rounded-md py-1 px-3 w-full"
-                />
-              </td>
-              <td className="px-4">
-                <input
-                  type="text"
-                  className="border border-dark_green rounded-md py-1 px-3 w-full"
-                />
-              </td>
-              <td className="px-4">
-                <input
-                  type="text"
-                  className="border border-dark_green rounded-md py-1 px-3 w-full"
-                />
-              </td>
-              <td className="px-4">
-                <input
-                  type="text"
-                  className="border border-dark_green rounded-md py-1 px-3 w-full"
-                />
-              </td>
-            </tr> */}
-
-            {/* {detailOrders.length === 0 ? (
-              <tr className="border-b border-dark_green">
-                <td className="px-4 py-2 text-center" colSpan={7}>
-                  Tidak ada data
-                </td>
-              </tr>
-            ) : null}
-            {detailOrders.map((detailOrder) => (
-              <tr key={detailOrder.ID} className="border-b border-dark_green">
-                <td className="px-4 py-2">{detailOrder.ID}</td>
-                <td className="px-4 py-2">{detailOrder.name_product}</td>
-                <td className="px-4 py-2">{detailOrder.unit_product}</td>
-                <td className="px-4 py-2">{detailOrder.type_product}</td>
-                <td className="px-4 py-2">{detailOrder.price_product}</td>
-                <td className="px-4 py-2">{detailOrder.total_order}</td>
-              </tr>
-            ))} */}
           </tbody>
         </table>
         <div className="h-4" />
@@ -433,9 +376,19 @@ export default function CreateOrder() {
             + Baru
           </button>
           <div className="grow" />
-          <p>Total Harga {totalPrice}</p>
+          <p>
+            Total Harga{" "}
+            {detailOrdersTemp.reduce(
+              (total, detailOrder) =>
+                total + detailOrder.total_order * detailOrder.price_product,
+              0
+            )}
+          </p>
         </div>
-        <button className="border border-dark_green rounded-md py-1 px-3 hover:bg-dark_green/25 hover:text-black bg-dark_green text-white mr-16 float-right">
+        <button
+          className="border border-dark_green rounded-md py-1 px-3 hover:bg-dark_green/25 hover:text-black bg-dark_green text-white mr-16 float-right"
+          onClick={() => console.log(detailOrdersTemp)}
+        >
           Ajukan
         </button>
       </div>
