@@ -74,7 +74,7 @@ export default function ReportOrderPage() {
     <BaseLayout padding={12} text_color="stone_5">
       <HeaderPage>LAPORAN PEMESANAN MASUK</HeaderPage>
       <div className="h-16" />
-      <table className="table-auto text-center">
+      <table className="table-auto text-center text-white bg-green">
         <thead>
           <tr>
             <th className="px-4 py-2 border border-dark_green">

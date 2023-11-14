@@ -307,7 +307,7 @@ export default function CreateOrder() {
         <div className="bg-green my-4 py-2">
           <p className="text-center text-white">Daftar item yang dipesan</p>
         </div>
-        <table className="table-auto w-full text-left">
+        <table className="table-auto text-center text-white bg-green">
           <thead className="border-b border-dark_green">
             <tr>
               <th className="px-4 py-2 w-36">Kode Barang</th>

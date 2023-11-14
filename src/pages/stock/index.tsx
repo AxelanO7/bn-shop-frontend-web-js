@@ -144,7 +144,7 @@ export default function StockPage() {
         </button>
       </div>
       <div className="h-4" />
-      <table className="table-auto border border-dark_green text-center">
+      <table className="table-auto text-center text-white bg-green">
         <thead>
           <tr>
             <th className="px-4 py-2 border border-dark_green">Kode Barang</th>

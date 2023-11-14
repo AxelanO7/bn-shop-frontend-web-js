@@ -107,7 +107,7 @@ export default function SupplierPage() {
         Tambah Supplier
       </button>
       <div className="h-4" />
-      <table className="table-auto border-collapse border border-dark_green">
+      <table className="table-auto text-center text-white bg-green">
         <thead>
           <tr>
             <th className="px-4 py-2 border border-dark_green">ID Supplier</th>
