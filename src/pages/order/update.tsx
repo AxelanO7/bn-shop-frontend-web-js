@@ -128,7 +128,7 @@ export default function UpdateOrderPage() {
             <th className="px-4 py-2 text-start">Subtotal</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="border border-dark_green bg-white text-stone_5">
           {detailOrders?.map((detailOrder) => (
             <tr key={detailOrder.ID}>
               <td className="px-4 py-2">{detailOrder.ID}</td>

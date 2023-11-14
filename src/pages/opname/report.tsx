@@ -29,7 +29,7 @@ export default function ReportInputPage() {
     <BaseLayout padding={12} text_color="stone_5">
       <HeaderPage>LAPORAN STOCK OPNAME</HeaderPage>
       <div className="h-16" />
-      <table className="table-auto text-center text-white bg-green">
+      <table className="table-auto text-center">
         <thead>
           <tr>
             <th className="px-4 py-2 border border-dark_green">No</th>
@@ -38,7 +38,7 @@ export default function ReportInputPage() {
             <th className="px-4 py-2 border border-dark_green">Harga</th>
           </tr>
         </thead>
-        <tbody className="border border-dark_green">
+        <tbody className="border border-dark_green bg-white text-stone_5">
           {opnames.map((opname, index) => (
             <tr key={index}>
               <td className="px-4 py-2 border border-dark_green">

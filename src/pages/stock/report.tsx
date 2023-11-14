@@ -42,7 +42,7 @@ export default function ReportInputPage() {
             <th className="px-4 py-2 border border-dark_green">Harga</th>
           </tr>
         </thead>
-        <tbody className="border border-dark_green">
+        <tbody className="border border-dark_green bg-white text-stone_5">
           {stocks.map((stock, index) => (
             <tr key={index}>
               <td className="px-4 py-2 border border-dark_green">{stock.ID}</td>

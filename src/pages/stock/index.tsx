@@ -154,7 +154,7 @@ export default function StockPage() {
             <th className="px-4 py-2 border border-dark_green">Harga</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="border border-dark_green bg-white text-stone_5">
           {stocks.length === 0 ? (
             <tr>
               <td className="px-4 py-2" colSpan={5}>

@@ -119,7 +119,7 @@ export default function SupplierPage() {
             <th className="px-4 py-2 border border-dark_green">Aksi</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="border border-dark_green bg-white text-stone_5">
           {suppliers.length === 0 ? (
             <tr>
               <td className="px-4 py-2 text-center" colSpan={5}>

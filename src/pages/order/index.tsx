@@ -50,7 +50,7 @@ export default function OrderPage() {
         + Pesanan Baru
       </button>
       <div className="h-4" />
-      <table className="table-auto text-center text-white bg-green">
+      <table className="table-auto text-center">
         <thead>
           <tr>
             <th className="px-4 py-2 border border-dark_green">
@@ -66,7 +66,7 @@ export default function OrderPage() {
             {/* <th className="border border-dark_green px-4 py-2">Aksi</th> */}
           </tr>
         </thead>
-        <tbody className="border border-dark_green">
+        <tbody className="border border-dark_green bg-white text-stone_5">
           {orders.length === 0 ? (
             <tr>
               <td

@@ -86,7 +86,7 @@ export default function ReportOrderPage() {
             <th className="px-4 py-2 border border-dark_green">Harga</th>
           </tr>
         </thead>
-        <tbody className="border border-dark_green">
+        <tbody className="border border-dark_green bg-white text-stone_5">
           {detailOrders.map((detailOrder, index) => (
             <tr key={index}>
               <td className="border-x border-dark_green">{detailOrder.ID}</td>

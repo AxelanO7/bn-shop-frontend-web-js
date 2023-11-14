@@ -318,7 +318,7 @@ export default function CreateOrder() {
               <th className="px-4 py-2 w-64">Jumlah</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="border border-dark_green bg-white text-stone_5">
             {detailOrdersTemp.map((detailOrder) => (
               <tr key={detailOrder.ID} className="border-b border-dark_green">
                 <td className="px-4 py-2">
