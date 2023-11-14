@@ -15,7 +15,7 @@ export default function DashboardPage() {
             window.location.href = "/order";
           }}
         >
-          <p>PEMESANAN BARANG</p>
+          <p className="text-black text-xl">PEMESANAN BARANG</p>
           <div className="h-4"></div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +36,7 @@ export default function DashboardPage() {
             window.location.href = "/stock";
           }}
         >
-          <p>DATA BARANG</p>
+          <p className="text-black text-xl">DATA BARANG</p>
           <div className="h-4"></div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +57,7 @@ export default function DashboardPage() {
             window.location.href = "/supplier";
           }}
         >
-          <p>DATA SUPPLIER</p>
+          <p className="text-black text-xl">DATA SUPPLIER</p>
           <div className="h-4"></div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
