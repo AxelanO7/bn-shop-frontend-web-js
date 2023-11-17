@@ -343,9 +343,7 @@ export default function CreateOrder() {
             + Baru
           </button>
           <div className="grow" />
-          <p>
-            Total Harga {totalPrice}
-          </p>
+          <p>Total Harga {totalPrice ? totalPrice : 0}</p>
         </div>
         <button
           className="border border-dark_green rounded-md py-1 px-3 hover:bg-dark_green/25 hover:text-black bg-dark_green text-white mr-16 float-right"
