@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
-import { randomUUID } from "crypto";
 
 interface DetailOrder {
   ID: number;
+  code_product: string;
   id_order: number;
   order: Order;
   name_product: string;
@@ -22,6 +22,7 @@ interface Order {
   id_supplier: number;
   supplier: Supplier;
   type_transaction: string;
+  status: number;
 }
 
 interface Supplier {
@@ -37,10 +38,10 @@ export default function CreateOrder() {
   const [detailOrdersTemp, setDetailOrdersTemp] = useState<DetailOrder[]>([]);
 
   // order
-  const [purchaseOrder, setPurchaseOrder] = useState<string | null>(null);
-  const [dateTransaction, setDateTransaction] = useState<string | null>(null);
-  const [idSupplier, setIdSupplier] = useState<number | null>(null);
-  const [typeTransaction, setTypeTransaction] = useState<string | null>(null);
+  const [purchaseOrder, setPurchaseOrder] = useState<string>();
+  const [dateTransaction, setDateTransaction] = useState<string>();
+  const [idSupplier, setIdSupplier] = useState<number>();
+  const [typeTransaction, setTypeTransaction] = useState<string>();
 
   useEffect(() => {
     getSupplier();
@@ -74,6 +75,7 @@ export default function CreateOrder() {
       id_supplier: idSupplier,
       supplier: findSupplier(idSupplier || 0),
       type_transaction: typeTransaction,
+      status: 0,
     });
     if (resOrder.status !== 201) {
       alert("Order gagal ditambahkan");
@@ -86,6 +88,7 @@ export default function CreateOrder() {
     );
     if (response.status === 201) {
       alert("Order berhasil ditambahkan");
+      window.location.href = "/order";
     } else alert("Order gagal ditambahkan");
   };
 
@@ -112,14 +115,22 @@ export default function CreateOrder() {
           id_supplier: idSupplier || 0,
           supplier: findSupplier(idSupplier || 0),
           type_transaction: typeTransaction || "",
+          status: 0,
         },
-        name_product: "item" + detailOrdersTemp.length + 1,
+        code_product: "",
+        name_product: "",
         unit_product: "",
         type_product: "",
         price_product: 0,
         total_order: 0,
       },
     ]);
+  };
+
+  const deleteOrderList = (id: number) => {
+    setDetailOrdersTemp(
+      detailOrdersTemp.filter((detailOrder) => detailOrder.ID !== id)
+    );
   };
 
   return (
@@ -170,10 +181,10 @@ export default function CreateOrder() {
                 </div>
                 <select
                   className="border border-dark_green rounded-md py-1.5 px-3 ml-4 w-60"
-                  defaultValue={"Pilih Supplier"}
                   value={idSupplier!}
                   onChange={(e) => setIdSupplier(parseInt(e.target.value))}
                 >
+                  <option disabled>Pilih Supplier</option>
                   {suppliers.map((supplier) => (
                     <option key={supplier.ID} value={supplier.ID}>
                       {supplier.name_supplier}
@@ -194,14 +205,15 @@ export default function CreateOrder() {
               <th className="px-4 py-2">Nama</th>
               <th className="px-4 py-2 w-28">Satuan</th>
               <th className="px-4 py-2 w-40">Jenis</th>
-              <th className="px-4 py-2 w-64">Harga</th>
-              <th className="px-4 py-2 w-64">Jumlah</th>
+              <th className="px-4 py-2">Harga</th>
+              <th className="px-4 py-2">Jumlah</th>
+              <th />
             </tr>
           </thead>
           <tbody className="border border-dark_green bg-white text-stone_5">
             {detailOrdersTemp.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-4 py-2 border border-dark_green">
+                <td colSpan={7} className="px-4 py-2 border border-dark_green">
                   Tidak ada data
                 </td>
               </tr>
@@ -209,10 +221,22 @@ export default function CreateOrder() {
             {detailOrdersTemp.map((detailOrder) => (
               <tr key={detailOrder.ID} className="border-b border-dark_green">
                 <td className="px-4 py-2">
-                  <p>{detailOrder.ID}</p>
+                  <input
+                    type="text"
+                    className="border border-dark_green rounded-md py-1 px-3 w-full"
+                    onChange={(e) =>
+                      (detailOrder.code_product = e.target.value)
+                    }
+                  />
                 </td>
                 <td className="px-4 py-2">
-                  <p>{detailOrder.name_product}</p>
+                  <input
+                    type="text"
+                    className="border border-dark_green rounded-md py-1 px-3 w-full"
+                    onChange={(e) =>
+                      (detailOrder.name_product = e.target.value)
+                    }
+                  />
                 </td>
                 <td className="px-4 py-2">
                   <input
@@ -225,11 +249,12 @@ export default function CreateOrder() {
                 </td>
                 <td className="px-4 py-2">
                   <select
-                    className="border border-dark_green rounded-md py-1.5 px-3 ml-4 w-full"
+                    className="border border-dark_green rounded-md py-1 px-3"
                     onChange={(e) =>
                       (detailOrder.type_product = e.target.value)
                     }
                   >
+                    <option disabled>Pilih Jenis</option>
                     <option value={"Bahan Baku"}>Bahan Baku</option>
                     <option value={"Barang Jadi"}>Barang Jadi</option>
                   </select>
@@ -251,6 +276,23 @@ export default function CreateOrder() {
                       (detailOrder.total_order = parseInt(e.target.value))
                     }
                   />
+                </td>
+                <td className="pr-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                    onClick={() => deleteOrderList(detailOrder.ID)}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
                 </td>
               </tr>
             ))}

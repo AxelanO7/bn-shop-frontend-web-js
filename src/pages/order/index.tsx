@@ -9,6 +9,7 @@ interface Order {
   id_supplier: number;
   type_transaction: string;
   supplier: Supplier;
+  status: number;
 }
 
 interface Supplier {
@@ -115,7 +116,7 @@ export default function OrderPage() {
                 className="px-4 py-2 border-x border-dark_green"
                 onClick={() => changeStatus(order.ID.toString())}
               >
-                {order.type_transaction}
+                {order.status === 0 ? "Belum Diterima" : "Sudah Diterima"}
               </td>
             </tr>
           ))}

@@ -34,6 +34,8 @@ export default function UpdateOrderPage() {
   const [detailOrders, setDetailOrders] = useState<DetailOrder[]>();
   const [suppliers, setSuppliers] = useState<Supplier[]>();
 
+  const [status, setStatus] = useState<string>();
+
   // get from url params
   useEffect(() => {
     const id = window.location.pathname.split("/")[2];
@@ -64,6 +66,17 @@ export default function UpdateOrderPage() {
     else alert("Order gagal diambil");
   };
 
+  const handleUpdateStatus = async () => {
+    const response = await axios.put(
+      `http://localhost:8080/api/order/${order?.ID}`,
+      {
+        status: status,
+      }
+    );
+    if (response.status === 200) alert("Status berhasil diubah");
+    else alert("Status gagal diubah");
+  };
+
   return (
     <BaseLayout padding={12}>
       <div className="flex text-dark_green">
@@ -84,16 +97,9 @@ export default function UpdateOrderPage() {
             </div>
             <div className="w-8" />
             <select
-            // onChange={(event) => {
-            //   setOrder({
-            //     ...order,
-            //     type_transaction: event.target.value,
-            //     ID: order?.ID || 0,
-            //     date_transaction: order!.date_transaction,
-            //     id_supplier: order!.id_supplier,
-            //     supplier: order!.supplier,
-            //   });
-            // }}
+              onChange={(e) => {
+                setStatus(e.target.value);
+              }}
             >
               <option value="paid">Lunas</option>
               <option value="waiting">Menunggu</option>
@@ -120,12 +126,12 @@ export default function UpdateOrderPage() {
       <table className="table-auto text-center text-white bg-green shadow-md">
         <thead className="border-y w-full border-neutral-500">
           <tr>
-            <th className="px-4 py-2 text-start">Kode Barang</th>
-            <th className="px-4 py-2 text-start">Nama</th>
-            <th className="px-4 py-2 text-start">Satuan</th>
-            <th className="px-4 py-2 text-start">Jumlah</th>
-            <th className="px-4 py-2 text-start">Harga Satuan</th>
-            <th className="px-4 py-2 text-start">Subtotal</th>
+            <th className="px-4 py-2">Kode Barang</th>
+            <th className="px-4 py-2">Nama</th>
+            <th className="px-4 py-2">Satuan</th>
+            <th className="px-4 py-2">Jumlah</th>
+            <th className="px-4 py-2">Harga Satuan</th>
+            <th className="px-4 py-2">Subtotal</th>
           </tr>
         </thead>
         <tbody className="border border-dark_green bg-white text-stone_5">
@@ -153,9 +159,7 @@ export default function UpdateOrderPage() {
           <div className="h-4" />
           <button
             className="border border-dark_green rounded-md py-1 px-3 hover:bg-dark_green/25 hover:text-black bg-dark_green text-white mr-16 w-min"
-            onClick={() => {
-              console.log(detailOrders);
-            }}
+            onClick={handleUpdateStatus}
           >
             Konfirmasi
           </button>
