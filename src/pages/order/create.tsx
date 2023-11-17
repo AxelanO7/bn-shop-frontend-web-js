@@ -308,11 +308,12 @@ export default function CreateOrder() {
                     type="number"
                     className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
                     onChange={(e) => {
-                      handleTotalPrice();
                       detailOrder.total_order = parseInt(e.target.value);
+                      handleTotalPrice();
                     }}
                   />
                 </td>
+                x
                 <td className="pr-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -349,7 +350,7 @@ export default function CreateOrder() {
               (total, detailOrder) =>
                 total + detailOrder.total_order * detailOrder.price_product,
               0
-            )}
+            ) || 0}
           </p>
         </div>
         <button
