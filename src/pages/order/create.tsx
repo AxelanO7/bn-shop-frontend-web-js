@@ -41,6 +41,8 @@ export default function CreateOrder() {
   const [purchaseOrder, setPurchaseOrder] = useState<string>();
   const [dateTransaction, setDateTransaction] = useState<string>();
   const [idSupplier, setIdSupplier] = useState<number>();
+  const [supplierSelected, setSupplierSelected] = useState<Supplier>();
+  const [nameSupplier, setNameSupplier] = useState<string>();
   const [typeTransaction, setTypeTransaction] = useState<string>();
 
   useEffect(() => {
@@ -181,7 +183,14 @@ export default function CreateOrder() {
                 </div>
                 <select
                   className="border border-dark_green rounded-md py-1.5 px-3 ml-4 w-60"
-                  onChange={(e) => setIdSupplier(parseInt(e.target.value))}
+                  onChange={(e) => {
+                    setIdSupplier(parseInt(e.target.value));
+                    setSupplierSelected(
+                      suppliers.find(
+                        (supplier) => supplier.ID === parseInt(e.target.value)
+                      )
+                    );
+                  }}
                 >
                   <option disabled selected>
                     Pilih Supplier
@@ -192,6 +201,16 @@ export default function CreateOrder() {
                     </option>
                   ))}
                 </select>
+              </div>
+              <div className="flex items-center">
+                <div className="w-36">
+                  <label>Id Supplier</label>
+                </div>
+                <input
+                  disabled
+                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
+                  value={supplierSelected?.ID}
+                />
               </div>
             </div>
           </div>
@@ -261,7 +280,8 @@ export default function CreateOrder() {
                     <option value={"Bahan Baku"}>Bahan Baku</option>
                     <option value={"Barang Jadi"}>Barang Jadi</option>
                   </select>
-                </td>pasti
+                </td>
+                pasti
                 <td className="px-4 py-2">
                   <input
                     type="number"
