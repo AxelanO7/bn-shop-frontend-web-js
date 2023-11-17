@@ -45,6 +45,8 @@ export default function CreateOrder() {
   const [nameSupplier, setNameSupplier] = useState<string>();
   const [typeTransaction, setTypeTransaction] = useState<string>();
 
+  const [totalPrice, setTotalPrice] = useState<number>();
+
   useEffect(() => {
     getSupplier();
     getOrder();
@@ -132,6 +134,16 @@ export default function CreateOrder() {
   const deleteOrderList = (id: number) => {
     setDetailOrdersTemp(
       detailOrdersTemp.filter((detailOrder) => detailOrder.ID !== id)
+    );
+  };
+
+  const handleTotalPrice = () => {
+    setTotalPrice(
+      detailOrdersTemp.reduce(
+        (total, detailOrder) =>
+          total + detailOrder.total_order * detailOrder.price_product,
+        0
+      )
     );
   };
 
@@ -281,23 +293,24 @@ export default function CreateOrder() {
                     <option value={"Barang Jadi"}>Barang Jadi</option>
                   </select>
                 </td>
-                pasti
                 <td className="px-4 py-2">
                   <input
                     type="number"
                     className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
-                    onChange={(e) =>
-                      (detailOrder.price_product = parseInt(e.target.value))
-                    }
+                    onChange={(e) => {
+                      handleTotalPrice();
+                      detailOrder.price_product = parseInt(e.target.value);
+                    }}
                   />
                 </td>
                 <td className="px-4 py-2">
                   <input
                     type="number"
                     className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
-                    onChange={(e) =>
-                      (detailOrder.total_order = parseInt(e.target.value))
-                    }
+                    onChange={(e) => {
+                      handleTotalPrice();
+                      detailOrder.total_order = parseInt(e.target.value);
+                    }}
                   />
                 </td>
                 <td className="pr-2">
