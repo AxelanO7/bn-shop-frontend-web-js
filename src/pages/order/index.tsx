@@ -33,7 +33,7 @@ export default function OrderPage() {
   };
 
   const changeStatus = async (idProps: string) => {
-    window.location.href = `/update-order/${idProps}`;
+    window.location.href = `/edit-order/${idProps}`;
   };
 
   const addOrder = async () => {
@@ -87,7 +87,6 @@ export default function OrderPage() {
               Name Supplier
             </th>
             <th className="px-4 py-2 border border-dark_green">Status</th>
-            {/* <th className="border border-dark_green px-4 py-2">Aksi</th> */}
           </tr>
         </thead>
         <tbody className="border border-dark_green bg-white text-stone_5">

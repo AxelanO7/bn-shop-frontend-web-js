@@ -55,7 +55,6 @@ function App() {
           path="/report-order/:start_date/:end_date"
           element={<ReportOrderPage />}
         />
-        {/* <Route path="/report-order" element={<ReportOrderPage />} /> */}
 
         <Route path="/supplier" element={<SupplierPage />} />
       </Routes>
