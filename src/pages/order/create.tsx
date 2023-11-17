@@ -181,10 +181,11 @@ export default function CreateOrder() {
                 </div>
                 <select
                   className="border border-dark_green rounded-md py-1.5 px-3 ml-4 w-60"
-                  value={idSupplier!}
                   onChange={(e) => setIdSupplier(parseInt(e.target.value))}
                 >
-                  <option disabled>Pilih Supplier</option>
+                  <option disabled selected>
+                    Pilih Supplier
+                  </option>
                   {suppliers.map((supplier) => (
                     <option key={supplier.ID} value={supplier.ID}>
                       {supplier.name_supplier}
@@ -223,7 +224,7 @@ export default function CreateOrder() {
                 <td className="px-4 py-2">
                   <input
                     type="text"
-                    className="border border-dark_green rounded-md py-1 px-3 w-full"
+                    className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
                     onChange={(e) =>
                       (detailOrder.code_product = e.target.value)
                     }
@@ -232,7 +233,7 @@ export default function CreateOrder() {
                 <td className="px-4 py-2">
                   <input
                     type="text"
-                    className="border border-dark_green rounded-md py-1 px-3 w-full"
+                    className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
                     onChange={(e) =>
                       (detailOrder.name_product = e.target.value)
                     }
@@ -241,7 +242,7 @@ export default function CreateOrder() {
                 <td className="px-4 py-2">
                   <input
                     type="text"
-                    className="border border-dark_green rounded-md py-1 px-3 w-full"
+                    className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
                     onChange={(e) =>
                       (detailOrder.unit_product = e.target.value)
                     }
@@ -249,20 +250,22 @@ export default function CreateOrder() {
                 </td>
                 <td className="px-4 py-2">
                   <select
-                    className="border border-dark_green rounded-md py-1 px-3"
+                    className="border border-dark_green rounded-md py-1 px-3 text-center"
                     onChange={(e) =>
                       (detailOrder.type_product = e.target.value)
                     }
                   >
-                    <option disabled>Pilih Jenis</option>
+                    <option disabled selected>
+                      Pilih Jenis
+                    </option>
                     <option value={"Bahan Baku"}>Bahan Baku</option>
                     <option value={"Barang Jadi"}>Barang Jadi</option>
                   </select>
-                </td>
+                </td>pasti
                 <td className="px-4 py-2">
                   <input
                     type="number"
-                    className="border border-dark_green rounded-md py-1 px-3 w-full"
+                    className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
                     onChange={(e) =>
                       (detailOrder.price_product = parseInt(e.target.value))
                     }
@@ -271,7 +274,7 @@ export default function CreateOrder() {
                 <td className="px-4 py-2">
                   <input
                     type="number"
-                    className="border border-dark_green rounded-md py-1 px-3 w-full"
+                    className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
                     onChange={(e) =>
                       (detailOrder.total_order = parseInt(e.target.value))
                     }

@@ -21,7 +21,7 @@ export default function Navbar() {
           </div>
         </nav>
         {navSide ? (
-          <div className="bg-dark_green/75 w-80 text-white py-6 px-10 space-y-4 h-screen">
+          <div className="bg-dark_green/75 w-max text-white py-6 px-10 space-y-4 h-screen pr-24">
             <h1>MAIN NAVIGATION</h1>
             <p
               className="cursor-pointer"
@@ -70,6 +70,30 @@ export default function Navbar() {
               }}
             >
               Laporan Barang
+            </p>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                window.location.href = "/report-stock";
+              }}
+            >
+              Laporan Barang Jadi
+            </p>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                window.location.href = "/report-input";
+              }}
+            >
+              Laporan Barang Masuk
+            </p>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                window.location.href = "/report-opname";
+              }}
+            >
+              Laporan Stok Opname
             </p>
           </div>
         ) : null}
