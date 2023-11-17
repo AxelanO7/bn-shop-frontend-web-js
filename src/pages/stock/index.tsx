@@ -129,64 +129,142 @@ export default function StockPage() {
   };
 
   return (
-    <BaseLayout padding={12} text_color="stone_5">
-      <HeaderPage>DATA STOK BARANG</HeaderPage>
-      <div className="h-12" />
-      <div className="self-end space-x-4">
-        <button className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white">
-          Barang Masuk
-        </button>
-        <button className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white">
-          Barang Keluar
-        </button>
-        <button className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white">
-          Stock Opname
-        </button>
-      </div>
-      <div className="h-4" />
-      <table className="table-auto text-center text-white bg-green">
-        <thead>
-          <tr>
-            <th className="px-4 py-2 border border-dark_green">Kode Barang</th>
-            <th className="px-4 py-2 border border-dark_green">Nama</th>
-            <th className="px-4 py-2 border border-dark_green">Jenis Barang</th>
-            <th className="px-4 py-2 border border-dark_green">Stok</th>
-            <th className="px-4 py-2 border border-dark_green">Harga</th>
-          </tr>
-        </thead>
-        <tbody className="border border-dark_green bg-white text-stone_5">
-          {stocks.length === 0 ? (
+    <>
+      <BaseLayout text_color="stone_5" padding={12}>
+        <HeaderPage>DATA STOK BARANG</HeaderPage>
+        <div className="h-12" />
+        <div className="flex justify-between">
+          <div className="flex items-center">
+            <p className="dark_green">Search</p>
+            <div className="w-4" />
+            <input type="text" className="border border-dark_green" />
+          </div>
+          <div className="space-x-4">
+            <button className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white">
+              Barang Masuk
+            </button>
+            <button className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white">
+              Barang Keluar
+            </button>
+            <button className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white">
+              Stock Opname
+            </button>
+          </div>
+        </div>
+        <div className="h-4" />
+        <table className="table-auto text-center text-white bg-green shadow-md">
+          <thead>
             <tr>
-              <td className="px-4 py-2" colSpan={5}>
-                Tidak ada data
-              </td>
+              <th className="px-4 py-2 border border-dark_green">
+                Kode Barang
+              </th>
+              <th className="px-4 py-2 border border-dark_green">Nama</th>
+              <th className="px-4 py-2 border border-dark_green">
+                Jenis Barang
+              </th>
+              <th className="px-4 py-2 border border-dark_green">Stok</th>
+              <th className="px-4 py-2 border border-dark_green">Harga</th>
             </tr>
-          ) : null}
-          {stocks.map((stock) => (
-            <tr key={stock.ID}>
-              <td className="px-4 py-2 border border-dark_green">{stock.ID}</td>
-              <td className="px-4 py-2 border border-dark_green">
-                {stock.name_product}
-              </td>
-              <td className="px-4 py-2 border border-dark_green">
-                {stock.type_product}
-              </td>
-              <td className="px-4 py-2 border border-dark_green">
-                {stock.unit_product}
-              </td>
-              <td className="px-4 py-2 border border-dark_green">
-                {stock.price_product}
-              </td>
+          </thead>
+          <tbody className="border border-dark_green bg-white text-stone_5">
+            {stocks.length === 0 ? (
+              <tr>
+                <td className="px-4 py-2" colSpan={5}>
+                  Tidak ada data
+                </td>
+              </tr>
+            ) : null}
+            {stocks.map((stock) => (
+              <tr key={stock.ID}>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.ID}
+                </td>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.name_product}
+                </td>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.type_product}
+                </td>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.unit_product}
+                </td>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.price_product}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="h-8" />
+        <p className="border border-dark_green w-max px-4">
+          Jumlah Total :{" "}
+          {stocks.reduce((total, stock) => total + stock.total_product!, 0)}
+        </p>
+        <div className="h-12" />
+        <div className="flex justify-between">
+          <div className="flex items-center">
+            <p className="dark_green">Search</p>
+            <div className="w-4" />
+            <input type="text" className="border border-dark_green" />
+          </div>
+          <div className="space-x-4">
+            <button className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white">
+              Barang Masuk
+            </button>
+            <button className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white">
+              Barang Keluar
+            </button>
+            <button className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white">
+              Stock Opname
+            </button>
+          </div>
+        </div>
+        <div className="h-4" />
+        <table className="table-auto text-center text-white bg-green shadow-md">
+          <thead>
+            <tr>
+              <th className="px-4 py-2 border border-dark_green py-4"></th>
+              <th className="px-4 py-2 border border-dark_green py-4"></th>
+              <th className="px-4 py-2 border border-dark_green py-4"></th>
+              <th className="px-4 py-2 border border-dark_green py-4"></th>
+              <th className="px-4 py-2 border border-dark_green py-4"></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="h-8" />
-      <p className="border border-dark_green w-max px-4">
-        Jumlah Total :{" "}
-        {stocks.reduce((total, stock) => total + stock.total_product!, 0)}
-      </p>
-
+          </thead>
+          <tbody className="border border-dark_green bg-white text-stone_5">
+            {stocks.length === 0 ? (
+              <tr>
+                <td className="px-4 py-2" colSpan={5}>
+                  Tidak ada data
+                </td>
+              </tr>
+            ) : null}
+            {stocks.map((stock) => (
+              <tr key={stock.ID}>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.ID}
+                </td>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.name_product}
+                </td>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.type_product}
+                </td>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.unit_product}
+                </td>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.price_product}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="h-8" />
+        <p className="border border-dark_green w-max px-4">
+          Jumlah Total :{" "}
+          {stocks.reduce((total, stock) => total + stock.total_product!, 0)}
+        </p>
+      </BaseLayout>
       {manage !== null ? (
         <div className="w-1/2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 fixed z-[1] flex flex-col justify-center items-center bg-white rounded-md shadow-md border border-dark_green px-10 py-10">
           <button
@@ -278,6 +356,6 @@ export default function StockPage() {
           </button>
         </div>
       ) : null}
-    </BaseLayout>
+    </>
   );
 }

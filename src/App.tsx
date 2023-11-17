@@ -29,7 +29,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<OrderPage />} />
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
@@ -51,7 +51,11 @@ function App() {
         <Route path="/add-order" element={<CreateOrderPage />} />
         <Route path="/edit-order/:id" element={<UpdateOrderPage />} />
         <Route path="/print-order" element={<PrintOrderPage />} />
-        <Route path="/report-order" element={<ReportOrderPage />} />
+        <Route
+          path="/report-order/:start_date/:end_date"
+          element={<ReportOrderPage />}
+        />
+        {/* <Route path="/report-order" element={<ReportOrderPage />} /> */}
 
         <Route path="/supplier" element={<SupplierPage />} />
       </Routes>

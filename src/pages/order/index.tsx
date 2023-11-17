@@ -20,6 +20,7 @@ interface Supplier {
 
 export default function OrderPage() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [entries, setEntries] = useState<number>(10);
 
   useEffect(() => {
     getOrders();
@@ -39,18 +40,41 @@ export default function OrderPage() {
     window.location.href = "/add-order";
   };
 
+  const handleEnteries = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setEntries(Number(event.target.value));
+    setOrders(orders.slice(0, Number(event.target.value)));
+  };
+
   return (
     <BaseLayout padding={12} text_color="stone_5">
       <HeaderPage>TRANSAKSI PEMESANAN</HeaderPage>
       <div className="h-12" />
-      <button
-        className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white self-end flex items-center"
-        onClick={addOrder}
-      >
-        + Pesanan Baru
-      </button>
+      <div className="flex justify-between items-center">
+        <div className="flex">
+          <p>Show</p>
+          <select
+            className="border border-dark_green mx-2"
+            onChange={handleEnteries}
+          >
+            <option>10</option>
+            <option>20</option>
+            <option>30</option>
+          </select>
+          <p>entries</p>
+        </div>
+        <div className="flex">
+          <p>Search</p>
+          <input type="text" className="border border-dark_green mx-2 px-2" />
+        </div>
+        <button
+          className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white flex items-center w-max"
+          onClick={addOrder}
+        >
+          + Pesanan Baru
+        </button>
+      </div>
       <div className="h-4" />
-      <table className="table-auto text-center text-white bg-green">
+      <table className="table-auto text-center text-white bg-green shadow-md">
         <thead>
           <tr>
             <th className="px-4 py-2 border border-dark_green">
@@ -71,7 +95,7 @@ export default function OrderPage() {
             <tr>
               <td
                 className="border border-dark_green px-4 py-2 text-center"
-                colSpan={5}
+                colSpan={4}
               >
                 Tidak ada data
               </td>
@@ -98,6 +122,26 @@ export default function OrderPage() {
           ))}
         </tbody>
       </table>
+      <div className="h-4" />
+      <div className="flex">
+        <p>Showing</p>
+        <span className="font-bold mx-1"> 1 </span>
+        to
+        <span className="font-bold mx-1"> 10 </span>
+        of
+        <span className="font-bold mx-1"> 57 </span>
+        <p>entries</p>
+        <div className="grow" />
+        <div className="flex ">
+          <button className="border border-black px-4 py-1 w-28">
+            previous
+          </button>
+          <button className="bg-blue-500 text-white px-3 border border-black">
+            1
+          </button>
+          <button className="border border-black px-4 py-1 w-28">next</button>
+        </div>
+      </div>
     </BaseLayout>
   );
 }

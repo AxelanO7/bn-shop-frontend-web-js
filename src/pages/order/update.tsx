@@ -117,7 +117,7 @@ export default function UpdateOrderPage() {
       </div>
       <div className="h-12" />
       <p className="px-4 pb-2">Pesanan</p>
-      <table className="table-auto text-center text-white bg-green">
+      <table className="table-auto text-center text-white bg-green shadow-md">
         <thead className="border-y w-full border-neutral-500">
           <tr>
             <th className="px-4 py-2 text-start">Kode Barang</th>

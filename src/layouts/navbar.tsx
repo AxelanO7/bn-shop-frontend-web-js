@@ -23,12 +23,54 @@ export default function Navbar() {
         {navSide ? (
           <div className="bg-dark_green/75 w-80 text-white py-6 px-10 space-y-4 h-screen">
             <h1>MAIN NAVIGATION</h1>
-            <p>Dashboard</p>
-            <p>Pemesanan Barang</p>
-            <p>Data Barang</p>
-            <p>Data Supplier</p>
-            <p>Data Master</p>
-            <p>Laporan Barang</p>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                window.location.href = "/dashboard";
+              }}
+            >
+              Dashboard
+            </p>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                window.location.href = "/order";
+              }}
+            >
+              Pemesanan Barang
+            </p>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                window.location.href = "/stock";
+              }}
+            >
+              Data Barang
+            </p>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                window.location.href = "/supplier";
+              }}
+            >
+              Data Supplier
+            </p>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                window.location.href = "/print-stock";
+              }}
+            >
+              Data Master
+            </p>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                window.location.href = "/report-order";
+              }}
+            >
+              Laporan Barang
+            </p>
           </div>
         ) : null}
       </div>

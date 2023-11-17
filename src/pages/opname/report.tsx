@@ -29,16 +29,24 @@ export default function ReportInputPage() {
     <BaseLayout padding={12} text_color="stone_5">
       <HeaderPage>LAPORAN STOCK OPNAME</HeaderPage>
       <div className="h-16" />
-      <table className="table-auto text-center text-white bg-green">
+      <table className="table-auto text-center text-white bg-green shadow-md">
         <thead>
           <tr>
-            <th className="px-4 py-2 border border-dark_green">No</th>
+            <th className="px-4 py-2 border border-dark_green w-16">No</th>
             <th className="px-4 py-2 border border-dark_green">Nama Barang</th>
-            <th className="px-4 py-2 border border-dark_green">Stock Real</th>
-            <th className="px-4 py-2 border border-dark_green">Harga</th>
+            <th className="px-4 py-2 border border-dark_green">Stok Real</th>
+            <th className="px-4 py-2 border border-dark_green">Stok Sistem</th>
+            <th className="px-4 py-2 border border-dark_green">Selisih</th>
           </tr>
         </thead>
         <tbody className="border border-dark_green bg-white text-stone_5">
+          {opnames.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="px-4 py-2 border border-dark_green">
+                Tidak ada data
+              </td>
+            </tr>
+          ) : null}
           {opnames.map((opname, index) => (
             <tr key={index}>
               <td className="px-4 py-2 border border-dark_green">

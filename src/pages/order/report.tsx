@@ -36,12 +36,15 @@ export default function ReportOrderPage() {
 
   useEffect(() => {
     //get start date and end date from url params
-    // const startDate = window.location.pathname.split("/")[2];
-    // const endDate = window.location.pathname.split("/")[3];
+    const startDate = window.location.pathname.split("/")[2];
+    const endDate = window.location.pathname.split("/")[3];
 
     getOrders();
     getSupplier();
-    getDetailOrders();
+    getDetailOrders(
+      startDate ? startDate : "2021-09-01",
+      endDate ? endDate : "2021-09-30"
+    );
   }, []);
 
   const getOrders = async () => {
@@ -50,19 +53,19 @@ export default function ReportOrderPage() {
     else alert("Order gagal diambil");
   };
 
-  // const getDetailOrders = async (startDate: string, endDate: string) => {
-  //   const response = await axios.get(
-  //     `http://localhost:8080/api/detail-order/order/${startDate}/${endDate}`
-  //   );
+  const getDetailOrders = async (startDate: string, endDate: string) => {
+    const response = await axios.get(
+      `http://localhost:8080/api/detail-order/order/${startDate}/${endDate}`
+    );
+    if (response.status === 200) setDetailOrders(response.data.data);
+    else alert(response.data.message);
+  };
+
+  // const getDetailOrders = async () => {
+  //   const response = await axios.get(`http://localhost:8080/api/detail-order`);
   //   if (response.status === 200) setDetailOrders(response.data.data);
   //   else alert("Order gagal diambil");
   // };
-
-  const getDetailOrders = async () => {
-    const response = await axios.get(`http://localhost:8080/api/detail-order`);
-    if (response.status === 200) setDetailOrders(response.data.data);
-    else alert("Order gagal diambil");
-  };
 
   const getSupplier = async () => {
     const response = await axios.get("http://localhost:8080/api/supplier");
@@ -74,7 +77,7 @@ export default function ReportOrderPage() {
     <BaseLayout padding={12} text_color="stone_5">
       <HeaderPage>LAPORAN PEMESANAN MASUK</HeaderPage>
       <div className="h-16" />
-      <table className="table-auto text-center text-white bg-green">
+      <table className="table-auto text-center text-white bg-green shadow-md">
         <thead>
           <tr>
             <th className="px-4 py-2 border border-dark_green">
@@ -87,6 +90,13 @@ export default function ReportOrderPage() {
           </tr>
         </thead>
         <tbody className="border border-dark_green bg-white text-stone_5">
+          {detailOrders.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="px-4 py-2 border border-dark_green">
+                Tidak ada data
+              </td>
+            </tr>
+          ) : null}
           {detailOrders.map((detailOrder, index) => (
             <tr key={index}>
               <td className="border-x border-dark_green">{detailOrder.ID}</td>

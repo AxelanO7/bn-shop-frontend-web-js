@@ -32,7 +32,7 @@ export default function ReportInputPage() {
     <BaseLayout padding={12} text_color="stone_5">
       <HeaderPage>LAPORAN STOK BARANG</HeaderPage>
       <div className="h-16" />
-      <table className="table-auto text-center text-white bg-green">
+      <table className="table-auto text-center text-white bg-green shadow-md">
         <thead>
           <tr>
             <th className="px-4 py-2 border border-dark_green">Kode Barang</th>
@@ -43,6 +43,14 @@ export default function ReportInputPage() {
           </tr>
         </thead>
         <tbody className="border border-dark_green bg-white text-stone_5">
+          {stocks.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="px-4 py-2 border border-dark_green">
+                Tidak ada data
+              </td>
+            </tr>
+          ) : null}
+
           {stocks.map((stock, index) => (
             <tr key={index}>
               <td className="px-4 py-2 border border-dark_green">{stock.ID}</td>

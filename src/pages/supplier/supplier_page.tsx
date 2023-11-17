@@ -107,7 +107,7 @@ export default function SupplierPage() {
         Tambah Supplier
       </button>
       <div className="h-4" />
-      <table className="table-auto text-center text-white bg-green">
+      <table className="table-auto text-center text-white bg-green shadow-md">
         <thead>
           <tr>
             <th className="px-4 py-2 border border-dark_green">ID Supplier</th>
@@ -127,6 +127,7 @@ export default function SupplierPage() {
               </td>
             </tr>
           ) : null}
+
           {suppliers.map((supplier) => (
             <tr key={supplier.ID}>
               <td className="px-4 py-2 border border-dark_green">

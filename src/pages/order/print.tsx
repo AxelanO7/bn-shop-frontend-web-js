@@ -23,8 +23,13 @@ export default function PrintOrderPage() {
   const [endDate, setEndDate] = useState<string>();
 
   const handlePreview = () => {
-    // window.location.href = `/order/${startDate}/${endDate}`;
-    window.open(`/report-order`, "_blank");
+    if (startDate && endDate) {
+      window.open(
+        `/report-order?start_date=${startDate}&end_date=${endDate}`,
+        "_blank"
+      );
+    }
+    // window.open(`/report-order`, "_blank");
   };
 
   return (

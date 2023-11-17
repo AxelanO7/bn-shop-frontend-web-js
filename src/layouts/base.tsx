@@ -9,7 +9,7 @@ interface BaseLayoutProps {
 }
 
 export default function BaseLayout({
-  padding = 0,
+  padding,
   children,
   text_color,
 }: BaseLayoutProps) {
@@ -18,7 +18,10 @@ export default function BaseLayout({
       <Navbar />
       <div className="flex flex-col min-h-screen">
         <div className="h-16" />
-        <div className={`flex flex-col grow p-${padding} text-${text_color}`}>
+        <div
+          className={`flex flex-col grow text-${text_color}`}
+          style={{ padding: `${(padding || 0) * 4}px` }}
+        >
           {children}
         </div>
         <div className="grow" />
