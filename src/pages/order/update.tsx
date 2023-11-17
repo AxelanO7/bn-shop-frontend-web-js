@@ -185,7 +185,13 @@ export default function UpdateOrderPage() {
           <div className="h-4" />
           <p>
             Total Rp.
-            {totalPrice || 0}
+            {totalPrice ||
+              0 ||
+              detailOrders?.reduce((total, detailOrder) => {
+                return (
+                  total + detailOrder.price_product * detailOrder.total_order
+                );
+              }, 0)}
           </p>
           <div className="h-4" />
           <button
