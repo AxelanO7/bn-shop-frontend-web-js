@@ -298,8 +298,8 @@ export default function CreateOrder() {
                     type="number"
                     className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
                     onChange={(e) => {
+                      detailOrder.price_product = parseFloat(e.target.value);
                       handleTotalPrice();
-                      detailOrder.price_product = parseInt(e.target.value);
                     }}
                   />
                 </td>
@@ -308,12 +308,11 @@ export default function CreateOrder() {
                     type="number"
                     className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
                     onChange={(e) => {
-                      detailOrder.total_order = parseInt(e.target.value);
+                      detailOrder.total_order = parseFloat(e.target.value);
                       handleTotalPrice();
                     }}
                   />
                 </td>
-                x
                 <td className="pr-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -345,12 +344,7 @@ export default function CreateOrder() {
           </button>
           <div className="grow" />
           <p>
-            Total Harga{" "}
-            {detailOrdersTemp.reduce(
-              (total, detailOrder) =>
-                total + detailOrder.total_order * detailOrder.price_product,
-              0
-            ) || 0}
+            Total Harga {totalPrice}
           </p>
         </div>
         <button
