@@ -5,6 +5,7 @@ import HeaderPage from "../../components/header_page";
 
 interface Order {
   ID: number;
+  purchase_order: string;
   date_transaction: string;
   id_supplier: number;
   type_transaction: string;
@@ -107,7 +108,7 @@ export default function OrderPage() {
                 {order.date_transaction}
               </td>
               <td className="px-4 py-2 border-x border-dark_green">
-                {order.ID}
+                {order.purchase_order}
               </td>
               <td className="px-4 py-2 border-x border-dark_green">
                 {order.supplier.name_supplier}
