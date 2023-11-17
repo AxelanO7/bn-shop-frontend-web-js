@@ -4,7 +4,7 @@ import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
 
 interface DetailOrder {
-  ID: number;
+  ID: number | null;
   code_product: string;
   id_order: number;
   order: Order;
@@ -71,6 +71,7 @@ export default function CreateOrder() {
   };
 
   const createDetailOrder = async () => {
+    getOrder();
     // create order
     const resOrder = await axios.post("http://localhost:8080/api/order/", {
       ID: orders.length + 1,
@@ -110,7 +111,7 @@ export default function CreateOrder() {
     setDetailOrdersTemp([
       ...detailOrdersTemp,
       {
-        ID: detailOrdersTemp.length + 1,
+        ID: null,
         id_order: orders.length + 1,
         order: {
           ID: 1,
@@ -131,9 +132,9 @@ export default function CreateOrder() {
     ]);
   };
 
-  const deleteOrderList = (id: number) => {
+  const deleteOrderList = (index: number) => {
     setDetailOrdersTemp(
-      detailOrdersTemp.filter((detailOrder) => detailOrder.ID !== id)
+      detailOrdersTemp.filter((detailOrder) => detailOrder.ID !== index)
     );
   };
 
@@ -250,7 +251,7 @@ export default function CreateOrder() {
                 </td>
               </tr>
             ) : null}
-            {detailOrdersTemp.map((detailOrder) => (
+            {detailOrdersTemp.map((detailOrder, index) => (
               <tr key={detailOrder.ID} className="border-b border-dark_green">
                 <td className="px-4 py-2">
                   <input
@@ -321,7 +322,7 @@ export default function CreateOrder() {
                     strokeWidth={1.5}
                     stroke="currentColor"
                     className="w-6 h-6"
-                    onClick={() => deleteOrderList(detailOrder.ID)}
+                    onClick={() => deleteOrderList(index)}
                   >
                     <path
                       strokeLinecap="round"
