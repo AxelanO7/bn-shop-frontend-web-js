@@ -15,6 +15,7 @@ interface Order {
 
 interface DetailOrder {
   ID: number;
+  code_product: string;
   id_order: number;
   order: Order;
   name_product: string;
@@ -48,7 +49,7 @@ export default function UpdateOrderPage() {
 
   const getSupplier = async () => {
     const response = await axios.get("http://localhost:8080/api/supplier");
-    if (response.status === 200) setSuppliers(response.data.data);
+    if (response) setSuppliers(response.data.data);
     else alert("Supplier gagal diambil");
   };
 
@@ -140,7 +141,7 @@ export default function UpdateOrderPage() {
         <tbody className="border border-dark_green bg-white text-stone_5">
           {detailOrders?.map((detailOrder) => (
             <tr key={detailOrder.ID}>
-              <td className="px-4 py-2">{detailOrder.order.purchase_order}</td>
+              <td className="px-4 py-2">{detailOrder.code_product}</td>
               <td className="px-4 py-2">{detailOrder.name_product}</td>
               <td className="px-4 py-2">{detailOrder.unit_product}</td>
               <td className="px-4 py-2">{detailOrder.type_product}</td>
