@@ -47,6 +47,18 @@ export default function OrderPage() {
     setOrders(orders.slice(0, Number(event.target.value)));
   };
 
+  const handleChangeStatus = async (idProps: string) => {
+    // check isConfirm
+    const response = await axios.get(
+      `http://localhost:8080/api/order/${idProps}`
+    );
+    if (response.data.data.is_confirm === true) {
+      alert("Pesanan sudah dikonfirmasi");
+      return;
+    }
+    changeStatus(idProps);
+  };
+
   return (
     <BaseLayout padding={12} text_color="stone_5">
       <HeaderPage>TRANSAKSI PEMESANAN</HeaderPage>
@@ -115,7 +127,7 @@ export default function OrderPage() {
               </td>
               <td
                 className="px-4 py-2 border-x border-dark_green"
-                onClick={() => changeStatus(order.ID.toString())}
+                onClick={() => handleChangeStatus(order.ID.toString())}
               >
                 {order.status === 0
                   ? "Menunggu"

@@ -11,6 +11,7 @@ interface Order {
   type_transaction: string;
   status: number;
   purchase_order: string;
+  is_confirm: boolean;
 }
 
 interface DetailOrder {
@@ -38,8 +39,8 @@ export default function UpdateOrderPage() {
   const [suppliers, setSuppliers] = useState<Supplier[]>();
 
   const [status, setStatus] = useState<number>();
+  const [totalPrice, setTotalPrice] = useState<number>();
 
-  // get from url params
   useEffect(() => {
     const id = window.location.pathname.split("/")[2];
     getSupplier();
@@ -70,16 +71,34 @@ export default function UpdateOrderPage() {
   };
 
   const handleUpdateStatus = async () => {
+    const responseDetailOrder = await axios.put(
+      `http://localhost:8080/api/detail-order/update-multiple/${order?.ID}`,
+      detailOrders
+    );
+    if (responseDetailOrder.status !== 200) {
+      alert("Status gagal diubah");
+      return;
+    }
+
     const response = await axios.put(
       `http://localhost:8080/api/order/${order?.ID}`,
       {
         status: status,
+        is_confirm: true,
       }
     );
     if (response.status === 200) {
       alert("Status berhasil diubah");
       window.location.href = "/order";
     } else alert("Status gagal diubah");
+  };
+
+  const handleTotalPrice = () => {
+    setTotalPrice(
+      detailOrders?.reduce((total, detailOrder) => {
+        return total + detailOrder.price_product * detailOrder.total_order;
+      }, 0)
+    );
   };
 
   return (
@@ -127,7 +146,7 @@ export default function UpdateOrderPage() {
       </div>
       <div className="h-12" />
       <p className="px-4 pb-2">Pesanan</p>
-      <table className="table-auto text-center text-white bg-green shadow-md">
+      <table className="table-fixed text-center text-white bg-green shadow-md">
         <thead className="border-y w-full border-neutral-500">
           <tr>
             <th className="px-4 py-2">Kode Barang</th>
@@ -135,7 +154,7 @@ export default function UpdateOrderPage() {
             <th className="px-4 py-2">Satuan</th>
             <th className="px-4 py-2">Jumlah</th>
             <th className="px-4 py-2">Harga Satuan</th>
-            <th className="px-4 py-2">Subtotal</th>
+            <th className="px-4 py-2 w-72">Subtotal</th>
           </tr>
         </thead>
         <tbody className="border border-dark_green bg-white text-stone_5">
@@ -146,7 +165,17 @@ export default function UpdateOrderPage() {
               <td className="px-4 py-2">{detailOrder.unit_product}</td>
               <td className="px-4 py-2">{detailOrder.type_product}</td>
               <td className="px-4 py-2">{detailOrder.price_product}</td>
-              <td className="px-4 py-2">{detailOrder.total_order}</td>
+              <td>
+                <input
+                  type="number"
+                  className="border border-dark_green rounded-md py-1 px-3 text-center"
+                  defaultValue={detailOrder.total_order.toString()}
+                  onChange={(e) => {
+                    detailOrder.total_order = parseFloat(e.target.value);
+                    handleTotalPrice();
+                  }}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
@@ -156,9 +185,7 @@ export default function UpdateOrderPage() {
           <div className="h-4" />
           <p>
             Total Rp.
-            {detailOrders?.reduce((total, detailOrder) => {
-              return total + detailOrder.total_order;
-            }, 0)}
+            {totalPrice || 0}
           </p>
           <div className="h-4" />
           <button

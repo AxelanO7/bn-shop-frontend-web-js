@@ -23,6 +23,7 @@ interface Order {
   supplier: Supplier;
   type_transaction: string;
   status: number;
+  is_confirm: boolean;
 }
 
 interface Supplier {
@@ -42,7 +43,6 @@ export default function CreateOrder() {
   const [dateTransaction, setDateTransaction] = useState<string>();
   const [idSupplier, setIdSupplier] = useState<number>();
   const [supplierSelected, setSupplierSelected] = useState<Supplier>();
-  const [nameSupplier, setNameSupplier] = useState<string>();
   const [typeTransaction, setTypeTransaction] = useState<string>();
 
   const [totalPrice, setTotalPrice] = useState<number>();
@@ -72,7 +72,6 @@ export default function CreateOrder() {
 
   const createDetailOrder = async () => {
     getOrder();
-    // create order
     const resOrder = await axios.post("http://localhost:8080/api/order/", {
       ID: orders.length + 1,
       purchase_order: purchaseOrder,
@@ -95,6 +94,7 @@ export default function CreateOrder() {
       alert("Order berhasil ditambahkan");
       window.location.href = "/order";
     } else alert("Order gagal ditambahkan");
+    handleTotalPrice();
   };
 
   const findSupplier = (id: number) => {
@@ -121,6 +121,7 @@ export default function CreateOrder() {
           supplier: findSupplier(idSupplier || 0),
           type_transaction: typeTransaction || "",
           status: 0,
+          is_confirm: false,
         },
         code_product: "",
         name_product: "",
@@ -133,9 +134,9 @@ export default function CreateOrder() {
   };
 
   const deleteOrderList = (index: number) => {
-    setDetailOrdersTemp(
-      detailOrdersTemp.filter((detailOrder) => detailOrder.ID !== index)
-    );
+    detailOrdersTemp.splice(index, 1);
+    setDetailOrdersTemp([...detailOrdersTemp]);
+    handleTotalPrice();
   };
 
   const handleTotalPrice = () => {
