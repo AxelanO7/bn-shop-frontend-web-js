@@ -117,7 +117,11 @@ export default function OrderPage() {
                 className="px-4 py-2 border-x border-dark_green"
                 onClick={() => changeStatus(order.ID.toString())}
               >
-                {order.status === 0 ? "Belum Diterima" : "Sudah Diterima"}
+                {order.status === 0
+                  ? "Menunggu"
+                  : order.status === 1
+                  ? "Lunas"
+                  : "Dibatalkan"}
               </td>
             </tr>
           ))}

@@ -10,6 +10,7 @@ interface Order {
   supplier: Supplier;
   type_transaction: string;
   status: number;
+  purchase_order: string;
 }
 
 interface DetailOrder {
@@ -74,8 +75,10 @@ export default function UpdateOrderPage() {
         status: status,
       }
     );
-    if (response.status === 200) alert("Status berhasil diubah");
-    else alert("Status gagal diubah");
+    if (response.status === 200) {
+      alert("Status berhasil diubah");
+      window.location.href = "/order";
+    } else alert("Status gagal diubah");
   };
 
   return (
@@ -83,11 +86,10 @@ export default function UpdateOrderPage() {
       <div className="flex text-dark_green">
         <div className="flex-1">
           <h3 className="font-normal">Purchase Order</h3>
-          <h2 className="text-4xl">{order?.ID}</h2>
+          <h2 className="text-4xl">{order?.purchase_order}</h2>
           <div className="mt-6 space-y-2">
             <p>{order?.supplier.name_supplier}</p>
             <p>{order?.supplier.ID}</p>
-            <p>{order?.supplier.address}</p>
             <p>{order?.supplier.address}</p>
           </div>
         </div>
@@ -103,6 +105,7 @@ export default function UpdateOrderPage() {
             >
               <option value={0}>Menunggu</option>
               <option value={1}>Lunas</option>
+              <option value={2}>Dibatalkan</option>
             </select>
           </div>
           <div className="flex">
@@ -137,7 +140,7 @@ export default function UpdateOrderPage() {
         <tbody className="border border-dark_green bg-white text-stone_5">
           {detailOrders?.map((detailOrder) => (
             <tr key={detailOrder.ID}>
-              <td className="px-4 py-2">{detailOrder.ID}</td>
+              <td className="px-4 py-2">{detailOrder.order.purchase_order}</td>
               <td className="px-4 py-2">{detailOrder.name_product}</td>
               <td className="px-4 py-2">{detailOrder.unit_product}</td>
               <td className="px-4 py-2">{detailOrder.type_product}</td>
