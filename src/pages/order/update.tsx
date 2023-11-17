@@ -163,7 +163,7 @@ export default function UpdateOrderPage() {
               <td className="px-4 py-2">{detailOrder.code_product}</td>
               <td className="px-4 py-2">{detailOrder.name_product}</td>
               <td className="px-4 py-2">{detailOrder.unit_product}</td>
-              <td className="px-4 py-2">{detailOrder.type_product}</td>
+              <td className="px-4 py-2">{detailOrder.total_order}</td>
               <td className="px-4 py-2">{detailOrder.price_product}</td>
               <td>
                 <input
