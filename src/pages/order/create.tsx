@@ -37,17 +37,14 @@ export default function CreateOrder() {
   const [detailOrdersTemp, setDetailOrdersTemp] = useState<DetailOrder[]>([]);
 
   // order
-  // const [idOrder, setIdOrder] = useState<number | null>(null);
   const [purchaseOrder, setPurchaseOrder] = useState<string | null>(null);
   const [dateTransaction, setDateTransaction] = useState<string | null>(null);
   const [idSupplier, setIdSupplier] = useState<number | null>(null);
   const [typeTransaction, setTypeTransaction] = useState<string | null>(null);
 
-  const totalPrice = 0;
-
   useEffect(() => {
     getSupplier();
-    // getOrder();
+    getOrder();
   }, []);
 
   const getOrder = async () => {
@@ -68,9 +65,23 @@ export default function CreateOrder() {
     return true;
   };
 
-  const addDetailOrder = async () => {
+  const createDetailOrder = async () => {
+    // create order
+    const resOrder = await axios.post("http://localhost:8080/api/order/", {
+      ID: orders.length + 1,
+      purchase_order: purchaseOrder,
+      date_transaction: dateTransaction,
+      id_supplier: idSupplier,
+      supplier: findSupplier(idSupplier || 0),
+      type_transaction: typeTransaction,
+    });
+    if (resOrder.status !== 201) {
+      alert("Order gagal ditambahkan");
+      return;
+    }
+
     const response = await axios.post(
-      "http://localhost:8080/api/detail-order",
+      "http://localhost:8080/api/detail-order/create-multiple",
       detailOrdersTemp
     );
     if (response.status === 201) {
@@ -155,7 +166,7 @@ export default function CreateOrder() {
               </div>
               <div className="w-full flex items-center">
                 <div className="w-36">
-                  <label>Name Supplier</label>
+                  <label>Nama Supplier</label>
                 </div>
                 <select
                   className="border border-dark_green rounded-md py-1.5 px-3 ml-4 w-60"
@@ -265,7 +276,7 @@ export default function CreateOrder() {
         </div>
         <button
           className="border border-dark_green rounded-md py-1 px-3 hover:bg-dark_green/25 hover:text-black bg-dark_green text-white mr-16 float-right"
-          onClick={addDetailOrder}
+          onClick={createDetailOrder}
         >
           Ajukan
         </button>
