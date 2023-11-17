@@ -9,6 +9,7 @@ interface Order {
   id_supplier: number;
   supplier: Supplier;
   type_transaction: string;
+  status: number;
 }
 
 interface DetailOrder {
@@ -34,7 +35,7 @@ export default function UpdateOrderPage() {
   const [detailOrders, setDetailOrders] = useState<DetailOrder[]>();
   const [suppliers, setSuppliers] = useState<Supplier[]>();
 
-  const [status, setStatus] = useState<string>();
+  const [status, setStatus] = useState<number>();
 
   // get from url params
   useEffect(() => {
@@ -97,12 +98,11 @@ export default function UpdateOrderPage() {
             </div>
             <div className="w-8" />
             <select
-              onChange={(e) => {
-                setStatus(e.target.value);
-              }}
+              defaultValue={order?.status}
+              onChange={(e) => setStatus(parseInt(e.target.value))}
             >
-              <option value="paid">Lunas</option>
-              <option value="waiting">Menunggu</option>
+              <option value={0}>Menunggu</option>
+              <option value={1}>Lunas</option>
             </select>
           </div>
           <div className="flex">

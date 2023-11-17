@@ -9,6 +9,7 @@ interface Order {
   id_supplier: number;
   type_transaction: string;
   supplier: Supplier;
+  status: number;
 }
 
 interface Supplier {
