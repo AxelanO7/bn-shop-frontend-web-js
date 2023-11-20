@@ -23,7 +23,7 @@ interface DetailOrder {
   unit_product: string;
   type_product: string;
   price_product: number;
-  total_order: number;
+  total_product: number;
 }
 
 interface Supplier {
@@ -70,33 +70,57 @@ export default function UpdateOrderPage() {
     else alert("Order gagal diambil");
   };
 
-  const handleUpdateStatus = async () => {
-    const responseDetailOrder = await axios.put(
-      `http://localhost:8080/api/detail-order/update-multiple/${order?.ID}`,
-      detailOrders
-    );
-    if (responseDetailOrder.status !== 200) {
-      alert("Status gagal diubah");
-      return;
-    }
+  const createMultipleStock = async () => {
+    detailOrders?.map(async (detailOrder) => {
+      await axios
+        .post("http://localhost:8080/api/stock", {
+          code_product: detailOrder.code_product,
+          name_product: detailOrder.name_product,
+          unit_product: detailOrder.unit_product,
+          type_product: detailOrder.type_product,
+          price_product: detailOrder.price_product,
+          total_product: detailOrder.total_product,
+        })
+        .then((res) => {
+          alert("Stock berhasil ditambahkan");
+          window.location.href = "/order";
+        })
+        .catch((err) => {
+          alert("Stock gagal ditambahkan");
+        });
+    });
+  };
 
-    const response = await axios.put(
-      `http://localhost:8080/api/order/${order?.ID}`,
-      {
+  const handleUpdateStatus = async () => {
+    await axios
+      .put(
+        `http://localhost:8080/api/detail-order/update-multiple/${order?.ID}`,
+        detailOrders
+      )
+      .then((res) => {
+        alert("Status berhasil diubah");
+      })
+      .catch((err) => {
+        alert("Status gagal diubah");
+      });
+
+    await axios
+      .put(`http://localhost:8080/api/order/${order?.ID}`, {
         status: status,
-        is_confirm: true,
-      }
-    );
-    if (response.status === 200) {
-      alert("Status berhasil diubah");
-      window.location.href = "/order";
-    } else alert("Status gagal diubah");
+      })
+      .then((res) => {
+        alert("Status berhasil diubah");
+        createMultipleStock();
+      })
+      .catch((err) => {
+        alert("Status gagal diubah");
+      });
   };
 
   const handleTotalPrice = () => {
     setTotalPrice(
       detailOrders?.reduce((total, detailOrder) => {
-        return total + detailOrder.price_product * detailOrder.total_order;
+        return total + detailOrder.price_product * detailOrder.total_product;
       }, 0)
     );
   };
@@ -163,15 +187,15 @@ export default function UpdateOrderPage() {
               <td className="px-4 py-2">{detailOrder.code_product}</td>
               <td className="px-4 py-2">{detailOrder.name_product}</td>
               <td className="px-4 py-2">{detailOrder.unit_product}</td>
-              <td className="px-4 py-2">{detailOrder.total_order}</td>
+              <td className="px-4 py-2">{detailOrder.total_product}</td>
               <td className="px-4 py-2">{detailOrder.price_product}</td>
               <td>
                 <input
                   type="number"
                   className="border border-dark_green rounded-md py-1 px-3 text-center"
-                  defaultValue={detailOrder.total_order.toString()}
+                  defaultValue={detailOrder.total_product.toString()}
                   onChange={(e) => {
-                    detailOrder.total_order = parseFloat(e.target.value);
+                    detailOrder.total_product = parseFloat(e.target.value);
                     handleTotalPrice();
                   }}
                 />
@@ -189,7 +213,7 @@ export default function UpdateOrderPage() {
               0 ||
               detailOrders?.reduce((total, detailOrder) => {
                 return (
-                  total + detailOrder.price_product * detailOrder.total_order
+                  total + detailOrder.price_product * detailOrder.total_product
                 );
               }, 0)}
           </p>

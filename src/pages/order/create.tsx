@@ -12,7 +12,7 @@ interface DetailOrder {
   unit_product: string;
   type_product: string;
   price_product: number;
-  total_order: number;
+  total_product: number;
 }
 
 interface Order {
@@ -23,7 +23,6 @@ interface Order {
   supplier: Supplier;
   type_transaction: string;
   status: number;
-  is_confirm: boolean;
 }
 
 interface Supplier {
@@ -121,14 +120,13 @@ export default function CreateOrder() {
           supplier: findSupplier(idSupplier || 0),
           type_transaction: typeTransaction || "",
           status: 0,
-          is_confirm: false,
         },
         code_product: "",
         name_product: "",
         unit_product: "",
         type_product: "",
         price_product: 0,
-        total_order: 0,
+        total_product: 0,
       },
     ]);
   };
@@ -143,7 +141,7 @@ export default function CreateOrder() {
     setTotalPrice(
       detailOrdersTemp.reduce(
         (total, detailOrder) =>
-          total + detailOrder.total_order * detailOrder.price_product,
+          total + detailOrder.total_product * detailOrder.price_product,
         0
       )
     );
@@ -310,7 +308,7 @@ export default function CreateOrder() {
                     type="number"
                     className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
                     onChange={(e) => {
-                      detailOrder.total_order = parseFloat(e.target.value);
+                      detailOrder.total_product = parseFloat(e.target.value);
                       handleTotalPrice();
                     }}
                   />

@@ -58,14 +58,6 @@ export default function Navbar() {
             <p
               className="cursor-pointer"
               onClick={() => {
-                window.location.href = "/print-stock";
-              }}
-            >
-              Data Master
-            </p>
-            <p
-              className="cursor-pointer"
-              onClick={() => {
                 window.location.href = "/report-order";
               }}
             >
