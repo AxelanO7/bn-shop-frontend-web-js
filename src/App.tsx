@@ -14,6 +14,7 @@ import CreateOutput from "./pages/output/create";
 import PrintOutputPage from "./pages/output/print";
 import ReportOutputPage from "./pages/output/report";
 
+import CreateOpnamePage from "./pages/opname/create";
 import PrintOpnamePage from "./pages/opname/print";
 import ReportOpnamePage from "./pages/opname/report";
 
@@ -31,7 +32,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<CreateInput />} />
+        <Route path="/" element={<CreateOpnamePage />} />
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
@@ -40,14 +41,15 @@ function App() {
         <Route path="/print-stock" element={<PrintStockPage />} />
         <Route path="/report-stock" element={<ReportStockPage />} />
 
-        <Route path="/create-input" element={<CreateInput />} />
+        <Route path="/add-input" element={<CreateInput />} />
         <Route path="/print-input" element={<PrintInputPage />} />
         <Route path="/report-input" element={<ReportInputPage />} />
 
-        <Route path="/create-output" element={<CreateOutput />} />
+        <Route path="/add-output" element={<CreateOutput />} />
         <Route path="/print-output" element={<PrintOutputPage />} />
         <Route path="/report-output" element={<ReportOutputPage />} />
 
+        <Route path="/add-opname" element={<CreateOpnamePage />} />
         <Route path="/print-opname" element={<PrintOpnamePage />} />
         <Route path="/report-opname" element={<ReportOpnamePage />} />
 

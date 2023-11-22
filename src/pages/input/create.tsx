@@ -52,6 +52,8 @@ export default function CreateInput() {
 
   const [totalPrice, setTotalPrice] = useState<number>();
 
+  const [maxTotals, setMaxTotals] = useState<number[]>([]);
+
   useEffect(() => {
     fetchStock();
   }, []);
@@ -97,7 +99,7 @@ export default function CreateInput() {
       return;
     }
 
-    const response = await axios.post(
+    const resDetail = await axios.post(
       "http://localhost:8080/api/detail-inputs",
       stocksRawTemp.map(
         (stockRawT): DetailInput => ({
@@ -122,16 +124,48 @@ export default function CreateInput() {
         })
       )
     );
-    if (response.status === 201) {
-      alert("Order berhasil ditambahkan");
-      window.location.href = "/stock";
-    } else alert("Order gagal ditambahkan");
+    if (resDetail.status !== 201) {
+      alert("Order gagal ditambahkan");
+      return;
+    }
+
+    const resReduceStock = await axios.put(
+      "http://localhost:8080/api/detail-inputs",
+      stocksRawTemp.map(
+        (stockRawT): DetailInput => ({
+          ID: null,
+          id_input: resInput.data.data.ID,
+          input: {
+            ID: resInput.data.data.ID,
+            no_input: noInputProduct || "",
+            date_input: dateTransaction || "",
+            code_product: codeProduct || "",
+            name_product: nameProduct || "",
+            type_product: typeProduct || "",
+            total_product: totalProduction || 0,
+            price_product: price || 0,
+          },
+          code_product: stockRawT.code_product,
+          name_raw: stockRawT.name_product,
+          unit_product: stockRawT.unit_product,
+          total_used: stockRawT.total_product,
+          type_product: stockRawT.type_product,
+          price_unit: stockRawT.price_product,
+        })
+      )
+    );
+    if (resReduceStock.status !== 201) {
+      alert("Order gagal ditambahkan");
+      return;
+    }
+    alert("Order berhasil ditambahkan");
+    window.location.href = "/stock";
     handleTotalPrice();
   };
 
   const addStockList = () => {
     if (!validateInput()) {
-      alert("Silahkan isi form order terlebih dahulu");
+      alert("Silahkan isi form barang masuk terlebih dahulu");
       return;
     }
     setInputs([
@@ -163,6 +197,10 @@ export default function CreateInput() {
   };
 
   const deleteOrderList = (index: number) => {
+    setMaxTotals([
+      ...maxTotals.slice(0, index),
+      ...maxTotals.slice(index + 1, maxTotals.length),
+    ]);
     stocksRawTemp.splice(index, 1);
     setStocksRawTemp([...stocksRawTemp]);
     handleTotalPrice();
@@ -170,7 +208,10 @@ export default function CreateInput() {
 
   const handleTotalPrice = () => {
     setTotalPrice(
-      stocksRawTemp.reduce((total, item) => total + item.total_product, 0)
+      stocksRawTemp.reduce(
+        (total, item) => total + item.total_product * item.price_product,
+        0
+      )
     );
   };
 
@@ -263,16 +304,17 @@ export default function CreateInput() {
               <th className="px-4 py-2 w-36">Kode Barang</th>
               <th className="px-4 py-2">Nama</th>
               <th className="px-4 py-2 w-28">Satuan</th>
-              <th className="px-4 py-2 w-40">Jenis</th>
-              <th className="px-4 py-2">Harga</th>
               <th className="px-4 py-2">Jumlah</th>
+              <th className="px-4 py-2 w-36">Jenis</th>
+              <th className="px-4 py-2">Harga</th>
+              <th className="px-4 py-2">Subtotal</th>
               <th />
             </tr>
           </thead>
           <tbody className="border border-dark_green bg-white text-stone_5">
             {stocksRawTemp.length === 0 && (
               <tr>
-                <td colSpan={7} className="py-2">
+                <td colSpan={8} className="py-2">
                   Tidak ada data
                 </td>
               </tr>
@@ -299,6 +341,12 @@ export default function CreateInput() {
                       stockRawT.price_product = stock.price_product;
                       stockRawT.total_product = stock.total_product;
                       setStocksRawTemp([...stocksRawTemp]);
+                      setMaxTotals([
+                        ...maxTotals.slice(0, index),
+                        stock.total_product,
+                        ...maxTotals.slice(index + 1, maxTotals.length),
+                      ]);
+                      handleTotalPrice();
                     }}
                   >
                     <option disabled selected>
@@ -317,6 +365,27 @@ export default function CreateInput() {
                   </p>
                 </td>
                 <td className="px-4 py-2">
+                  <input
+                    className="border border-dark_green rounded-md py-1 px-3 text-center"
+                    type="number"
+                    value={stockRawT.total_product}
+                    min={0}
+                    max={maxTotals[index]}
+                    onChange={(e) => {
+                      const totalItem: number = parseInt(e.target.value);
+                      if (totalItem > maxTotals[index]) {
+                        alert(
+                          `Jumlah barang melebihi stok, stok tersisa ${maxTotals[index]}`
+                        );
+                        return;
+                      }
+                      stockRawT.total_product = totalItem;
+                      setStocksRawTemp([...stocksRawTemp]);
+                      handleTotalPrice();
+                    }}
+                  />
+                </td>
+                <td className="px-4 py-2">
                   <p className="py-1 px-3 w-full text-center">
                     {stockRawT.type_product || "-"}
                   </p>
@@ -327,16 +396,9 @@ export default function CreateInput() {
                   </p>
                 </td>
                 <td className="px-4 py-2">
-                  <input
-                    className="border border-dark_green rounded-md py-1 px-3 text-center"
-                    type="number"
-                    value={stockRawT.total_product}
-                    onChange={(e) => {
-                      stockRawT.total_product = parseInt(e.target.value);
-                      setStocksRawTemp([...stocksRawTemp]);
-                      handleTotalPrice();
-                    }}
-                  />
+                  <p className="py-1 px-3 w-full text-center">
+                    {stockRawT.price_product * stockRawT.total_product || "-"}
+                  </p>
                 </td>
                 <td className="pr-2">
                   <svg

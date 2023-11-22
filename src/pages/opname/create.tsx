@@ -4,13 +4,33 @@ import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
 
 interface Stock {
-  ID: number;
+  ID: number | null;
   code_product: string;
   name_product: string;
   unit_product: string;
   total_product: number;
   type_product: string;
   price_product: number;
+}
+
+interface Opname {
+  ID: number | null;
+  code_stock_opname: string;
+  date_calculate: string;
+}
+
+interface DetailOpname {
+  ID: number | null;
+  id_opname: number;
+  opname: Opname;
+  code_product: string;
+  name_finished: string;
+  unit_product: string;
+  type_product: string;
+  price_unit: number;
+  stock_real: number;
+  stock_system: number;
+  total_diff: number;
 }
 
 interface Output {
@@ -31,16 +51,16 @@ interface DetailOutput {
   price_unit: number;
 }
 
-export default function CreateOutput() {
-  const [stocksFinished, setStocksFinished] = useState<Stock[]>([]);
-  const [stocksFinishedTemp, setStocksFinishedTemp] = useState<Stock[]>([]);
-  const [outputs, setOutputs] = useState<Output[]>([]);
+export default function CreateOpname() {
+  const [stocksOpname, setStocksOpname] = useState<Stock[]>([]);
+  const [stocksOpnameTemp, setStocksOpnameTemp] = useState<Stock[]>([]);
+  const [opnames, setOpnames] = useState<Opname[]>([]);
 
   // order
   const [dateTransaction, setDateTransaction] = useState<string>();
-  const [noOutputProduct, setNoOutputProduct] = useState<string>();
+  const [codeStockOpname, setCodeStockOpname] = useState<string>();
 
-  const [totalPrice, setTotalPrice] = useState<number>();
+  // const [totalPrice, setTotalPrice] = useState<number>();
 
   const [maxTotals, setMaxTotals] = useState<number[]>([]);
 
@@ -52,7 +72,7 @@ export default function CreateOutput() {
     await axios
       .get("http://localhost:8080/api/paid/finished")
       .then((response) => {
-        setStocksFinished(response.data.data);
+        setStocksOpname(response.data.data);
       })
       .catch((error) => {
         console.log(error);
@@ -60,38 +80,71 @@ export default function CreateOutput() {
       });
   };
 
-  const validateOutput = () => {
-    if (!dateTransaction || !noOutputProduct) return false;
+  const validateOpname = () => {
+    if (!dateTransaction || !codeStockOpname) return false;
     return true;
   };
 
-  const createOutput = async () => {
-    const resOutput = await axios.post("http://localhost:8080/api/output", {
-      no_output: noOutputProduct,
-      data_output: dateTransaction,
-    });
-    if (resOutput.status !== 201) {
+  const createOpname = async () => {
+    // console.log(
+    //   "stocksOpnameTemp",
+    //   stocksOpnameTemp.map(
+    //     (stockFinishedT): DetailOpname => ({
+    //       ID: null,
+    //       id_output: 0,
+    //       output: {
+    //         ID: 0,
+    //         code_stock_opname: codeStockOpname || "",
+    //         date_calculate: dateTransaction || "",
+    //       },
+    //       code_product: stockFinishedT.code_product,
+    //       name_finished: stockFinishedT.name_product,
+    //       unit_product: stockFinishedT.unit_product,
+    //       stock_real: stockFinishedT.total_product,
+    //       stock_system: maxTotals[stocksOpnameTemp.indexOf(stockFinishedT)],
+    //       total_diff:
+    //         maxTotals[stocksOpnameTemp.indexOf(stockFinishedT)] -
+    //         stockFinishedT.total_product,
+    //       type_product: stockFinishedT.type_product,
+    //       price_unit: stockFinishedT.price_product,
+    //     })
+    //   )
+    // );
+
+    const resOpname = await axios.post(
+      "http://localhost:8080/api/stock-opname",
+      {
+        ID: null,
+        code_stock_opname: codeStockOpname || "",
+        date_calculate: dateTransaction || "",
+      }
+    );
+    if (resOpname.status !== 201) {
       alert("Order gagal ditambahkan");
       return;
     }
 
     const resDetail = await axios.post(
-      "http://localhost:8080/api/detail-outputs",
-      stocksFinishedTemp.map(
-        (stockRawT): DetailOutput => ({
+      "http://localhost:8080/api/stock-opnames",
+      stocksOpnameTemp.map(
+        (stockFinishedT): DetailOpname => ({
           ID: null,
-          id_output: resOutput.data.data.ID,
-          output: {
-            ID: resOutput.data.data.ID,
-            no_output: noOutputProduct || "",
-            date_output: dateTransaction || "",
+          id_opname: resOpname.data.data.ID,
+          opname: {
+            ID: resOpname.data.data.ID,
+            code_stock_opname: codeStockOpname || "",
+            date_calculate: dateTransaction || "",
           },
-          code_product: stockRawT.code_product,
-          name_finished: stockRawT.name_product,
-          unit_product: stockRawT.unit_product,
-          total_used: stockRawT.total_product,
-          type_product: stockRawT.type_product,
-          price_unit: stockRawT.price_product,
+          code_product: stockFinishedT.code_product,
+          name_finished: stockFinishedT.name_product,
+          unit_product: stockFinishedT.unit_product,
+          stock_real: stockFinishedT.total_product,
+          stock_system: maxTotals[stocksOpnameTemp.indexOf(stockFinishedT)],
+          total_diff:
+            maxTotals[stocksOpnameTemp.indexOf(stockFinishedT)] -
+            stockFinishedT.total_product,
+          type_product: stockFinishedT.type_product,
+          price_unit: stockFinishedT.price_product,
         })
       )
     );
@@ -100,51 +153,53 @@ export default function CreateOutput() {
       return;
     }
 
-    const resReduceStock = await axios.put(
-      "http://localhost:8080/api/detail-outputs",
-      stocksFinishedTemp.map(
+    const resAdjustStock = await axios.put(
+      "http://localhost:8080/api/stock-opnames",
+      stocksOpnameTemp.map(
         (stockFinishedT): DetailOutput => ({
           ID: null,
-          id_output: resOutput.data.data.ID,
+          id_output: resOpname.data.data.ID,
           output: {
-            ID: resOutput.data.data.ID,
-            no_output: noOutputProduct || "",
+            ID: resOpname.data.data.ID,
             date_output: dateTransaction || "",
+            no_output: codeStockOpname || "",
           },
           code_product: stockFinishedT.code_product,
           name_finished: stockFinishedT.name_product,
           unit_product: stockFinishedT.unit_product,
-          total_used: stockFinishedT.total_product,
+          total_used:
+            maxTotals[stocksOpnameTemp.indexOf(stockFinishedT)] -
+            stockFinishedT.total_product,
           type_product: stockFinishedT.type_product,
           price_unit: stockFinishedT.price_product,
         })
       )
     );
-    if (resReduceStock.status !== 201) {
+    if (resAdjustStock.status !== 201) {
       alert("Order gagal ditambahkan");
       return;
     }
     alert("Order berhasil ditambahkan");
     window.location.href = "/stock";
-    handleTotalPrice();
+    // handleTotalPrice();
   };
 
   const addStockList = () => {
-    if (!validateOutput()) {
-      alert("Silahkan isi form barang keluar terlebih dahulu");
+    if (!validateOpname()) {
+      alert("Silahkan isi form stok opname terlebih dahulu");
       return;
     }
-    setOutputs([
-      ...outputs,
+    setOpnames([
+      ...opnames,
       {
         ID: null,
-        no_output: noOutputProduct || "",
-        date_output: dateTransaction || "",
+        code_stock_opname: codeStockOpname || "",
+        date_calculate: dateTransaction || "",
       },
     ]);
 
-    setStocksFinishedTemp([
-      ...stocksFinishedTemp,
+    setStocksOpnameTemp([
+      ...stocksOpnameTemp,
       {
         ID: 0,
         code_product: "",
@@ -162,31 +217,31 @@ export default function CreateOutput() {
       ...maxTotals.slice(0, index),
       ...maxTotals.slice(index + 1, maxTotals.length),
     ]);
-    stocksFinishedTemp.splice(index, 1);
-    setStocksFinishedTemp([...stocksFinishedTemp]);
-    handleTotalPrice();
+    stocksOpnameTemp.splice(index, 1);
+    setStocksOpnameTemp([...stocksOpnameTemp]);
+    // handleTotalPrice();
   };
 
-  const handleTotalPrice = () => {
-    setTotalPrice(
-      stocksFinishedTemp.reduce(
-        (total, item) => total + item.total_product * item.price_product,
-        0
-      )
-    );
-  };
+  // const handleTotalPrice = () => {
+  //   setTotalPrice(
+  //     stocksOpnameTemp.reduce(
+  //       (total, item) => total + item.total_product * item.price_product,
+  //       0
+  //     )
+  //   );
+  // };
 
   return (
     <BaseLayout padding={12}>
-      <HeaderPage>FORM BARANG KELUAR</HeaderPage>
+      <HeaderPage>FORM STOK OPNAME</HeaderPage>
       <div className="h-12" />
       <div className="border border-dark_green rounded-2xl w-full py-8">
         <div className="flex flex-col px-12">
           <div className="flex space-x-4  text-stone_5">
             <div className="flex-1 flex-col items-center space-y-6">
               <div className="flex items-center">
-                <div className="w-36">
-                  <label>Tanggal Keluar</label>
+                <div className="w-44">
+                  <label>Tanggal Penghitungan</label>
                 </div>
                 <input
                   type="date"
@@ -197,12 +252,12 @@ export default function CreateOutput() {
             </div>
             <div className="flex-1 flex-col items-center space-y-6">
               <div className="flex items-center">
-                <div className="w-36">
-                  <label>No Keluar</label>
+                <div className="w-44">
+                  <label>Kode Stok Opname</label>
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  onChange={(e) => setNoOutputProduct(e.target.value)}
+                  onChange={(e) => setCodeStockOpname(e.target.value)}
                 />
               </div>
             </div>
@@ -210,41 +265,33 @@ export default function CreateOutput() {
         </div>
         <div className="h-4" />
         <div className="bg-green my-4 py-2">
-          <p className="text-center text-white">Daftar barang yang digunakan</p>
+          <p className="text-center text-white">Daftar barang opname</p>
         </div>
         <table className="table-auto text-center text-white bg-green w-full">
           <thead className="border-b border-dark_green">
             <tr>
-              <th className="px-4 py-2 w-36">Kode Barang</th>
-              <th className="px-4 py-2">Nama</th>
-              <th className="px-4 py-2 w-28">Satuan</th>
-              <th className="px-4 py-2">Jumlah</th>
-              <th className="px-4 py-2 w-36">Jenis</th>
-              <th className="px-4 py-2">Harga</th>
-              <th className="px-4 py-2">Subtotal</th>
+              <th className="px-4 py-2">Nama Barang</th>
+              <th className="px-4 py-2">Stok Real</th>
+              <th className="px-4 py-2">Stok Sistem</th>
+              <th className="px-4 py-2">Selisih</th>
               <th />
             </tr>
           </thead>
           <tbody className="border border-dark_green bg-white text-stone_5">
-            {stocksFinishedTemp.length === 0 && (
+            {stocksOpnameTemp.length === 0 && (
               <tr>
                 <td colSpan={8} className="py-2">
                   Tidak ada data
                 </td>
               </tr>
             )}
-            {stocksFinishedTemp.map((stockRawT, index) => (
+            {stocksOpnameTemp.map((stockRawT, index) => (
               <tr key={stockRawT.ID} className="border-b border-dark_green">
-                <td className="px-4 py-2">
-                  <p className="py-1 px-3 w-full text-center">
-                    {stockRawT.code_product || "-"}
-                  </p>
-                </td>
                 <td className="px-4 py-2">
                   <select
                     className="border border-dark_green rounded-md py-1 px-3 text-center"
                     onChange={(e) => {
-                      const stock = stocksFinished.find(
+                      const stock = stocksOpname.find(
                         (stock) => stock.ID === parseInt(e.target.value)
                       );
                       if (!stock) return;
@@ -254,60 +301,45 @@ export default function CreateOutput() {
                       stockRawT.type_product = stock.type_product;
                       stockRawT.price_product = stock.price_product;
                       stockRawT.total_product = stock.total_product;
-                      setStocksFinishedTemp([...stocksFinishedTemp]);
+                      setStocksOpnameTemp([...stocksOpnameTemp]);
                       setMaxTotals([...maxTotals, stock.total_product]);
-                      handleTotalPrice();
+                      // handleTotalPrice();
                     }}
                   >
                     <option disabled selected>
                       Pilih Barang
                     </option>
-                    {stocksFinished.map((stockRaw) => (
-                      <option value={stockRaw.ID}>
+                    {stocksOpname.map((stockRaw) => (
+                      <option value={stockRaw.ID!}>
                         {stockRaw.name_product}
                       </option>
                     ))}
                   </select>
                 </td>
                 <td className="px-4 py-2">
-                  <p className="py-1 px-3 w-full text-center">
-                    {stockRawT.unit_product || "-"}
-                  </p>
-                </td>
-                <td className="px-4 py-2">
                   <input
                     className="border border-dark_green rounded-md py-1 px-3 text-center"
                     type="number"
-                    value={stockRawT.total_product}
                     min={0}
-                    max={maxTotals[index]}
                     onChange={(e) => {
                       const totalItem: number = parseInt(e.target.value);
-                      if (totalItem > maxTotals[index]) {
-                        alert(
-                          `Jumlah barang melebihi stok, stok tersisa ${maxTotals[index]}`
-                        );
-                        return;
-                      }
-                      stockRawT.total_product = totalItem;
-                      setStocksFinishedTemp([...stocksFinishedTemp]);
-                      handleTotalPrice();
+                      stockRawT.total_product =
+                        totalItem > maxTotals[index]
+                          ? maxTotals[index]
+                          : totalItem;
+                      setStocksOpnameTemp([...stocksOpnameTemp]);
                     }}
                   />
                 </td>
+
                 <td className="px-4 py-2">
                   <p className="py-1 px-3 w-full text-center">
-                    {stockRawT.type_product || "-"}
+                    {maxTotals[index] || "-"}
                   </p>
                 </td>
                 <td className="px-4 py-2">
                   <p className="py-1 px-3 w-full text-center">
-                    {stockRawT.price_product || "-"}
-                  </p>
-                </td>
-                <td className="px-4 py-2">
-                  <p className="py-1 px-3 w-full text-center">
-                    {stockRawT.price_product * stockRawT.total_product || "-"}
+                    {(maxTotals[index] || 0) - (stockRawT.total_product || 0)}
                   </p>
                 </td>
                 <td className="pr-2">
@@ -339,12 +371,10 @@ export default function CreateOutput() {
           >
             + Baru
           </button>
-          <div className="grow" />
-          <p>Total Harga {totalPrice ? totalPrice : 0}</p>
         </div>
         <button
           className="border border-dark_green rounded-md py-1 px-3 hover:bg-dark_green/25 hover:text-black bg-dark_green text-white mr-16 float-right"
-          onClick={createOutput}
+          onClick={createOpname}
         >
           Ajukan
         </button>

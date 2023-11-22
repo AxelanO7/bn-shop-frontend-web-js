@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
-import { create } from "domain";
 
 interface Stock {
   ID: number;
@@ -53,11 +52,15 @@ export default function StockPage() {
   };
 
   const handleCreateInput = () => {
-    window.location.href = "create-input";
+    window.location.href = "add-input";
   };
 
   const handleCreateOutput = () => {
-    window.location.href = "create-output";
+    window.location.href = "add-output";
+  };
+
+  const handleStockOpname = () => {
+    window.location.href = "add-opname";
   };
 
   // const addStock = async () => {
@@ -178,7 +181,10 @@ export default function StockPage() {
             >
               Barang Keluar
             </button>
-            <button className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white">
+            <button
+              className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white"
+              onClick={handleStockOpname}
+            >
               Stock Opname
             </button>
           </div>
