@@ -41,6 +41,7 @@ export default function CreateInput() {
   const [stocksRawTemp, setStocksRawTemp] = useState<Stock[]>([]);
   const [inputs, setInputs] = useState<Input[]>([]);
 
+  const [lastIdInput, setLastIdInput] = useState<number>(0);
   // order
   const [dateTransaction, setDateTransaction] = useState<string>();
   const [codeProduct, setCodeProduct] = useState<string>();
@@ -68,6 +69,22 @@ export default function CreateInput() {
         console.log(error);
         alert("Gagal mendapatkan data");
       });
+
+    await axios
+      .get("http://localhost:8080/api/input")
+      .then((response) => {
+        setLastIdInput(
+          response.data.data
+            .map((input: Input) => input.ID)
+            .sort((a: number, b: number) => b - a)[0]
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Gagal mendapatkan data");
+      });
+    setCodeProduct("IN" + (lastIdInput + 1).toString().padStart(4, "0"));
+    setTypeProduct("Bahan Jadi");
   };
 
   const validateInput = () => {
@@ -239,7 +256,13 @@ export default function CreateInput() {
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  onChange={(e) => setCodeProduct(e.target.value)}
+                  type="text"
+                  defaultValue={
+                    "IN" + (lastIdInput + 1).toString().padStart(4, "0")
+                  }
+                  value={"IN" + (lastIdInput + 1).toString().padStart(4, "0")}
+                  disabled
+                  // onChange={(e) => setCodeProduct(e.target.value)}
                 />
               </div>
               <div className="flex items-center">
@@ -257,7 +280,10 @@ export default function CreateInput() {
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  onChange={(e) => setTypeProduct(e.target.value)}
+                  defaultValue={"Bahan Jadi"}
+                  value={"Bahan Jadi"}
+                  // onChange={(e) => setTypeProduct(e.target.value)}
+                  disabled
                 />
               </div>
             </div>
@@ -372,7 +398,7 @@ export default function CreateInput() {
                     min={0}
                     max={maxTotals[index]}
                     onChange={(e) => {
-                      const totalItem: number = parseInt(e.target.value);
+                      const totalItem: number = parseFloat(e.target.value);
                       if (totalItem > maxTotals[index]) {
                         alert(
                           `Jumlah barang melebihi stok, stok tersisa ${maxTotals[index]}`

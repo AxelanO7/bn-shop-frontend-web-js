@@ -36,6 +36,8 @@ export default function CreateOutput() {
   const [stocksFinishedTemp, setStocksFinishedTemp] = useState<Stock[]>([]);
   const [outputs, setOutputs] = useState<Output[]>([]);
 
+  const [lastIdOutput, setLastIdOutput] = useState<number>(0);
+
   // order
   const [dateTransaction, setDateTransaction] = useState<string>();
   const [noOutputProduct, setNoOutputProduct] = useState<string>();
@@ -58,6 +60,21 @@ export default function CreateOutput() {
         console.log(error);
         alert("Gagal mendapatkan data");
       });
+
+    await axios
+      .get("http://localhost:8080/api/output")
+      .then((response) => {
+        setLastIdOutput(
+          response.data.data
+            .map((output: Output) => output.ID)
+            .sort((a: number, b: number) => b - a)[0] || 0
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Gagal mendapatkan data");
+      });
+    setNoOutputProduct("OUT" + (lastIdOutput + 1).toString().padStart(4, "0"));
   };
 
   const validateOutput = () => {
@@ -202,7 +219,12 @@ export default function CreateOutput() {
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  onChange={(e) => setNoOutputProduct(e.target.value)}
+                  defaultValue={
+                    "OUT" + (lastIdOutput + 1).toString().padStart(4, "0")
+                  }
+                  value={"OUT" + (lastIdOutput + 1).toString().padStart(4, "0")}
+                  disabled
+                  // onChange={(e) => setNoOutputProduct(e.target.value)}
                 />
               </div>
             </div>
@@ -282,7 +304,7 @@ export default function CreateOutput() {
                     min={0}
                     max={maxTotals[index]}
                     onChange={(e) => {
-                      const totalItem: number = parseInt(e.target.value);
+                      const totalItem: number = parseFloat(e.target.value);
                       if (totalItem > maxTotals[index]) {
                         alert(
                           `Jumlah barang melebihi stok, stok tersisa ${maxTotals[index]}`

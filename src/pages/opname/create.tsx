@@ -60,6 +60,8 @@ export default function CreateOpname() {
   const [dateTransaction, setDateTransaction] = useState<string>();
   const [codeStockOpname, setCodeStockOpname] = useState<string>();
 
+  const [lastIdOpname, setLastIdOpname] = useState<number>(0);
+
   // const [totalPrice, setTotalPrice] = useState<number>();
 
   const [maxTotals, setMaxTotals] = useState<number[]>([]);
@@ -78,6 +80,17 @@ export default function CreateOpname() {
         console.log(error);
         alert("Gagal mendapatkan data");
       });
+
+    await axios
+      .get("http://localhost:8080/api/stock-opname")
+      .then((response) => {
+        setLastIdOpname(response.data.data[response.data.data.length - 1].ID);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Gagal mendapatkan data");
+      });
+    setCodeStockOpname("OP" + (lastIdOpname + 1).toString().padStart(4, "0"));
   };
 
   const validateOpname = () => {
@@ -257,7 +270,12 @@ export default function CreateOpname() {
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  onChange={(e) => setCodeStockOpname(e.target.value)}
+                  defaultValue={
+                    "OP" + (lastIdOpname + 1).toString().padStart(4, "0")
+                  }
+                  value={"OP" + (lastIdOpname + 1).toString().padStart(4, "0")}
+                  disabled
+                  // onChange={(e) => setCodeStockOpname(e.target.value)}
                 />
               </div>
             </div>
@@ -322,7 +340,7 @@ export default function CreateOpname() {
                     type="number"
                     min={0}
                     onChange={(e) => {
-                      const totalItem: number = parseInt(e.target.value);
+                      const totalItem: number = parseFloat(e.target.value);
                       stockRawT.total_product =
                         totalItem > maxTotals[index]
                           ? maxTotals[index]
