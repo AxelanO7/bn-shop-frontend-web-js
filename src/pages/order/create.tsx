@@ -37,6 +37,8 @@ export default function CreateOrder() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [detailOrdersTemp, setDetailOrdersTemp] = useState<DetailOrder[]>([]);
 
+  const [lastPO, setLastPO] = useState<string>();
+
   // order
   const [purchaseOrder, setPurchaseOrder] = useState<string>();
   const [dateTransaction, setDateTransaction] = useState<string>();
@@ -55,6 +57,11 @@ export default function CreateOrder() {
     const response = await axios.get("http://localhost:8080/api/order");
     if (response.status === 200) setOrders(response.data.data);
     else alert("Order gagal diambil");
+    setLastPO(
+      response.data.data[response.data.data.length - 1]?.purchase_order
+    );
+    console.log(lastPO);
+    setPurchaseOrder("PO" + (parseInt(lastPO?.substring(2, 5) || "0") + 1));
   };
 
   const getSupplier = async () => {
@@ -185,8 +192,13 @@ export default function CreateOrder() {
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  value={purchaseOrder!}
-                  onChange={(e) => setPurchaseOrder(e.target.value)}
+                  value={
+                    purchaseOrder ||
+                    "PO" + (parseInt(lastPO?.substring(2, 5) || "0") + 1)
+                  }
+                  disabled
+                  // value={purchaseOrder!}
+                  // onChange={(e) => setPurchaseOrder(e.target.value)}
                 />
               </div>
               <div className="w-full flex items-center">

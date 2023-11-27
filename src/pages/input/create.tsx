@@ -83,7 +83,7 @@ export default function CreateInput() {
         console.log(error);
         alert("Gagal mendapatkan data");
       });
-    setCodeProduct("IN" + (lastIdInput + 1).toString().padStart(4, "0"));
+    setNoInputProduct("IN" + (lastIdInput + 1).toString().padStart(4, "0"));
     setTypeProduct("Bahan Jadi");
   };
 
@@ -257,12 +257,7 @@ export default function CreateInput() {
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
                   type="text"
-                  defaultValue={
-                    "IN" + (lastIdInput + 1).toString().padStart(4, "0")
-                  }
-                  value={"IN" + (lastIdInput + 1).toString().padStart(4, "0")}
-                  disabled
-                  // onChange={(e) => setCodeProduct(e.target.value)}
+                  onChange={(e) => setCodeProduct(e.target.value)}
                 />
               </div>
               <div className="flex items-center">
@@ -280,7 +275,6 @@ export default function CreateInput() {
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  defaultValue={"Bahan Jadi"}
                   value={"Bahan Jadi"}
                   // onChange={(e) => setTypeProduct(e.target.value)}
                   disabled
@@ -294,7 +288,9 @@ export default function CreateInput() {
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  onChange={(e) => setNoInputProduct(e.target.value)}
+                  value={"IN" + (lastIdInput + 1).toString().padStart(4, "0")}
+                  disabled
+                  // onChange={(e) => setNoInputProduct(e.target.value)}
                 />
               </div>
               <div className="w-full flex items-center">

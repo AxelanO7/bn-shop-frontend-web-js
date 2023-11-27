@@ -270,9 +270,6 @@ export default function CreateOpname() {
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  defaultValue={
-                    "OP" + (lastIdOpname + 1).toString().padStart(4, "0")
-                  }
                   value={"OP" + (lastIdOpname + 1).toString().padStart(4, "0")}
                   disabled
                   // onChange={(e) => setCodeStockOpname(e.target.value)}

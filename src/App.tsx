@@ -6,7 +6,7 @@ import StockPage from "./pages/stock";
 import PrintStockPage from "./pages/stock/print";
 import ReportStockPage from "./pages/stock/report";
 
-import CreateInput from "./pages/input/create";
+import CreateInputPage from "./pages/input/create";
 import PrintInputPage from "./pages/input/print";
 import ReportInputPage from "./pages/input/report";
 
@@ -32,7 +32,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<CreateOpnamePage />} />
+        <Route path="/" element={<LoginPage />} />
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
@@ -41,7 +41,7 @@ function App() {
         <Route path="/print-stock" element={<PrintStockPage />} />
         <Route path="/report-stock" element={<ReportStockPage />} />
 
-        <Route path="/add-input" element={<CreateInput />} />
+        <Route path="/add-input" element={<CreateInputPage />} />
         <Route path="/print-input" element={<PrintInputPage />} />
         <Route path="/report-input" element={<ReportInputPage />} />
 

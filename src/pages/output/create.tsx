@@ -219,9 +219,6 @@ export default function CreateOutput() {
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  defaultValue={
-                    "OUT" + (lastIdOutput + 1).toString().padStart(4, "0")
-                  }
                   value={"OUT" + (lastIdOutput + 1).toString().padStart(4, "0")}
                   disabled
                   // onChange={(e) => setNoOutputProduct(e.target.value)}
