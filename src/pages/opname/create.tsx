@@ -336,10 +336,7 @@ export default function CreateOpname() {
                     min={0}
                     onChange={(e) => {
                       const totalItem: number = parseFloat(e.target.value);
-                      stockRawT.total_product =
-                        totalItem > maxTotals[index]
-                          ? maxTotals[index]
-                          : totalItem;
+                      stockRawT.total_product = totalItem;
                       setStocksOpnameTemp([...stocksOpnameTemp]);
                     }}
                   />
@@ -352,7 +349,7 @@ export default function CreateOpname() {
                 </td>
                 <td className="px-4 py-2">
                   <p className="py-1 px-3 w-full text-center">
-                    {(maxTotals[index] || 0) - (stockRawT.total_product || 0)}
+                    {maxTotals[index] - stockRawT.total_product || "-"}
                   </p>
                 </td>
                 <td className="pr-2">
