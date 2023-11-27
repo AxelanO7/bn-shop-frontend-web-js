@@ -180,9 +180,7 @@ export default function CreateOpname() {
           code_product: stockFinishedT.code_product,
           name_finished: stockFinishedT.name_product,
           unit_product: stockFinishedT.unit_product,
-          total_used:
-            maxTotals[stocksOpnameTemp.indexOf(stockFinishedT)] -
-            stockFinishedT.total_product,
+          total_used: stockFinishedT.total_product,
           type_product: stockFinishedT.type_product,
           price_unit: stockFinishedT.price_product,
         })
