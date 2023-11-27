@@ -84,7 +84,7 @@ export default function CreateInput() {
         alert("Gagal mendapatkan data");
       });
     setNoInputProduct("IN" + (lastIdInput + 1).toString().padStart(4, "0"));
-    setTypeProduct("Bahan Jadi");
+    setTypeProduct("Barang Jadi");
   };
 
   const validateInput = () => {
@@ -275,7 +275,7 @@ export default function CreateInput() {
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  value={"Bahan Jadi"}
+                  value={"Barang Jadi"}
                   // onChange={(e) => setTypeProduct(e.target.value)}
                   disabled
                 />
