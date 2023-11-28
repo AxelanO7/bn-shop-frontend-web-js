@@ -115,6 +115,7 @@ export default function UpdateOrderPage() {
       .catch((err) => {
         alert("Status gagal diubah");
       });
+    window.location.href = "/order";
   };
 
   const handleTotalPrice = () => {
