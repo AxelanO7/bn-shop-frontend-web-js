@@ -110,7 +110,7 @@ export default function UpdateOrderPage() {
       })
       .then((res) => {
         alert("Status berhasil diubah");
-        createMultipleStock();
+        if (status === 1) createMultipleStock();
       })
       .catch((err) => {
         alert("Status gagal diubah");

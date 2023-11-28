@@ -48,7 +48,7 @@ export default function OrderPage() {
   };
 
   const handleChangeStatus = async (order: Order) => {
-    if (order.status === 1) {
+    if (order.status !== 0) {
       alert("Pesanan sudah dikonfirmasi");
       return;
     }

@@ -72,7 +72,6 @@ export default function CreateOrder() {
 
   const validateOrder = () => {
     if (!purchaseOrder || !dateTransaction || !idSupplier || !typeTransaction) {
-      console.log(purchaseOrder, dateTransaction, idSupplier, typeTransaction);
       return false;
     }
     return true;
@@ -80,8 +79,7 @@ export default function CreateOrder() {
 
   const createDetailOrder = async () => {
     getOrder();
-    const resOrder = await axios.post("http://localhost:8080/api/order/", {
-      ID: orders.length + 1,
+    const resOrder = await axios.post("http://localhost:8080/api/order", {
       purchase_order: purchaseOrder,
       date_transaction: dateTransaction,
       id_supplier: idSupplier,
