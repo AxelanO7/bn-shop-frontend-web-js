@@ -57,11 +57,15 @@ export default function CreateOrder() {
     const response = await axios.get("http://localhost:8080/api/order");
     if (response.status === 200) setOrders(response.data.data);
     else alert("Order gagal diambil");
-    setLastPO(
-      response.data.data[response.data.data.length - 1]?.purchase_order
-    );
-    console.log(lastPO);
-    setPurchaseOrder("PO" + (parseInt(lastPO?.substring(2, 5) || "0") + 1));
+    const lastPoId =
+      "PO" +
+      parseInt(
+        response.data.data[
+          response.data.data.length - 1
+        ]?.purchase_order.substring(2, 5) || "0" + 1
+      );
+    setLastPO(lastPoId);
+    setPurchaseOrder(lastPoId);
   };
 
   const getSupplier = async () => {
@@ -71,8 +75,10 @@ export default function CreateOrder() {
   };
 
   const validateOrder = () => {
-    if (!purchaseOrder || !dateTransaction || !idSupplier || !typeTransaction)
+    if (!purchaseOrder || !dateTransaction || !idSupplier || !typeTransaction) {
+      console.log(purchaseOrder, dateTransaction, idSupplier, typeTransaction);
       return false;
+    }
     return true;
   };
 
@@ -110,6 +116,7 @@ export default function CreateOrder() {
   };
 
   const addOrderList = () => {
+    setPurchaseOrder(lastPO);
     if (!validateOrder()) {
       alert("Silahkan isi form order terlebih dahulu");
       return;
@@ -294,15 +301,16 @@ export default function CreateOrder() {
                 <td className="px-4 py-2">
                   <select
                     className="border border-dark_green rounded-md py-1 px-3 text-center"
+                    value={"Bahan Baku"}
                     onChange={(e) =>
                       (detailOrder.type_product = e.target.value)
                     }
+                    disabled
                   >
                     <option disabled selected>
                       Pilih Jenis
                     </option>
                     <option value={"Bahan Baku"}>Bahan Baku</option>
-                    <option value={"Barang Jadi"}>Barang Jadi</option>
                   </select>
                 </td>
                 <td className="px-4 py-2">
