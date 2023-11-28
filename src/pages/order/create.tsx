@@ -37,8 +37,6 @@ export default function CreateOrder() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [detailOrdersTemp, setDetailOrdersTemp] = useState<DetailOrder[]>([]);
 
-  const [lastPO, setLastPO] = useState<string>();
-
   // order
   const [purchaseOrder, setPurchaseOrder] = useState<string>();
   const [dateTransaction, setDateTransaction] = useState<string>();
@@ -57,14 +55,12 @@ export default function CreateOrder() {
     const response = await axios.get("http://localhost:8080/api/order");
     if (response.status === 200) setOrders(response.data.data);
     else alert("Order gagal diambil");
-    const lastPoId =
-      "PO" +
-      parseInt(
-        response.data.data[
-          response.data.data.length - 1
-        ]?.purchase_order.substring(2, 5) || "0" + 1
-      );
-    setLastPO(lastPoId);
+    const lastIndexPo = response.data.data
+      .map(
+        (order: Order) => parseInt(order.purchase_order.substring(2, 5)) || 0
+      )
+      .sort((a: number, b: number) => b - a);
+    const lastPoId = "PO" + (lastIndexPo[0] + 1);
     setPurchaseOrder(lastPoId);
   };
 
@@ -116,7 +112,6 @@ export default function CreateOrder() {
   };
 
   const addOrderList = () => {
-    setPurchaseOrder(lastPO);
     if (!validateOrder()) {
       alert("Silahkan isi form order terlebih dahulu");
       return;
@@ -199,10 +194,7 @@ export default function CreateOrder() {
                 </div>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
-                  value={
-                    purchaseOrder ||
-                    "PO" + (parseInt(lastPO?.substring(2, 5) || "0") + 1)
-                  }
+                  value={purchaseOrder}
                   disabled
                   // value={purchaseOrder!}
                   // onChange={(e) => setPurchaseOrder(e.target.value)}
