@@ -88,18 +88,27 @@ export default function CreateOrder() {
 
   const createDetailOrder = async () => {
     getOrder();
-    const resOrder = await axios.post("http://localhost:8080/api/order", {
-      purchase_order: purchaseOrder,
-      date_transaction: dateTransaction,
-      id_supplier: idSupplier,
-      supplier: findSupplier(idSupplier || 0),
-      type_transaction: typeTransaction,
-      status: 0,
-    });
-    if (resOrder.status !== 201) {
-      alert("Order gagal ditambahkan");
-      return;
-    }
+    await axios
+      .post("http://localhost:8080/api/order", {
+        purchase_order: purchaseOrder,
+        date_transaction: dateTransaction,
+        id_supplier: idSupplier,
+        supplier: findSupplier(idSupplier || 0),
+        type_transaction: typeTransaction,
+        status: 0,
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          alert("Order berhasil ditambahkan");
+          const idOrder = response.data.data.ID;
+          detailOrdersTemp.forEach((detailOrder) => {
+            detailOrder.id_order = idOrder;
+          });
+        } else alert("Order gagal ditambahkan");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     const response = await axios.post(
       "http://localhost:8080/api/detail-order/create-multiple",
