@@ -127,7 +127,7 @@ export default function CreateOrder() {
           date_transaction: dateTransaction || "",
           id_supplier: idSupplier || 0,
           supplier: findSupplier(idSupplier || 0),
-          type_transaction: typeTransaction || "",
+          type_transaction: "Bahan Baku",
           status: 0,
         },
         code_product: "",
@@ -291,19 +291,15 @@ export default function CreateOrder() {
                   />
                 </td>
                 <td className="px-4 py-2">
-                  <select
-                    className="border border-dark_green rounded-md py-1 px-3 text-center"
-                    value={"Bahan Baku"}
+                  <input
+                    type="text"
+                    className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
                     onChange={(e) =>
                       (detailOrder.type_product = e.target.value)
                     }
+                    value={"Bahan Baku"}
                     disabled
-                  >
-                    <option disabled selected>
-                      Pilih Jenis
-                    </option>
-                    <option value={"Bahan Baku"}>Bahan Baku</option>
-                  </select>
+                  />
                 </td>
                 <td className="px-4 py-2">
                   <input
