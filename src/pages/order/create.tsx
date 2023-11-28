@@ -52,16 +52,25 @@ export default function CreateOrder() {
   }, []);
 
   const getOrder = async () => {
-    const response = await axios.get("http://localhost:8080/api/order");
-    if (response.status === 200) setOrders(response.data.data);
-    else alert("Order gagal diambil");
-    const lastIndexPo = response.data.data
-      .map(
-        (order: Order) => parseInt(order.purchase_order.substring(2, 5)) || 0
-      )
-      .sort((a: number, b: number) => b - a);
-    const lastPoId = "PO" + (lastIndexPo[0] + 1);
-    setPurchaseOrder(lastPoId);
+    await axios
+      .get("http://localhost:8080/api/order")
+      .then((response) => {
+        if (response.status === 200) {
+          setOrders(response.data.data);
+          const lastIndexPo = response.data.data
+            .map(
+              (order: Order) =>
+                parseInt(order.purchase_order.substring(2, 5)) || 0
+            )
+            .sort((a: number, b: number) => b - a);
+          const lastPoId = "PO" + (lastIndexPo[0] + 1);
+          setPurchaseOrder(lastPoId);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 404) setPurchaseOrder("PO1");
+        else console.log(error);
+      });
   };
 
   const getSupplier = async () => {

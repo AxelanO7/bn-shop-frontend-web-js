@@ -29,9 +29,14 @@ export default function OrderPage() {
   }, []);
 
   const getOrders = async () => {
-    const response = await axios.get("http://localhost:8080/api/order");
-    if (response.status === 200) setOrders(response.data.data);
-    else alert("Order gagal diambil");
+    await axios
+      .get("http://localhost:8080/api/order")
+      .then((response) => {
+        if (response.status === 200) setOrders(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const changeStatus = async (idProps: string) => {
