@@ -82,14 +82,14 @@ export default function OrderPage() {
           <input type="text" className="border border-dark_green mx-2 px-2" />
         </div>
         <button
-          className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white flex items-center w-max"
+          className="rounded-lg border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white flex items-center w-max"
           onClick={addOrder}
         >
           + Pesanan Baru
         </button>
       </div>
-      <div className="h-4" />
-      <table className="table-auto text-center text-white bg-green shadow-md">
+      <div className="h-4 " />
+      <table className="table-auto text-center text-white bg-green shadow-md ">
         <thead>
           <tr>
             <th className="px-4 py-2 border border-dark_green">
@@ -133,8 +133,8 @@ export default function OrderPage() {
                 {order.status === 0
                   ? "Menunggu"
                   : order.status === 1
-                  ? "Lunas"
-                  : "Dibatalkan"}
+                    ? "Lunas"
+                    : "Dibatalkan"}
               </td>
             </tr>
           ))}

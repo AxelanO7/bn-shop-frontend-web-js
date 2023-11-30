@@ -103,6 +103,7 @@ export default function CreateOrder() {
           const idOrder = response.data.data.ID;
           detailOrdersTemp.forEach((detailOrder) => {
             detailOrder.id_order = idOrder;
+            detailOrder.type_product = "Bahan Baku";
           });
         } else alert("Order gagal ditambahkan");
       })
@@ -212,8 +213,8 @@ export default function CreateOrder() {
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
                   value={purchaseOrder}
                   disabled
-                  // value={purchaseOrder!}
-                  // onChange={(e) => setPurchaseOrder(e.target.value)}
+                // value={purchaseOrder!}
+                // onChange={(e) => setPurchaseOrder(e.target.value)}
                 />
               </div>
               <div className="w-full flex items-center">

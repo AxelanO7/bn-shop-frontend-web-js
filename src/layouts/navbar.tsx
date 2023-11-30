@@ -58,23 +58,23 @@ export default function Navbar() {
             <p
               className="cursor-pointer"
               onClick={() => {
-                window.location.href = "/report-order";
+                window.location.href = "/print-order";
               }}
             >
-              Laporan Barang
+              Laporan Pemesanan Barang
             </p>
             <p
               className="cursor-pointer"
               onClick={() => {
-                window.location.href = "/report-stock";
+                window.location.href = "/print-stock";
               }}
             >
-              Laporan Barang Jadi
+              Laporan Stok Barang
             </p>
             <p
               className="cursor-pointer"
               onClick={() => {
-                window.location.href = "/report-input";
+                window.location.href = "/print-input";
               }}
             >
               Laporan Barang Masuk
@@ -82,7 +82,15 @@ export default function Navbar() {
             <p
               className="cursor-pointer"
               onClick={() => {
-                window.location.href = "/report-opname";
+                window.location.href = "/print-output";
+              }}
+            >
+              Laporan Barang Keluar
+            </p>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                window.location.href = "/print-opname";
               }}
             >
               Laporan Stok Opname

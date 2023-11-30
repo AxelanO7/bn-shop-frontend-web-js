@@ -18,17 +18,17 @@ export default function LoginPage() {
     });
     if (response.status === 200) {
       alert("Login berhasil");
-      window.location.href = "/order";
+      window.location.href = "/dashboard";
     } else setFailedLoginPopup(true);
   };
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center bg-t_white">
+    <div className="h-screen flex flex-col justify-center items-center bg-gray-100">
       <h1 className="font-medium text-3xl">SISTEM OPERASIONAL</h1>
       <div className="h-2" />
       <h2 className="font-light text-2xl">BN SHOP UBUD</h2>
       <div className="h-10" />
-      <div className="bg-light_green py-6 px-8 flex flex-col rounded-3xl	w-1/2">
+      <div className="bg-light_green shadow-md py-8 px-12 flex flex-col rounded-3xl	w-1/2">
         <h2 className="text-center font-normal text-2xl">LOGIN</h2>
         <div className="h-8" />
         <input
@@ -37,7 +37,7 @@ export default function LoginPage() {
           value={username!}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <div className="h-6" />
+        <div className="h-8" />
         <input
           className="rounded-lg px-3 py-1"
           placeholder="Password"

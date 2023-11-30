@@ -101,10 +101,10 @@ export default function SupplierPage() {
       <HeaderPage>Daftar Supplier</HeaderPage>
       <div className="h-12" />
       <button
-        className="border border-dark_green py-1 px-3 w-1/4 hover:bg-dark_green/25 hover:text-white self-end"
+        className="rounded-lg border border-dark_green py-1 px-3 w-1/4 hover:bg-dark_green/25 hover:text-white self-end"
         onClick={() => setManage("add")}
       >
-        Tambah Supplier
+        + Tambah Supplier
       </button>
       <div className="h-4" />
       <table className="table-auto text-center text-white bg-green shadow-md">
@@ -144,14 +144,14 @@ export default function SupplierPage() {
               </td>
               <td className="px-4 py-2 flex border-y-[0.1px] border-dark_green">
                 <button
-                  className="border border-dark_green rounded-md py-1 px-3 w-full hover:bg-dark_green/25 hover:text-white"
+                  className="bg-red-700 rounded-md py-1 px-3 w-full hover:bg-dark_green/25 text-white"
                   onClick={() => deleteSupplier(supplier.ID.toString())}
                 >
                   Delete
                 </button>
                 <div className="w-4"></div>
                 <button
-                  className="border border-dark_green rounded-md py-1 px-3 w-full hover:bg-dark_green/25 hover:text-white"
+                  className="bg-blue-500 rounded-md py-1 px-3 w-full hover:bg-dark_green/25 text-white"
                   onClick={() => {
                     setIdSupplier(supplier.ID);
                     setNameSupplier(supplier.name_supplier);
@@ -179,8 +179,8 @@ export default function SupplierPage() {
             {manage === "add"
               ? "Tambah Supplier"
               : manage === "edit"
-              ? "Ubah Supplier"
-              : "Supplier"}
+                ? "Ubah Supplier"
+                : "Supplier"}
           </label>
           {manage === "add" ? null : (
             <>
@@ -234,8 +234,8 @@ export default function SupplierPage() {
             {manage === "add"
               ? "Tambah"
               : manage === "edit"
-              ? "Ubah"
-              : "Simpan"}
+                ? "Ubah"
+                : "Simpan"}
           </button>
         </div>
       ) : null}

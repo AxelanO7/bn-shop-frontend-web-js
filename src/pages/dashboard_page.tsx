@@ -7,15 +7,15 @@ export default function DashboardPage() {
     <BaseLayout padding={12} text_color="stone_5">
       <HeaderPage>AKSES CEPAT</HeaderPage>
       <p className="text-center">silahkan klik dibawah ini</p>
-      <div className="h-16" />
-      <div className="grid grid-cols-3 gap-4 w-full  text-center text-white">
+      <div className="h-20" />
+      <div className="grid grid-cols-3 gap-5 w-full  text-center text-white">
         <div
-          className="border border-dark_green rounded-md"
+          className="bg-white shadow rounded-md"
           onClick={() => {
             window.location.href = "/order";
           }}
         >
-          <p className="text-xl bg-green rounded-md py-8">PEMESANAN BARANG</p>
+          <p className="text-xl bg-green rounded-md py-4">PEMESANAN BARANG</p>
           <div className="h-4"></div>
           {/* <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,10 +31,10 @@ export default function DashboardPage() {
           </svg> */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
+            viewBox="0 0 28 24"
             fill="none"
             stroke="black"
-            stroke-width="2"
+            stroke-width="1"
             stroke-linecap="round"
             stroke-linejoin="round"
             className="lucide lucide-arrow-right-square p-20"
@@ -45,12 +45,12 @@ export default function DashboardPage() {
           </svg>
         </div>
         <div
-          className="border border-dark_green rounded-md"
+          className="bg-white shadow rounded-md"
           onClick={() => {
             window.location.href = "/stock";
           }}
         >
-          <p className="text-xl bg-green rounded-md py-8">DATA BARANG</p>
+          <p className="text-xl bg-green rounded-md py-4">DATA BARANG</p>
           <div className="h-4"></div>
           {/* <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -66,10 +66,10 @@ export default function DashboardPage() {
           </svg> */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
+            viewBox="0 0 28 24"
             fill="none"
             stroke="black"
-            stroke-width="2"
+            stroke-width="1"
             stroke-linecap="round"
             stroke-linejoin="round"
             className="lucide lucide-arrow-right-square p-20"
@@ -80,12 +80,12 @@ export default function DashboardPage() {
           </svg>
         </div>
         <div
-          className="border border-dark_green rounded-md"
+          className="bg-white shadow rounded-md"
           onClick={() => {
             window.location.href = "/supplier";
           }}
         >
-          <p className="text-xl bg-green rounded-md py-8">DATA SUPPLIER</p>
+          <p className="text-xl bg-green rounded-md py-4">DATA SUPPLIER</p>
           <div className="h-4"></div>
           {/* <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -101,10 +101,10 @@ export default function DashboardPage() {
           </svg> */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
+            viewBox="0 0 28 24"
             fill="none"
             stroke="black"
-            stroke-width="2"
+            stroke-width="1"
             stroke-linecap="round"
             stroke-linejoin="round"
             className="lucide lucide-arrow-right-square p-20"
