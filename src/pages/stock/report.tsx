@@ -16,16 +16,28 @@ export default function ReportInputPage() {
   const [stocks, setStocks] = useState<Stock[]>([]);
 
   useEffect(() => {
-    //get start date and end date from url params
-    // const startDate = window.location.pathname.split("/")[2];
-    // const endDate = window.location.pathname.split("/")[3];
-    getStocks();
+    const startDate = window.location.pathname.split("/")[2];
+    const endDate = window.location.pathname.split("/")[3];
+
+    console.log(startDate, endDate);
+
+    getStocks(
+      startDate ? startDate : "2021-09-01",
+      endDate ? endDate : "2021-09-30"
+    );
   }, []);
 
-  const getStocks = async () => {
-    const res = await axios.get("http://localhost:8080/api/stock");
-    if (res.status === 200) setStocks(res.data.data);
-    else alert("Stock gagal diambil");
+  const getStocks = async (startDate: string, endDate: string) => {
+    await axios
+      .get(
+        `http://localhost:8080/api/date/stock/?date-start=${startDate}&date-end=${endDate}`
+      )
+      .then((res) => {
+        if (res.status === 200) setStocks(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

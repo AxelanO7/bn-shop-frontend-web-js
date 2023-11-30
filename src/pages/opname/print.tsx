@@ -5,9 +5,11 @@ import HeaderPage from "../../components/header_page";
 export default function PrintOpnamePage() {
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
+
   const handlePreview = () => {
-    // window.location.href = `/order/${startDate}/${endDate}`;
-    window.open(`/input`, "_blank");
+    if (startDate && endDate) {
+      window.open(`/report-opname/${startDate}/${endDate}`, "_blank");
+    }
   };
 
   return (

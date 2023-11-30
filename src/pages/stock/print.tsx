@@ -5,8 +5,11 @@ import HeaderPage from "../../components/header_page";
 export default function PrintStockPage() {
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
+
   const handlePreview = () => {
-    window.open(`/stock`, "_blank");
+    if (startDate && endDate) {
+      window.open(`/report-stock/${startDate}/${endDate}`, "_blank");
+    }
   };
 
   return (

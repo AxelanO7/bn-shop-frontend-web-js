@@ -16,7 +16,7 @@ export default function BaseLayout({
   return (
     <>
       <Navbar />
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen ">
         <div className="h-16" />
         <div
           className={`flex flex-col grow text-${text_color}`}

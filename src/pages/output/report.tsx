@@ -12,36 +12,37 @@ interface DetailOutput {
   ID: number;
   id_output: number;
   output: Output;
-  name_product_output: string;
+  code_product: string;
+  name_finished: string;
   unit_product: string;
-  total_product_output: number;
+  total_used: number;
   type_product: string;
   price_unit: number;
-  total_price: number;
 }
 
 export default function ReportOutputPage() {
   const [detailOutputs, setDetailOutputs] = useState<DetailOutput[]>([]);
-  const [outputs, setOutputs] = useState<Output[]>([]);
 
   useEffect(() => {
-    //get start date and end date from url params
-    // const startDate = window.location.pathname.split("/")[2];
-    // const endDate = window.location.pathname.split("/")[3];
-    getOutputs();
-    getDetailOutputs();
+    const startDate = window.location.pathname.split("/")[2];
+    const endDate = window.location.pathname.split("/")[3];
+    getDetailOutputs(
+      startDate ? startDate : "2021-09-01",
+      endDate ? endDate : "2021-09-30"
+    );
   }, []);
 
-  const getOutputs = async () => {
-    const res = await axios.get("http://localhost:8080/api/output");
-    if (res.status === 200) setOutputs(res.data.data);
-    else alert("Output gagal diambil");
-  };
-
-  const getDetailOutputs = async () => {
-    const res = await axios.get("http://localhost:8080/api/detail-output");
-    if (res.status === 200) setDetailOutputs(res.data.data);
-    else alert("Detail Output gagal diambil");
+  const getDetailOutputs = async (startDate: string, endDate: string) => {
+    await axios
+      .get(
+        `http://localhost:8080/api/date/output/?date-start=${startDate}&date-end=${endDate}`
+      )
+      .then((res) => {
+        if (res.status === 200) setDetailOutputs(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -70,16 +71,16 @@ export default function ReportOutputPage() {
           {detailOutputs.map((detailOutput, index) => (
             <tr key={index}>
               <td className="border border-dark_green px-4 py-2">
-                {detailOutput.output.ID}
+                {detailOutput.code_product}
               </td>
               <td className="border border-dark_green px-4 py-2">
-                {detailOutput.name_product_output}
+                {detailOutput.name_finished}
               </td>
               <td className="border border-dark_green px-4 py-2">
                 {detailOutput.type_product}
               </td>
               <td className="border border-dark_green px-4 py-2">
-                {detailOutput.total_product_output}
+                {detailOutput.total_used}
               </td>
               <td className="border border-dark_green px-4 py-2">
                 {detailOutput.price_unit}
@@ -89,7 +90,12 @@ export default function ReportOutputPage() {
         </tbody>
       </table>
       <div className="h-4" />
-      <p className="border border-dark_green w-max px-4">Jumlah Total : </p>
+      <p className="border border-dark_green w-max px-4">
+        Jumlah Total :{" "}
+        {detailOutputs.reduce((total, detailOutput) => {
+          return total + detailOutput.total_used * detailOutput.price_unit;
+        }, 0)}
+      </p>
     </BaseLayout>
   );
 }

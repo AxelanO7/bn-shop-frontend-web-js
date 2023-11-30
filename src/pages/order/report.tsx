@@ -27,51 +27,33 @@ interface DetailOrder {
   unit_product: string;
   type_product: string;
   price_product: number;
-  total_order: number;
+  total_product: number;
 }
 
 export default function ReportOrderPage() {
-  const [orders, setOrders] = useState<Order[]>([]);
   const [detailOrders, setDetailOrders] = useState<DetailOrder[]>([]);
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
 
   useEffect(() => {
-    //get start date and end date from url params
     const startDate = window.location.pathname.split("/")[2];
     const endDate = window.location.pathname.split("/")[3];
 
-    getOrders();
-    getSupplier();
     getDetailOrders(
       startDate ? startDate : "2021-09-01",
       endDate ? endDate : "2021-09-30"
     );
   }, []);
 
-  const getOrders = async () => {
-    const response = await axios.get("http://localhost:8080/api/order");
-    if (response.status === 200) setOrders(response.data.data);
-    else alert("Order gagal diambil");
-  };
-
   const getDetailOrders = async (startDate: string, endDate: string) => {
-    const response = await axios.get(
-      `http://localhost:8080/api/detail-order/order/${startDate}/${endDate}`
-    );
-    if (response.status === 200) setDetailOrders(response.data.data);
-    else alert(response.data.message);
-  };
-
-  // const getDetailOrders = async () => {
-  //   const response = await axios.get(`http://localhost:8080/api/detail-order`);
-  //   if (response.status === 200) setDetailOrders(response.data.data);
-  //   else alert("Order gagal diambil");
-  // };
-
-  const getSupplier = async () => {
-    const response = await axios.get("http://localhost:8080/api/supplier");
-    if (response.status === 200) setSuppliers(response.data.data);
-    else alert("Supplier gagal diambil");
+    await axios
+      .get(
+        `http://localhost:8080/api/date/order/?date-start=${startDate}&date-end=${endDate}`
+      )
+      .then((res) => {
+        if (res.status === 200) setDetailOrders(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -108,7 +90,7 @@ export default function ReportOrderPage() {
                 {detailOrder.type_product}
               </td>
               <td className="border-x border-dark_green">
-                {detailOrder.total_order}
+                {detailOrder.total_product}
               </td>
               <td className="border-x border-dark_green">
                 {detailOrder.price_product}
@@ -121,7 +103,7 @@ export default function ReportOrderPage() {
       <p className="border border-dark_green w-max px-4">
         Jumlah Total :{" "}
         {detailOrders.reduce(
-          (total, detailOrder) => total + detailOrder.total_order,
+          (total, detailOrder) => total + detailOrder.total_product,
           0
         )}
       </p>

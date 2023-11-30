@@ -5,9 +5,11 @@ import HeaderPage from "../../components/header_page";
 export default function PrintOutputPage() {
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
+
   const handlePreview = () => {
-    // window.location.href = `/order/${startDate}/${endDate}`;
-    window.open(`/input`, "_blank");
+    if (startDate && endDate) {
+      window.open(`/report-output/${startDate}/${endDate}`, "_blank");
+    }
   };
 
   return (

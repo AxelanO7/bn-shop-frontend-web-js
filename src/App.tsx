@@ -32,33 +32,45 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<PrintOpnamePage />} />
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
 
         <Route path="/stock" element={<StockPage />} />
         <Route path="/print-stock" element={<PrintStockPage />} />
-        <Route path="/report-stock" element={<ReportStockPage />} />
+        <Route
+          path="/report-stock/:startDate/:endDate"
+          element={<ReportStockPage />}
+        />
 
         <Route path="/add-input" element={<CreateInputPage />} />
         <Route path="/print-input" element={<PrintInputPage />} />
-        <Route path="/report-input" element={<ReportInputPage />} />
+        <Route
+          path="/report-input/:startDate/:endDate"
+          element={<ReportInputPage />}
+        />
 
         <Route path="/add-output" element={<CreateOutput />} />
         <Route path="/print-output" element={<PrintOutputPage />} />
-        <Route path="/report-output" element={<ReportOutputPage />} />
+        <Route
+          path="/report-output/:startDate/:endDate"
+          element={<ReportOutputPage />}
+        />
 
         <Route path="/add-opname" element={<CreateOpnamePage />} />
         <Route path="/print-opname" element={<PrintOpnamePage />} />
-        <Route path="/report-opname" element={<ReportOpnamePage />} />
+        <Route
+          path="/report-opname/:startDate/:endDate"
+          element={<ReportOpnamePage />}
+        />
 
         <Route path="/order" element={<OrderPage />} />
         <Route path="/add-order" element={<CreateOrderPage />} />
         <Route path="/edit-order/:id" element={<UpdateOrderPage />} />
         <Route path="/print-order" element={<PrintOrderPage />} />
         <Route
-          path="/report-order/:start_date/:end_date"
+          path="/report-order/:startDate/:endDate"
           element={<ReportOrderPage />}
         />
 

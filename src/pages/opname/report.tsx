@@ -2,27 +2,51 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
+import { type } from "os";
 
 interface Opname {
   ID: number;
   date_calculate: string;
-  name_product: string;
+  code_stock_opname: string;
+}
+
+interface DetailOpname {
+  ID: number;
+  id_opname: number;
+  opname: Opname;
+  code_product: string;
+  name_finished: string;
+  unit_product: string;
+  type_product: string;
+  price_unit: number;
+  stock_system: number;
   stock_real: number;
+  total_diff: number;
 }
 
 export default function ReportInputPage() {
-  const [opnames, setOpnames] = useState<Opname[]>([]);
+  const [opnames, setOpnames] = useState<DetailOpname[]>([]);
 
   useEffect(() => {
-    //get start date and end date from url params
-    // const startDate = window.location.pathname.split("/")[2];
-    // const endDate = window.location.pathname.split("/")[3];
+    const startDate = window.location.pathname.split("/")[2];
+    const endDate = window.location.pathname.split("/")[3];
+    getDetailOpnames(
+      startDate ? startDate : "2021-09-01",
+      endDate ? endDate : "2021-09-30"
+    );
   }, []);
 
-  const getOpnames = async () => {
-    const res = await axios.get("http://localhost:8080/api/stock-opname");
-    if (res.status === 200) setOpnames(res.data.data);
-    else alert("Stock gagal diambil");
+  const getDetailOpnames = async (startDate: string, endDate: string) => {
+    await axios
+      .get(
+        `http://localhost:8080/api/date/opname/?date-start=${startDate}&date-end=${endDate}`
+      )
+      .then((res) => {
+        if (res.status === 200) setOpnames(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -50,23 +74,29 @@ export default function ReportInputPage() {
           {opnames.map((opname, index) => (
             <tr key={index}>
               <td className="px-4 py-2 border border-dark_green">
-                {opname.ID}
+                {index + 1}
               </td>
               <td className="px-4 py-2 border border-dark_green">
-                {opname.name_product}
+                {opname.name_finished}
               </td>
               <td className="px-4 py-2 border border-dark_green">
                 {opname.stock_real}
               </td>
               <td className="px-4 py-2 border border-dark_green">
-                {opname.date_calculate}
+                {opname.stock_system}
+              </td>
+              <td className="px-4 py-2 border border-dark_green">
+                {opname.total_diff}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div className="h-4" />
-      <p className="border border-dark_green w-max px-4">Jumlah Total : </p>
+      <p className="border border-dark_green w-max px-4">
+        Jumlah Total :{" "}
+        {opnames.reduce((acc, opname) => acc + opname.total_diff, 0)}
+      </p>
     </BaseLayout>
   );
 }

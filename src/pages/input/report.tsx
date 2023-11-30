@@ -22,31 +22,33 @@ interface DetailInput {
   total_used: number;
   type_product: string;
   price_unit: number;
-  total_price: number;
 }
 
 export default function ReportInputPage() {
-  const [inputs, setInputs] = useState<Input[]>([]);
   const [detailInputs, setDetailInputs] = useState<DetailInput[]>([]);
 
   useEffect(() => {
-    //get start date and end date from url params
-    // const startDate = window.location.pathname.split("/")[2];
-    // const endDate = window.location.pathname.split("/")[3];
-    getInputs();
-    getDetailInput();
+    const startDate = window.location.pathname.split("/")[2];
+    const endDate = window.location.pathname.split("/")[3];
+
+    getDetailInput(
+      startDate ? startDate : "2021-09-01",
+      endDate ? endDate : "2021-09-30"
+    );
   }, []);
 
-  const getInputs = async () => {
-    const res = await axios.get("http://localhost:8080/api/input");
-    if (res.status === 200) setInputs(res.data.data);
-    else alert("Input gagal diambil");
-  };
-
-  const getDetailInput = async () => {
-    const res = await axios.get("http://localhost:8080/api/detail-input");
-    if (res.status === 200) setDetailInputs(res.data.data);
-    else alert("Detail Input gagal diambil");
+  const getDetailInput = async (startDate: string, endDate: string) => {
+    await axios
+      .get(
+        `http://localhost:8080/api/date/input/?date-start=${startDate}&date-end=${endDate}`
+      )
+      .then((res) => {
+        if (res.status === 200) setDetailInputs(res.data.data);
+      })
+      .catch((err) => {
+        if (err.response.status !== 404) alert("Detail Input gagal diambil");
+        else console.log(err);
+      });
   };
 
   return (
@@ -86,14 +88,19 @@ export default function ReportInputPage() {
                 {detailInput.total_used}
               </td>
               <td className="border border-dark_green px-4 py-2">
-                {detailInput.total_price}
+                {detailInput.price_unit}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div className="h-4" />
-      <p className="border border-dark_green w-max px-4">Jumlah Total : </p>
+      <p className="border border-dark_green w-max px-4">
+        Jumlah Total :{" "}
+        {detailInputs.reduce((total, detailInput) => {
+          return total + detailInput.total_used * detailInput.price_unit;
+        }, 0)}
+      </p>
     </BaseLayout>
   );
 }
