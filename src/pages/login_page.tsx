@@ -23,12 +23,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center bg-gray-100">
+    <div className="h-screen flex flex-col justify-center items-center bg-light_green">
       <h1 className="font-medium text-3xl">SISTEM OPERASIONAL</h1>
       <div className="h-2" />
       <h2 className="font-light text-2xl">BN SHOP UBUD</h2>
       <div className="h-10" />
-      <div className="bg-light_green shadow-md py-8 px-12 flex flex-col rounded-3xl	w-1/2">
+      <div className="bg-slate-200 shadow-md py-8 px-12 flex flex-col rounded-3xl	w-1/2">
         <h2 className="text-center font-normal text-2xl">LOGIN</h2>
         <div className="h-8" />
         <input
