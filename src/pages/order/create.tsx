@@ -178,7 +178,7 @@ export default function CreateOrder() {
       <HeaderPage>FORM PEMESANAN</HeaderPage>
       <div className="h-12" />
 
-      <div className="border border-dark_green rounded-2xl w-full py-8">
+      <div className="border border-dark_green rounded-2xl w-full py-8 bg-white">
         <div className="flex flex-col px-12">
           <div className="flex space-x-4">
             <div className="flex-1 flex-col items-center space-y-6">
@@ -210,7 +210,7 @@ export default function CreateOrder() {
                   <label>Purchase Order</label>
                 </div>
                 <input
-                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
+                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60 bg-white"
                   value={purchaseOrder}
                   disabled
                 // value={purchaseOrder!}
@@ -222,7 +222,7 @@ export default function CreateOrder() {
                   <label>Nama Supplier</label>
                 </div>
                 <select
-                  className="border border-dark_green rounded-md py-1.5 px-3 ml-4 w-60"
+                  className="border border-dark_green rounded-md py-1.5 px-3 ml-4 w-60 bg-white"
                   onChange={(e) => {
                     setIdSupplier(parseInt(e.target.value));
                     setSupplierSelected(
@@ -248,7 +248,7 @@ export default function CreateOrder() {
                 </div>
                 <input
                   disabled
-                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
+                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60 bg-white"
                   value={supplierSelected?.ID}
                 />
               </div>

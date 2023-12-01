@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
-import { type } from "os";
 
 interface Opname {
   ID: number;
@@ -28,19 +27,13 @@ export default function ReportInputPage() {
   const [opnames, setOpnames] = useState<DetailOpname[]>([]);
 
   useEffect(() => {
-    const startDate = window.location.pathname.split("/")[2];
-    const endDate = window.location.pathname.split("/")[3];
-    getDetailOpnames(
-      startDate ? startDate : "2021-09-01",
-      endDate ? endDate : "2021-09-30"
-    );
+    const date = window.location.pathname.split("/")[2];
+    getDetailOpnames(date ? date : "2021-09-01");
   }, []);
 
-  const getDetailOpnames = async (startDate: string, endDate: string) => {
+  const getDetailOpnames = async (date: string) => {
     await axios
-      .get(
-        `http://localhost:8080/api/date/opname/?date-start=${startDate}&date-end=${endDate}`
-      )
+      .get(`http://localhost:8080/api/date/opname/?date=${date}`)
       .then((res) => {
         if (res.status === 200) setOpnames(res.data.data);
       })
@@ -93,7 +86,7 @@ export default function ReportInputPage() {
         </tbody>
       </table>
       <div className="h-4" />
-      <p className="border border-dark_green w-max px-4">
+      <p className="border border-dark_green w-max px-4 bg-white">
         Jumlah Total :{" "}
         {opnames.reduce((acc, opname) => acc + opname.total_diff, 0)}
       </p>

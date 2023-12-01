@@ -90,7 +90,7 @@ export default function ReportOutputPage() {
         </tbody>
       </table>
       <div className="h-4" />
-      <p className="border border-dark_green w-max px-4">
+      <p className="border border-dark_green w-max px-4 bg-white">
         Jumlah Total :{" "}
         {detailOutputs.reduce((total, detailOutput) => {
           return total + detailOutput.total_used * detailOutput.price_unit;

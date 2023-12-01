@@ -100,7 +100,7 @@ export default function ReportOrderPage() {
         </tbody>
       </table>
       <div className="h-4" />
-      <p className="border border-dark_green w-max px-4">
+      <p className="border border-dark_green w-max px-4 bg-white">
         Jumlah Total :{" "}
         {detailOrders.reduce(
           (total, detailOrder) => total + detailOrder.total_product,

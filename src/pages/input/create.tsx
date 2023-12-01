@@ -236,7 +236,7 @@ export default function CreateInput() {
     <BaseLayout padding={12}>
       <HeaderPage>FORM BARANG MASUK</HeaderPage>
       <div className="h-12" />
-      <div className="border border-dark_green rounded-2xl w-full py-8">
+      <div className="border border-dark_green rounded-2xl w-full py-8 bg-white">
         <div className="flex flex-col px-12">
           <div className="flex space-x-4  text-stone_5">
             <div className="flex-1 flex-col items-center space-y-6">
@@ -274,7 +274,7 @@ export default function CreateInput() {
                   <label>Jenis Barang</label>
                 </div>
                 <input
-                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
+                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60 bg-white"
                   value={"Barang Jadi"}
                   // onChange={(e) => setTypeProduct(e.target.value)}
                   disabled
@@ -287,7 +287,7 @@ export default function CreateInput() {
                   <label>No Masuk</label>
                 </div>
                 <input
-                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
+                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60 bg-white"
                   value={"IN" + (lastIdInput + 1).toString().padStart(4, "0")}
                   disabled
                   // onChange={(e) => setNoInputProduct(e.target.value)}

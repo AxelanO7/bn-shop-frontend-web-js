@@ -95,7 +95,7 @@ export default function ReportInputPage() {
         </tbody>
       </table>
       <div className="h-4" />
-      <p className="border border-dark_green w-max px-4">
+      <p className="border border-dark_green w-max px-4 bg-white">
         Jumlah Total :{" "}
         {detailInputs.reduce((total, detailInput) => {
           return total + detailInput.total_used * detailInput.price_unit;

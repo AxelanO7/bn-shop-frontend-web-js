@@ -21,7 +21,7 @@ export default function PrintInputPage() {
           <p>Tanggal</p>
           <input
             type="date"
-            className="border border-neutral-500"
+            className="border border-neutral-500 rounded px-2"
             onChange={(e) => setStartDate(e.target.value)}
           />
         </div>
@@ -29,14 +29,14 @@ export default function PrintInputPage() {
           <p>s/d</p>
           <input
             type="date"
-            className="border border-neutral-500"
+            className="border border-neutral-500 rounded px-2"
             onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
       </div>
       <div className="h-12" />
       <button
-        className="bg-dark_green px-8 hover:bg-dark_green/25 hover:text-dark_green text-white w-min self-center mt-8"
+        className="bg-dark_green px-8 hover:bg-dark_green/25 hover:text-dark_green text-white w-min self-center mt-8 py-1 rounded-md"
         onClick={handlePreview}
       >
         Preview

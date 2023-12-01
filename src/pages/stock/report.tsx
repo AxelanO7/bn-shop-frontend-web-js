@@ -83,7 +83,9 @@ export default function ReportInputPage() {
         </tbody>
       </table>
       <div className="h-4" />
-      <p className="border border-dark_green w-max px-4">Jumlah Total : </p>
+      <p className="border border-dark_green w-max px-4 bg-white">
+        Jumlah Total :{" "}
+      </p>
     </BaseLayout>
   );
 }

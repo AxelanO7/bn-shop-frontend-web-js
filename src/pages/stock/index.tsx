@@ -234,7 +234,7 @@ export default function StockPage() {
           </tbody>
         </table>
         <div className="h-8" />
-        <p className="border border-dark_green w-max px-4">
+        <p className="border border-dark_green w-max px-4 bg-white">
           Jumlah Total :{" "}
           {stocksFinished.reduce(
             (total, stock) => total + stock.total_product!,
@@ -294,7 +294,7 @@ export default function StockPage() {
           </tbody>
         </table>
         <div className="h-8" />
-        <p className="border border-dark_green w-max px-4">
+        <p className="border border-dark_green w-max px-4 bg-white">
           Jumlah Total :{" "}
           {stocksRaw.reduce((total, stock) => total + stock.total_product!, 0)}
         </p>
