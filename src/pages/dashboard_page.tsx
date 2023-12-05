@@ -8,36 +8,25 @@ export default function DashboardPage() {
       <HeaderPage>AKSES CEPAT</HeaderPage>
       <p className="text-center">silahkan klik dibawah ini</p>
       <div className="h-20" />
-      <div className="grid grid-cols-3 gap-5 w-full  text-center text-white">
+      <div className="grid grid-cols-3 gap-5 w-full text-center text-white">
         <div
-          className="bg-white shadow rounded-md"
+          className="bg-white shadow-xl rounded-xl cursor-pointer"
           onClick={() => {
             window.location.href = "/order";
           }}
         >
-          <p className="text-xl bg-green rounded-md py-4">PEMESANAN BARANG</p>
-          <div className="h-4"></div>
-          {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-1/2 mx-auto"
-          >
-            <path
-              fillRule="evenodd"
-              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
-              clipRule="evenodd"
-            />
-          </svg> */}
+          <p className="text-xl bg-dark_green rounded-xl py-4">
+            PEMESANAN BARANG
+          </p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 28 24"
+            viewBox="0 0 24 24"
             fill="none"
             stroke="black"
             stroke-width="1"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="lucide lucide-arrow-right-square p-20"
+            className="lucide lucide-arrow-right-square w-80 mx-auto"
           >
             <rect width="18" height="18" x="3" y="3" rx="2" />
             <path d="M8 12h8" />
@@ -45,34 +34,21 @@ export default function DashboardPage() {
           </svg>
         </div>
         <div
-          className="bg-white shadow rounded-md"
+          className="bg-white shadow-xl rounded-xl"
           onClick={() => {
             window.location.href = "/stock";
           }}
         >
-          <p className="text-xl bg-green rounded-md py-4">DATA BARANG</p>
-          <div className="h-4"></div>
-          {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-1/2 mx-auto"
-          >
-            <path
-              fillRule="evenodd"
-              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
-              clipRule="evenodd"
-            />
-          </svg> */}
+          <p className="text-xl bg-dark_green rounded-xl py-4">DATA BARANG</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 28 24"
+            viewBox="0 0 24 24"
             fill="none"
             stroke="black"
             stroke-width="1"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="lucide lucide-arrow-right-square p-20"
+            className="lucide lucide-arrow-right-square w-80 mx-auto"
           >
             <rect width="18" height="18" x="3" y="3" rx="2" />
             <path d="M8 12h8" />
@@ -80,34 +56,21 @@ export default function DashboardPage() {
           </svg>
         </div>
         <div
-          className="bg-white shadow rounded-md"
+          className="bg-white shadow-xl rounded-xl"
           onClick={() => {
             window.location.href = "/supplier";
           }}
         >
-          <p className="text-xl bg-green rounded-md py-4">DATA SUPPLIER</p>
-          <div className="h-4"></div>
-          {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-1/2 mx-auto"
-          >
-            <path
-              fillRule="evenodd"
-              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
-              clipRule="evenodd"
-            />
-          </svg> */}
+          <p className="text-xl bg-dark_green rounded-xl py-4">DATA SUPPLIER</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 28 24"
+            viewBox="0 0 24 24"
             fill="none"
             stroke="black"
             stroke-width="1"
             stroke-linecap="round"
             stroke-linejoin="round"
-            className="lucide lucide-arrow-right-square p-20"
+            className="lucide lucide-arrow-right-square w-80 mx-auto"
           >
             <rect width="18" height="18" x="3" y="3" rx="2" />
             <path d="M8 12h8" />
