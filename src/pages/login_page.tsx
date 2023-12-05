@@ -7,26 +7,33 @@ interface Login {
 }
 
 export default function LoginPage() {
-  const [failedLoginPopup, setFailedLoginPopup] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [failedLoginPopup, setFailedLoginPopup] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>();
+  const [password, setPassword] = useState<string>();
 
   const login = async () => {
-    const response = await axios.post("http://localhost:8080/api/login/login", {
-      username: username,
-      password: password,
-    });
-    if (response.status === 200) {
-      alert("Login berhasil");
-      window.location.href = "/dashboard";
-    } else setFailedLoginPopup(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/login/login",
+        {
+          username: username,
+          password: password,
+        }
+      );
+      if (response.status === 200) {
+        alert("Login berhasil");
+        window.location.href = "/dashboard";
+      }
+    } catch (error) {
+      setFailedLoginPopup(true);
+    }
   };
 
   return (
     <div className="h-screen flex flex-col justify-center items-center bg-light_green">
-      <h1 className="font-medium text-3xl">SISTEM OPERASIONAL</h1>
+      <h1 className="font-bold text-3xl">SISTEM OPERASIONAL</h1>
       <div className="h-2" />
-      <h2 className="font-light text-2xl">BN SHOP UBUD</h2>
+      <h2 className="font-normal text-2xl">BN SHOP UBUD</h2>
       <div className="h-10" />
       <div className="bg-slate-200 shadow-md py-8 px-12 flex flex-col rounded-3xl	w-1/2">
         <h2 className="text-center font-normal text-2xl">LOGIN</h2>
@@ -55,7 +62,7 @@ export default function LoginPage() {
       {failedLoginPopup ? (
         <div className="z-[1] bg-white fixed flex justify-center items-center rounded-lg flex-col px-28 py-8 border space-y-12">
           <h1>LOGIN GAGAL !</h1>
-          <p>username atau password yang anda masukan salah</p>
+          <p>Username atau Password yang anda masukan salah</p>
           <button
             className="bg-dark_green rounded-lg px-4 py-2 w-min text-white"
             onClick={() => setFailedLoginPopup(false)}
