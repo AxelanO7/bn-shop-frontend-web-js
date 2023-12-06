@@ -88,6 +88,10 @@ export default function CreateOrder() {
 
   const createDetailOrder = async () => {
     getOrder();
+    console.log(purchaseOrder);
+    console.log(dateTransaction);
+    console.log(idSupplier);
+    console.log(typeTransaction);
     await axios
       .post("http://localhost:8080/api/order", {
         purchase_order: purchaseOrder,
@@ -117,7 +121,7 @@ export default function CreateOrder() {
     );
     if (response.status === 201) {
       alert("Order berhasil ditambahkan");
-      window.location.href = "/order";
+      // window.location.href = "/order";
     } else alert("Order gagal ditambahkan");
     handleTotalPrice();
   };

@@ -5,6 +5,7 @@ import HeaderPage from "../../components/header_page";
 
 interface Output {
   ID: number;
+  no_output: string;
   date_output: string;
 }
 
@@ -71,7 +72,7 @@ export default function ReportOutputPage() {
           {detailOutputs.map((detailOutput, index) => (
             <tr key={index}>
               <td className="border border-dark_green px-4 py-2">
-                {detailOutput.code_product}
+                {detailOutput.output.no_output}
               </td>
               <td className="border border-dark_green px-4 py-2">
                 {detailOutput.name_finished}
@@ -93,7 +94,7 @@ export default function ReportOutputPage() {
       <p className="border border-dark_green w-max px-4 bg-white">
         Jumlah Total :{" "}
         {detailOutputs.reduce((total, detailOutput) => {
-          return total + detailOutput.total_used * detailOutput.price_unit;
+          return total + detailOutput.total_used;
         }, 0)}
       </p>
     </BaseLayout>
