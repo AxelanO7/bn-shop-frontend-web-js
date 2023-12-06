@@ -11,7 +11,7 @@ export default function DashboardPage() {
         <p className="text-center">silahkan klik dibawah ini</p>
       </div>
       <div className="h-12" />
-      <div className="grid grid-cols-3 gap-28 w-full text-center text-white">
+      <div className="grid grid-cols-3 gap-20 w-full text-center text-white">
         <div
           className="bg-white shadow-xl rounded-xl cursor-pointer"
           onClick={() => {
