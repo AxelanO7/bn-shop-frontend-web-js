@@ -5,10 +5,11 @@ import HeaderPage from "../../components/header_page";
 
 interface Order {
   ID: number;
+  purchase_order: string;
   date_transaction: string;
   id_supplier: number;
-  type_transaction: string;
   supplier: Supplier;
+  type_transaction: string;
   status: number;
 }
 
@@ -82,7 +83,9 @@ export default function ReportOrderPage() {
           ) : null}
           {detailOrders.map((detailOrder, index) => (
             <tr key={index}>
-              <td className="border-x border-dark_green">{detailOrder.ID}</td>
+              <td className="border-x border-dark_green">
+                {detailOrder.order.purchase_order}
+              </td>
               <td className="border-x border-dark_green">
                 {detailOrder.name_product}
               </td>
