@@ -102,7 +102,7 @@ export default function CreateInput() {
   };
 
   const createInput = async () => {
-    const resInput = await axios.post("http://localhost:8080/api/input/", {
+    const resInput = await axios.post("http://localhost:8080/api/input", {
       no_input: noInputProduct,
       data_input: dateTransaction,
       code_product: codeProduct,
@@ -111,7 +111,9 @@ export default function CreateInput() {
       total_product: totalProduction,
       price_product: price,
     });
-    if (resInput.status !== 201) {
+    if (resInput.data.status !== "success") {
+      console.log(resInput.data.status);
+      console.log("duar0");
       alert("Order gagal ditambahkan");
       return;
     }
@@ -141,7 +143,8 @@ export default function CreateInput() {
         })
       )
     );
-    if (resDetail.status !== 201) {
+    if (resDetail.data.status !== "success") {
+      console.log("duar1");
       alert("Order gagal ditambahkan");
       return;
     }
@@ -171,7 +174,8 @@ export default function CreateInput() {
         })
       )
     );
-    if (resReduceStock.status !== 201) {
+    if (resReduceStock.data.status !== "success") {
+      console.log("duar2");
       alert("Order gagal ditambahkan");
       return;
     }
@@ -236,9 +240,9 @@ export default function CreateInput() {
     <BaseLayout padding={12}>
       <HeaderPage>FORM BARANG MASUK</HeaderPage>
       <div className="h-12" />
-      <div className="border border-dark_green rounded-2xl w-full py-8 bg-white">
-        <div className="flex flex-col px-12">
-          <div className="flex space-x-4  text-stone_5">
+      <div className="rounded-md w-full p-8 bg-white shadow-md">
+        <div className="flex flex-col">
+          <div className="flex space-x-4 text-stone_5">
             <div className="flex-1 flex-col items-center space-y-6">
               <div className="flex items-center">
                 <div className="w-36">
@@ -276,7 +280,6 @@ export default function CreateInput() {
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60 bg-white"
                   value={"Barang Jadi"}
-                  // onChange={(e) => setTypeProduct(e.target.value)}
                   disabled
                 />
               </div>
@@ -290,7 +293,6 @@ export default function CreateInput() {
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60 bg-white"
                   value={"IN" + (lastIdInput + 1).toString().padStart(4, "0")}
                   disabled
-                  // onChange={(e) => setNoInputProduct(e.target.value)}
                 />
               </div>
               <div className="w-full flex items-center">
@@ -321,7 +323,7 @@ export default function CreateInput() {
           <p className="text-center text-white">Daftar barang yang digunakan</p>
         </div>
         <table className="table-auto text-center text-white bg-green w-full">
-          <thead className="border-b border-dark_green">
+          <thead>
             <tr>
               <th className="px-4 py-2 w-36">Kode Barang</th>
               <th className="px-4 py-2">Nama</th>
@@ -333,7 +335,7 @@ export default function CreateInput() {
               <th />
             </tr>
           </thead>
-          <tbody className="border border-dark_green bg-white text-stone_5">
+          <tbody className="bg-slate-100 text-stone_5">
             {stocksRawTemp.length === 0 && (
               <tr>
                 <td colSpan={8} className="py-2">
@@ -342,7 +344,7 @@ export default function CreateInput() {
               </tr>
             )}
             {stocksRawTemp.map((stockRawT, index) => (
-              <tr key={stockRawT.ID} className="border-b border-dark_green">
+              <tr key={stockRawT.ID}>
                 <td className="px-4 py-2">
                   <p className="py-1 px-3 w-full text-center">
                     {stockRawT.code_product || "-"}
@@ -350,7 +352,7 @@ export default function CreateInput() {
                 </td>
                 <td className="px-4 py-2">
                   <select
-                    className="border border-dark_green rounded-md py-1 px-3 text-center"
+                    className="rounded-md py-1 px-3 text-center"
                     onChange={(e) => {
                       const stock = stocksRaw.find(
                         (stock) => stock.ID === parseInt(e.target.value)
@@ -388,7 +390,7 @@ export default function CreateInput() {
                 </td>
                 <td className="px-4 py-2">
                   <input
-                    className="border border-dark_green rounded-md py-1 px-3 text-center"
+                    className="rounded-md py-1 px-3 text-center"
                     type="number"
                     value={stockRawT.total_product}
                     min={0}

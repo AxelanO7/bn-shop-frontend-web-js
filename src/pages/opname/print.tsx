@@ -1,9 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
+import axios from "axios";
+
+interface Opname {
+  date_calculate: string;
+  code_stock_opname: string;
+}
 
 export default function PrintOpnamePage() {
   const [date, setDate] = useState<string>();
+  const [dateOptions, setDateOptions] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetchOpname();
+  }, []);
+
+  const fetchOpname = async () => {
+    const res = await axios.get("http://localhost:8080/api/stock-opname");
+    if (res.status === 200) {
+      const listOpnames = res.data.data;
+      for (let index = 0; index < listOpnames.length; index++) {
+        const element = listOpnames[index];
+        const dateElement = element.date_calculate;
+        if (!dateOptions.includes(dateElement)) {
+          dateOptions.push(dateElement);
+        }
+      }
+      console.log(dateOptions);
+      setDateOptions(dateOptions);
+    }
+  };
 
   const handlePreview = () => {
     if (date) {
@@ -18,11 +45,22 @@ export default function PrintOpnamePage() {
       <div className="flex d-block items-center mx-auto">
         <p>Tanggal Perhitungan</p>
         <div className="w-8" />
-        <input
+        <select
+          className="border border-neutral-500 rounded-md p-2 w-60"
+          onChange={(e) => setDate(e.target.value)}
+        >
+          <option value="">Pilih tanggal</option>
+          {dateOptions.map((date, index) => (
+            <option key={index} value={date}>
+              {date}
+            </option>
+          ))}
+        </select>
+        {/* <input
           type="date"
           className="border border-neutral-500 rounded-md p-2 w-60"
           onChange={(e) => setDate(e.target.value)}
-        />
+        /> */}
       </div>
       <div className="h-20" />
       <button

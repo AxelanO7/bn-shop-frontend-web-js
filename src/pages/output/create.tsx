@@ -197,8 +197,8 @@ export default function CreateOutput() {
     <BaseLayout padding={12}>
       <HeaderPage>FORM BARANG KELUAR</HeaderPage>
       <div className="h-12" />
-      <div className="border border-dark_green rounded-2xl w-full py-8 bg-white">
-        <div className="flex flex-col px-12">
+      <div className="rounded-md w-full p-8 bg-white shadow-md">
+        <div className="flex flex-col">
           <div className="flex space-x-4  text-stone_5">
             <div className="flex-1 flex-col items-center space-y-6">
               <div className="flex items-center">
@@ -232,7 +232,7 @@ export default function CreateOutput() {
           <p className="text-center text-white">Daftar barang yang digunakan</p>
         </div>
         <table className="table-auto text-center text-white bg-green w-full">
-          <thead className="border-b border-dark_green">
+          <thead>
             <tr>
               <th className="px-4 py-2 w-36">Kode Barang</th>
               <th className="px-4 py-2">Nama</th>
@@ -244,7 +244,7 @@ export default function CreateOutput() {
               <th />
             </tr>
           </thead>
-          <tbody className="border border-dark_green bg-white text-stone_5">
+          <tbody className="bg-slate-100 text-stone_5">
             {stocksFinishedTemp.length === 0 && (
               <tr>
                 <td colSpan={8} className="py-2">
@@ -253,7 +253,7 @@ export default function CreateOutput() {
               </tr>
             )}
             {stocksFinishedTemp.map((stockRawT, index) => (
-              <tr key={stockRawT.ID} className="border-b border-dark_green">
+              <tr key={stockRawT.ID}>
                 <td className="px-4 py-2">
                   <p className="py-1 px-3 w-full text-center">
                     {stockRawT.code_product || "-"}
@@ -261,7 +261,7 @@ export default function CreateOutput() {
                 </td>
                 <td className="px-4 py-2">
                   <select
-                    className="border border-dark_green rounded-md py-1 px-3 text-center"
+                    className="rounded-md py-1 px-3 text-center"
                     onChange={(e) => {
                       const stock = stocksFinished.find(
                         (stock) => stock.ID === parseInt(e.target.value)
@@ -295,7 +295,7 @@ export default function CreateOutput() {
                 </td>
                 <td className="px-4 py-2">
                   <input
-                    className="border border-dark_green rounded-md py-1 px-3 text-center"
+                    className="rounded-md py-1 px-3 text-center"
                     type="number"
                     value={stockRawT.total_product}
                     min={0}

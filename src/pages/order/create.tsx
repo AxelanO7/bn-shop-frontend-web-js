@@ -177,10 +177,9 @@ export default function CreateOrder() {
     <BaseLayout padding={12}>
       <HeaderPage>FORM PEMESANAN</HeaderPage>
       <div className="h-12" />
-
-      <div className="border border-dark_green rounded-2xl w-full py-8 bg-white">
-        <div className="flex flex-col px-12">
-          <div className="flex space-x-4">
+      <div className=" rounded-md w-full p-8 bg-white shadow-md">
+        <div className="flex flex-col">
+          <div className="flex space-x-4 text-stone_5">
             <div className="flex-1 flex-col items-center space-y-6">
               <div className="flex items-center">
                 <div className="w-36">
@@ -213,8 +212,8 @@ export default function CreateOrder() {
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60 bg-white"
                   value={purchaseOrder}
                   disabled
-                // value={purchaseOrder!}
-                // onChange={(e) => setPurchaseOrder(e.target.value)}
+                  // value={purchaseOrder!}
+                  // onChange={(e) => setPurchaseOrder(e.target.value)}
                 />
               </div>
               <div className="w-full flex items-center">
@@ -259,7 +258,7 @@ export default function CreateOrder() {
           <p className="text-center text-white">Daftar item yang dipesan</p>
         </div>
         <table className="table-auto text-center text-white bg-green w-full">
-          <thead className="border-b border-dark_green">
+          <thead>
             <tr>
               <th className="px-4 py-2 w-36">Kode Barang</th>
               <th className="px-4 py-2">Nama</th>
@@ -270,16 +269,16 @@ export default function CreateOrder() {
               <th />
             </tr>
           </thead>
-          <tbody className="border border-dark_green bg-white text-stone_5">
+          <tbody className="bg-slate-100 text-stone_5">
             {detailOrdersTemp.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-4 py-2 border border-dark_green">
+                <td colSpan={7} className="px-4 py-2 ">
                   Tidak ada data
                 </td>
               </tr>
             ) : null}
             {detailOrdersTemp.map((detailOrder, index) => (
-              <tr key={detailOrder.ID} className="border-b border-dark_green">
+              <tr key={detailOrder.ID}>
                 <td className="px-4 py-2">
                   <input
                     type="text"
