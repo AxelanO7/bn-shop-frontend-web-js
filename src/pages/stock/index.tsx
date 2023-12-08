@@ -55,6 +55,36 @@ export default function StockPage() {
     window.location.href = "add-opname";
   };
 
+  const handleSearchFinished = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = event.target.value.toLowerCase();
+    if (keyword === "") {
+      getStocks();
+      return;
+    }
+    const filtered = stocksFinished.filter(
+      (stock) =>
+        stock.code_product.toLowerCase().includes(keyword) ||
+        stock.name_product.toLowerCase().includes(keyword) ||
+        stock.type_product.toLowerCase().includes(keyword)
+    );
+    setStocksFinished(filtered);
+  };
+
+  const handleSearchRaw = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = event.target.value.toLowerCase();
+    if (keyword === "") {
+      getStocks();
+      return;
+    }
+    const filtered = stocksRaw.filter(
+      (stock) =>
+        stock.code_product.toLowerCase().includes(keyword) ||
+        stock.name_product.toLowerCase().includes(keyword) ||
+        stock.type_product.toLowerCase().includes(keyword)
+    );
+    setStocksRaw(filtered);
+  };
+
   return (
     <BaseLayout text_color="stone_5" padding={12}>
       <HeaderPage>DATA STOK BARANG</HeaderPage>
@@ -65,7 +95,11 @@ export default function StockPage() {
           <div className="flex items-center">
             <p className="dark_green">Search</p>
             <div className="w-4" />
-            <input type="text" className="border border-dark_green" />
+            <input
+              type="text"
+              className="border border-dark_green"
+              onChange={handleSearchFinished}
+            />
           </div>
           <div className="space-x-4">
             <button
@@ -147,7 +181,11 @@ export default function StockPage() {
           <div className="flex items-center">
             <p className="dark_green">Search</p>
             <div className="w-4" />
-            <input type="text" className="border border-dark_green" />
+            <input
+              type="text"
+              className="border border-dark_green"
+              onChange={handleSearchRaw}
+            />
           </div>
         </div>
         <div className="h-4" />

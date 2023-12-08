@@ -48,8 +48,26 @@ export default function OrderPage() {
   };
 
   const handleEnteries = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(event.target.value);
     setEntries(Number(event.target.value));
     setOrders(orders.slice(0, Number(event.target.value)));
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const search = event.target.value;
+    if (search === "") {
+      getOrders();
+      return;
+    }
+    const newOrders = orders.filter((order) => {
+      return (
+        order.purchase_order.toLowerCase().includes(search.toLowerCase()) ||
+        order.supplier.name_supplier
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      );
+    });
+    setOrders(newOrders);
   };
 
   const handleChangeStatus = async (order: Order) => {
@@ -80,7 +98,11 @@ export default function OrderPage() {
           </div>
           <div className="flex">
             <p>Search</p>
-            <input type="text" className="border border-dark_green mx-2 px-2" />
+            <input
+              type="text"
+              className="border border-dark_green mx-2 px-2"
+              onChange={handleSearch}
+            />
           </div>
           <button
             className="rounded-lg border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white flex items-center w-max"
