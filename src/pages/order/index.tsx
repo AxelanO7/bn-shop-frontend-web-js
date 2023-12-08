@@ -166,11 +166,15 @@ export default function OrderPage() {
         <div className="h-4" />
         <div className="flex">
           <p>Showing</p>
-          <span className="font-bold mx-1"> 1 </span>
+          <span className="font-bold mx-1">{orders.length === 0 ? 0 : 1} </span>
           to
-          <span className="font-bold mx-1"> 10 </span>
+          <span className="font-bold mx-1">
+            {orders.length < entries ? orders.length : entries}
+          </span>
           of
-          <span className="font-bold mx-1"> 57 </span>
+          <span className="font-bold mx-1">
+            {orders.length === 0 ? 0 : orders.length}
+          </span>
           <p>entries</p>
           <div className="grow" />
           <div className="flex ">
