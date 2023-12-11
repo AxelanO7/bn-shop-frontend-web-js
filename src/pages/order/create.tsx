@@ -88,10 +88,6 @@ export default function CreateOrder() {
 
   const createDetailOrder = async () => {
     getOrder();
-    console.log(purchaseOrder);
-    console.log(dateTransaction);
-    console.log(idSupplier);
-    console.log(typeTransaction);
     await axios
       .post("http://localhost:8080/api/order", {
         purchase_order: purchaseOrder,

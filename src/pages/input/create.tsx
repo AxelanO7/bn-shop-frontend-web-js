@@ -36,6 +36,35 @@ interface DetailInput {
   price_unit: number;
 }
 
+interface DetailOrder {
+  ID: number | null;
+  code_product: string;
+  id_order: number;
+  order: Order;
+  name_product: string;
+  unit_product: string;
+  type_product: string;
+  price_product: number;
+  total_product: number;
+}
+
+interface Order {
+  ID: number;
+  purchase_order: string;
+  date_transaction: string;
+  id_supplier: number;
+  supplier: Supplier;
+  type_transaction: string;
+  status: number;
+}
+
+interface Supplier {
+  ID: number;
+  name_supplier: string;
+  phone: number;
+  address: string;
+}
+
 export default function CreateInput() {
   const [stocksRaw, setStocksRaw] = useState<Stock[]>([]);
   const [stocksRawTemp, setStocksRawTemp] = useState<Stock[]>([]);
@@ -55,8 +84,21 @@ export default function CreateInput() {
 
   const [maxTotals, setMaxTotals] = useState<number[]>([]);
 
+  // //
+  // const [orders, setOrders] = useState<Order[]>([]);
+  // const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  // const [detailOrdersTemp, setDetailOrdersTemp] = useState<DetailOrder[]>([]);
+
+  // // order
+  // const [purchaseOrder, setPurchaseOrder] = useState<string>();
+  // const [idSupplier, setIdSupplier] = useState<number>();
+  // const [supplierSelected, setSupplierSelected] = useState<Supplier>();
+  // const [typeTransaction, setTypeTransaction] = useState<string>();
+
   useEffect(() => {
     fetchStock();
+    // getSupplier();
+    // getOrder();
   }, []);
 
   const fetchStock = async () => {
@@ -112,8 +154,6 @@ export default function CreateInput() {
       price_product: price,
     });
     if (resInput.data.status !== "success") {
-      console.log(resInput.data.status);
-      console.log("duar0");
       alert("Order gagal ditambahkan");
       return;
     }
@@ -144,7 +184,6 @@ export default function CreateInput() {
       )
     );
     if (resDetail.data.status !== "success") {
-      console.log("duar1");
       alert("Order gagal ditambahkan");
       return;
     }
@@ -175,10 +214,12 @@ export default function CreateInput() {
       )
     );
     if (resReduceStock.data.status !== "success") {
-      console.log("duar2");
       alert("Order gagal ditambahkan");
       return;
     }
+
+    // createDetailOrder();
+
     alert("Order berhasil ditambahkan");
     window.location.href = "/stock";
     handleTotalPrice();
@@ -235,6 +276,77 @@ export default function CreateInput() {
       )
     );
   };
+
+  // //
+  // const getOrder = async () => {
+  //   await axios
+  //     .get("http://localhost:8080/api/order")
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         setOrders(response.data.data);
+  //         const lastIndexPo = response.data.data
+  //           .map(
+  //             (order: Order) =>
+  //               parseInt(order.purchase_order.substring(2, 5)) || 0
+  //           )
+  //           .sort((a: number, b: number) => b - a);
+  //         const lastPoId = "PO" + (lastIndexPo[0] + 1);
+  //         setPurchaseOrder(lastPoId);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       if (error.response.status === 404) setPurchaseOrder("PO1");
+  //       else console.log(error);
+  //     });
+  // };
+
+  // const getSupplier = async () => {
+  //   const response = await axios.get("http://localhost:8080/api/supplier");
+  //   if (response.status === 200) setSuppliers(response.data.data);
+  //   else alert("Supplier gagal diambil");
+  // };
+
+  // const createDetailOrder = async () => {
+  //   getOrder();
+  //   await axios
+  //     .post("http://localhost:8080/api/order", {
+  //       purchase_order: purchaseOrder,
+  //       date_transaction: dateTransaction,
+  //       id_supplier: idSupplier,
+  //       supplier: findSupplier(idSupplier || 0),
+  //       type_transaction: typeTransaction,
+  //       status: 0,
+  //     })
+  //     .then((response) => {
+  //       if (response.status === 201) {
+  //         alert("Order berhasil ditambahkan");
+  //         const idOrder = response.data.data.ID;
+  //         detailOrdersTemp.forEach((detailOrder) => {
+  //           detailOrder.id_order = idOrder;
+  //           detailOrder.type_product = "Bahan Baku";
+  //         });
+  //       } else alert("Order gagal ditambahkan");
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+
+  //   const response = await axios.post(
+  //     "http://localhost:8080/api/detail-order/create-multiple",
+  //     detailOrdersTemp
+  //   );
+  //   if (response.status === 201) {
+  //     alert("Order berhasil ditambahkan");
+  //     window.location.href = "/order";
+  //   } else alert("Order gagal ditambahkan");
+  //   handleTotalPrice();
+  // };
+
+  // const findSupplier = (id: number) => {
+  //   const supplier = suppliers.find((supplier) => supplier.ID === id);
+  //   if (!supplier) return { ID: 0, name_supplier: "", phone: 0, address: "" };
+  //   return supplier;
+  // };
 
   return (
     <BaseLayout padding={12}>
