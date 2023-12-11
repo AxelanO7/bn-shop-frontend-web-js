@@ -4,7 +4,7 @@ import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
 
 interface Stock {
-  ID: number;
+  ID: number | null;
   code_product: string;
   name_product: string;
   unit_product: string;
@@ -84,21 +84,10 @@ export default function CreateInput() {
 
   const [maxTotals, setMaxTotals] = useState<number[]>([]);
 
-  // //
-  // const [orders, setOrders] = useState<Order[]>([]);
-  // const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  // const [detailOrdersTemp, setDetailOrdersTemp] = useState<DetailOrder[]>([]);
-
-  // // order
-  // const [purchaseOrder, setPurchaseOrder] = useState<string>();
-  // const [idSupplier, setIdSupplier] = useState<number>();
-  // const [supplierSelected, setSupplierSelected] = useState<Supplier>();
-  // const [typeTransaction, setTypeTransaction] = useState<string>();
+  //
 
   useEffect(() => {
     fetchStock();
-    // getSupplier();
-    // getOrder();
   }, []);
 
   const fetchStock = async () => {
@@ -218,10 +207,22 @@ export default function CreateInput() {
       return;
     }
 
-    // createDetailOrder();
+    const resAddStock = await axios.post("http://localhost:8080/api/stock", {
+      code_product: codeProduct,
+      name_product: nameProduct,
+      unit_product: "pcs",
+      type_product: "Barang Jadi",
+      price_product: price,
+      total_product: totalProduction,
+    });
+
+    if (resAddStock.data.status !== "success") {
+      alert("Order gagal ditambahkan");
+      return;
+    }
 
     alert("Order berhasil ditambahkan");
-    window.location.href = "/stock";
+    // window.location.href = "/stock";
     handleTotalPrice();
   };
 
@@ -276,77 +277,6 @@ export default function CreateInput() {
       )
     );
   };
-
-  // //
-  // const getOrder = async () => {
-  //   await axios
-  //     .get("http://localhost:8080/api/order")
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         setOrders(response.data.data);
-  //         const lastIndexPo = response.data.data
-  //           .map(
-  //             (order: Order) =>
-  //               parseInt(order.purchase_order.substring(2, 5)) || 0
-  //           )
-  //           .sort((a: number, b: number) => b - a);
-  //         const lastPoId = "PO" + (lastIndexPo[0] + 1);
-  //         setPurchaseOrder(lastPoId);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       if (error.response.status === 404) setPurchaseOrder("PO1");
-  //       else console.log(error);
-  //     });
-  // };
-
-  // const getSupplier = async () => {
-  //   const response = await axios.get("http://localhost:8080/api/supplier");
-  //   if (response.status === 200) setSuppliers(response.data.data);
-  //   else alert("Supplier gagal diambil");
-  // };
-
-  // const createDetailOrder = async () => {
-  //   getOrder();
-  //   await axios
-  //     .post("http://localhost:8080/api/order", {
-  //       purchase_order: purchaseOrder,
-  //       date_transaction: dateTransaction,
-  //       id_supplier: idSupplier,
-  //       supplier: findSupplier(idSupplier || 0),
-  //       type_transaction: typeTransaction,
-  //       status: 0,
-  //     })
-  //     .then((response) => {
-  //       if (response.status === 201) {
-  //         alert("Order berhasil ditambahkan");
-  //         const idOrder = response.data.data.ID;
-  //         detailOrdersTemp.forEach((detailOrder) => {
-  //           detailOrder.id_order = idOrder;
-  //           detailOrder.type_product = "Bahan Baku";
-  //         });
-  //       } else alert("Order gagal ditambahkan");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-
-  //   const response = await axios.post(
-  //     "http://localhost:8080/api/detail-order/create-multiple",
-  //     detailOrdersTemp
-  //   );
-  //   if (response.status === 201) {
-  //     alert("Order berhasil ditambahkan");
-  //     window.location.href = "/order";
-  //   } else alert("Order gagal ditambahkan");
-  //   handleTotalPrice();
-  // };
-
-  // const findSupplier = (id: number) => {
-  //   const supplier = suppliers.find((supplier) => supplier.ID === id);
-  //   if (!supplier) return { ID: 0, name_supplier: "", phone: 0, address: "" };
-  //   return supplier;
-  // };
 
   return (
     <BaseLayout padding={12}>
@@ -489,7 +419,7 @@ export default function CreateInput() {
                       Pilih Barang
                     </option>
                     {stocksRaw.map((stockRaw) => (
-                      <option value={stockRaw.ID}>
+                      <option value={stockRaw.ID ?? 0}>
                         {stockRaw.name_product}
                       </option>
                     ))}
