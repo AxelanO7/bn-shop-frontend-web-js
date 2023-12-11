@@ -5,6 +5,7 @@ import HeaderPage from "../../components/header_page";
 
 interface Input {
   ID: number;
+  purchase_order: string;
   no_input: string;
   date_input: string;
   code_product: number;
@@ -77,7 +78,7 @@ export default function ReportInputPage() {
           {detailInputs.map((detailInput, index) => (
             <tr key={index}>
               <td className="border border-dark_green px-4 py-2">
-                {detailInput.input.no_input}
+                {detailInput.input.purchase_order}
               </td>
               <td className="border border-dark_green px-4 py-2">
                 {detailInput.input.name_product}

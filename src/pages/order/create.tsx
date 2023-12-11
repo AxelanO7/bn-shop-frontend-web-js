@@ -121,7 +121,7 @@ export default function CreateOrder() {
     );
     if (response.status === 201) {
       alert("Order berhasil ditambahkan");
-      // window.location.href = "/order";
+      window.location.href = "/order";
     } else alert("Order gagal ditambahkan");
     handleTotalPrice();
   };

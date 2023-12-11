@@ -10,26 +10,31 @@ interface Opname {
 
 export default function PrintOpnamePage() {
   const [date, setDate] = useState<string>();
-  const [dateOptions, setDateOptions] = useState<string[]>([]);
+  const [dateSelect, setDateSelect] = useState<string[]>([]);
 
   useEffect(() => {
     fetchOpname();
   }, []);
 
   const fetchOpname = async () => {
-    const res = await axios.get("http://localhost:8080/api/stock-opname");
-    if (res.status === 200) {
-      const listOpnames = res.data.data;
-      for (let index = 0; index < listOpnames.length; index++) {
-        const element = listOpnames[index];
-        const dateElement = element.date_calculate;
-        if (!dateOptions.includes(dateElement)) {
-          dateOptions.push(dateElement);
+    await axios
+      .get("http://localhost:8080/api/stock-opname")
+      .then((res) => {
+        if (res.status === 200) {
+          const listOpnames = res.data.data;
+          for (let index = 0; index < listOpnames.length; index++) {
+            const element = listOpnames[index];
+            const dateElement = element.date_calculate;
+            if (!dateSelect.includes(dateElement)) {
+              dateSelect.push(dateElement);
+            }
+          }
         }
-      }
-      console.log(dateOptions);
-      setDateOptions(dateOptions);
-    }
+        setDateSelect(dateSelect);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handlePreview = () => {
@@ -50,17 +55,12 @@ export default function PrintOpnamePage() {
           onChange={(e) => setDate(e.target.value)}
         >
           <option value="">Pilih tanggal</option>
-          {dateOptions.map((date, index) => (
+          {dateSelect.map((date, index) => (
             <option key={index} value={date}>
               {date}
             </option>
           ))}
         </select>
-        {/* <input
-          type="date"
-          className="border border-neutral-500 rounded-md p-2 w-60"
-          onChange={(e) => setDate(e.target.value)}
-        /> */}
       </div>
       <div className="h-20" />
       <button
