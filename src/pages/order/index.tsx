@@ -22,7 +22,10 @@ interface Supplier {
 
 export default function OrderPage() {
   const [orders, setOrders] = useState<Order[]>([]);
+
   const [entries, setEntries] = useState<number>(10);
+
+  const [activePage, setActivePage] = useState<number>(1);
 
   useEffect(() => {
     getOrders();
@@ -48,7 +51,6 @@ export default function OrderPage() {
   };
 
   const handleEnteries = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value);
     setEntries(Number(event.target.value));
     setOrders(orders.slice(0, Number(event.target.value)));
   };
@@ -76,6 +78,18 @@ export default function OrderPage() {
       return;
     }
     changeStatus(order.ID.toString());
+  };
+
+  const handlePrevious = () => {
+    if (activePage === 1) return;
+    setActivePage(activePage - 1);
+    setOrders(orders.slice(0, entries));
+  };
+
+  const handleNext = () => {
+    if (activePage === Math.ceil(orders.length / entries)) return;
+    setActivePage(activePage + 1);
+    setOrders(orders.slice(entries, entries * 2));
   };
 
   return (
@@ -178,13 +192,21 @@ export default function OrderPage() {
           <p>entries</p>
           <div className="grow" />
           <div className="flex ">
-            <button className="border border-black px-4 py-1 w-28">
-              previous
+            <button
+              className="border border-black px-4 py-1 w-28"
+              onClick={handlePrevious}
+            >
+              Previous
             </button>
             <button className="bg-blue-500 text-white px-3 border border-black">
               1
             </button>
-            <button className="border border-black px-4 py-1 w-28">next</button>
+            <button
+              className="border border-black px-4 py-1 w-28"
+              onClick={handleNext}
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>
