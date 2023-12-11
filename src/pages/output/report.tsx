@@ -53,7 +53,7 @@ export default function ReportOutputPage() {
       <table className="table-auto text-center text-white bg-green shadow-md">
         <thead>
           <tr>
-            <th className="px-4 py-2 border border-dark_green">Kode Barang</th>
+            <th className="px-4 py-2 border border-dark_green">No Keluar</th>
             <th className="px-4 py-2 border border-dark_green">Nama</th>
             <th className="px-4 py-2 border border-dark_green">Jenis Barang</th>
             <th className="px-4 py-2 border border-dark_green">Stok</th>

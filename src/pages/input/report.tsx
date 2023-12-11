@@ -78,7 +78,7 @@ export default function ReportInputPage() {
           {detailInputs.map((detailInput, index) => (
             <tr key={index}>
               <td className="border border-dark_green px-4 py-2">
-                {detailInput.input.purchase_order}
+                {detailInput.input.no_input}
               </td>
               <td className="border border-dark_green px-4 py-2">
                 {detailInput.input.name_product}
