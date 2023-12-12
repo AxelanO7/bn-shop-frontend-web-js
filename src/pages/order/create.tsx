@@ -104,6 +104,7 @@ export default function CreateOrder() {
           detailOrdersTemp.forEach((detailOrder) => {
             detailOrder.id_order = idOrder;
             detailOrder.type_product = "Bahan Baku";
+            detailOrder.order.purchase_order = purchaseOrder || "";
           });
         } else alert("Order gagal ditambahkan");
       })
