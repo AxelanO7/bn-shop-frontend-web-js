@@ -3,11 +3,6 @@ import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
 import axios from "axios";
 
-interface Opname {
-  date_calculate: string;
-  code_stock_opname: string;
-}
-
 export default function PrintOpnamePage() {
   const [date, setDate] = useState<string>();
   const [dateSelect, setDateSelect] = useState<string[]>([]);
@@ -17,6 +12,7 @@ export default function PrintOpnamePage() {
   }, []);
 
   const fetchOpname = async () => {
+    const dateOptions: string[] = [];
     await axios
       .get("http://localhost:8080/api/stock-opname")
       .then((res) => {
@@ -25,16 +21,16 @@ export default function PrintOpnamePage() {
           for (let index = 0; index < listOpnames.length; index++) {
             const element = listOpnames[index];
             const dateElement = element.date_calculate;
-            if (!dateSelect.includes(dateElement)) {
-              dateSelect.push(dateElement);
+            if (!dateOptions.includes(dateElement)) {
+              dateOptions.push(dateElement);
             }
           }
         }
-        setDateSelect(dateSelect);
       })
       .catch((err) => {
         console.log(err);
       });
+    setDateSelect(dateOptions);
   };
 
   const handlePreview = () => {
