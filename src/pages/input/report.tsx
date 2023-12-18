@@ -15,19 +15,19 @@ interface Input {
   price_product: number;
 }
 
-interface DetailInput {
-  ID: number;
-  id_input: number;
-  input: Input;
-  name_raw: string;
-  unit_product: string;
-  total_used: number;
-  type_product: string;
-  price_unit: number;
-}
+// interface DetailInput {
+//   ID: number;
+//   id_input: number;
+//   input: Input;
+//   name_raw: string;
+//   unit_product: string;
+//   total_used: number;
+//   type_product: string;
+//   price_unit: number;
+// }
 
 export default function ReportInputPage() {
-  const [detailInputs, setDetailInputs] = useState<DetailInput[]>([]);
+  const [inputs, setInputs] = useState<Input[]>([]);
 
   useEffect(() => {
     const startDate = window.location.pathname.split("/")[2];
@@ -45,7 +45,7 @@ export default function ReportInputPage() {
         `http://localhost:8080/api/date/input/?date-start=${startDate}&date-end=${endDate}`
       )
       .then((res) => {
-        if (res.status === 200) setDetailInputs(res.data.data);
+        if (res.status === 200) setInputs(res.data.data);
       })
       .catch((err) => {
         if (err.response.status !== 404) alert("Detail Input gagal diambil");
@@ -68,29 +68,29 @@ export default function ReportInputPage() {
           </tr>
         </thead>
         <tbody className="border border-dark_green bg-white text-stone_5">
-          {detailInputs.length === 0 ? (
+          {inputs.length === 0 ? (
             <tr>
               <td colSpan={5} className="px-4 py-2 border border-dark_green">
                 Tidak ada data
               </td>
             </tr>
           ) : null}
-          {detailInputs.map((detailInput, index) => (
+          {inputs.map((input, index) => (
             <tr key={index}>
               <td className="border border-dark_green px-4 py-2">
-                {detailInput.input.no_input}
+                {input.no_input}
               </td>
               <td className="border border-dark_green px-4 py-2">
-                {detailInput.input.name_product}
+                {input.name_product}
               </td>
               <td className="border border-dark_green px-4 py-2">
-                {detailInput.input.type_product}
+                {input.type_product}
               </td>
               <td className="border border-dark_green px-4 py-2">
-                {detailInput.total_used}
+                {input.total_production}
               </td>
               <td className="border border-dark_green px-4 py-2">
-                {detailInput.price_unit}
+                {input.price_product}
               </td>
             </tr>
           ))}
@@ -99,8 +99,8 @@ export default function ReportInputPage() {
       <div className="h-4" />
       <p className="border border-dark_green w-max px-4 bg-white">
         Jumlah Total :{" "}
-        {detailInputs.reduce((total, detailInput) => {
-          return total + detailInput.total_used;
+        {inputs.reduce((total, input) => {
+          return total + input.total_production;
         }, 0)}
       </p>
     </BaseLayout>
