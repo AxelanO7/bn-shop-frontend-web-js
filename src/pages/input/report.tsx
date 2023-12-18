@@ -11,7 +11,7 @@ interface Input {
   code_product: number;
   name_product: string;
   type_product: string;
-  total_production: number;
+  total_product: number;
   price_product: number;
 }
 
@@ -87,7 +87,7 @@ export default function ReportInputPage() {
                 {input.type_product}
               </td>
               <td className="border border-dark_green px-4 py-2">
-                {input.total_production}
+                {input.total_product}
               </td>
               <td className="border border-dark_green px-4 py-2">
                 {input.price_product}
@@ -100,7 +100,7 @@ export default function ReportInputPage() {
       <p className="border border-dark_green w-max px-4 bg-white">
         Jumlah Total :{" "}
         {inputs.reduce((total, input) => {
-          return total + input.total_production;
+          return total + input.total_product;
         }, 0)}
       </p>
     </BaseLayout>
