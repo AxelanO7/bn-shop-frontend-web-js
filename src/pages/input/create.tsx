@@ -222,7 +222,7 @@ export default function CreateInput() {
     }
 
     alert("Order berhasil ditambahkan");
-    // window.location.href = "/stock";
+    window.location.href = "/stock";
     handleTotalPrice();
   };
 

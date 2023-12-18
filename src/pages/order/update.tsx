@@ -71,24 +71,15 @@ export default function UpdateOrderPage() {
   };
 
   const createMultipleStock = async () => {
-    detailOrders?.map(async (detailOrder) => {
-      await axios
-        .post("http://localhost:8080/api/stock", {
-          code_product: detailOrder.code_product,
-          name_product: detailOrder.name_product,
-          unit_product: detailOrder.unit_product,
-          type_product: detailOrder.type_product,
-          price_product: detailOrder.price_product,
-          total_product: detailOrder.total_product,
-        })
-        .then((res) => {
-          alert("Stock berhasil ditambahkan");
-          window.location.href = "/order";
-        })
-        .catch((err) => {
-          alert("Stock gagal ditambahkan");
-        });
-    });
+    await axios
+      .post("http://localhost:8080/api/stocks", detailOrders)
+      .then((res) => {
+        alert("Stock berhasil ditambahkan");
+        window.location.href = "/order";
+      })
+      .catch((err) => {
+        alert("Stock gagal ditambahkan");
+      });
   };
 
   const handleUpdateStatus = async () => {
@@ -103,7 +94,6 @@ export default function UpdateOrderPage() {
       .catch((err) => {
         alert("Status gagal diubah");
       });
-
     await axios
       .put(`http://localhost:8080/api/order/${order?.ID}`, {
         status: status,
