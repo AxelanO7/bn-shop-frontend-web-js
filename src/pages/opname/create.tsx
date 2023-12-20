@@ -52,7 +52,7 @@ interface DetailOutput {
 }
 
 export default function CreateOpname() {
-  const [stocksOpname, setStocksOpname] = useState<Stock[]>([]);
+  const [stocksOpnames, setStocksOpname] = useState<Stock[]>([]);
   const [stocksOpnameTemp, setStocksOpnameTemp] = useState<Stock[]>([]);
   const [opnames, setOpnames] = useState<Opname[]>([]);
 
@@ -301,11 +301,12 @@ export default function CreateOpname() {
             {stocksOpnameTemp.map((stockRawT, index) => (
               <tr key={stockRawT.ID} className="border-b border-dark_green">
                 <td className="px-4 py-2">
-                  <select
+                  <input
+                    list="items"
                     className="border border-dark_green rounded-md py-1 px-3 text-center"
                     onChange={(e) => {
-                      const stock = stocksOpname.find(
-                        (stock) => stock.ID === parseInt(e.target.value)
+                      const stock = stocksOpnames.find(
+                        (stock) => stock.name_product === e.target.value
                       );
                       if (!stock) return;
                       stockRawT.code_product = stock.code_product;
@@ -318,16 +319,18 @@ export default function CreateOpname() {
                       setMaxTotals([...maxTotals, stock.total_product]);
                       // handleTotalPrice();
                     }}
+                  />
+                  <datalist
+                    id="items"
+                    className="rounded-md py-1 px-3 text-center"
                   >
                     <option disabled selected>
                       Pilih Barang
                     </option>
-                    {stocksOpname.map((stockRaw) => (
-                      <option value={stockRaw.ID!}>
-                        {stockRaw.name_product}
-                      </option>
+                    {stocksOpnames.map((stockOpname) => (
+                      <option value={stockOpname.name_product} />
                     ))}
-                  </select>
+                  </datalist>
                 </td>
                 <td className="px-4 py-2">
                   <input

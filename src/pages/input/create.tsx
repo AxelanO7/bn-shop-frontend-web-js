@@ -65,7 +65,7 @@ interface Supplier {
   address: string;
 }
 
-export default function CreateInput() {
+export default function CreateInputPage() {
   const [stocksRaw, setStocksRaw] = useState<Stock[]>([]);
   const [stocksRawTemp, setStocksRawTemp] = useState<Stock[]>([]);
   const [inputs, setInputs] = useState<Input[]>([]);
@@ -393,11 +393,12 @@ export default function CreateInput() {
                   </p>
                 </td>
                 <td className="px-4 py-2">
-                  <select
-                    className="rounded-md py-1 px-3 text-center"
+                  <input
+                    list="items"
+                    className="border border-dark_green rounded-md py-1 px-3 text-center"
                     onChange={(e) => {
                       const stock = stocksRaw.find(
-                        (stock) => stock.ID === parseInt(e.target.value)
+                        (stock) => stock.name_product === e.target.value
                       );
                       if (!stock) return;
                       stockRawT.code_product = stock.code_product;
@@ -414,16 +415,18 @@ export default function CreateInput() {
                       ]);
                       handleTotalPrice();
                     }}
+                  />
+                  <datalist
+                    id="items"
+                    className="rounded-md py-1 px-3 text-center"
                   >
                     <option disabled selected>
                       Pilih Barang
                     </option>
                     {stocksRaw.map((stockRaw) => (
-                      <option value={stockRaw.ID ?? 0}>
-                        {stockRaw.name_product}
-                      </option>
+                      <option value={stockRaw.name_product} />
                     ))}
-                  </select>
+                  </datalist>
                 </td>
                 <td className="px-4 py-2">
                   <p className="py-1 px-3 w-full text-center">

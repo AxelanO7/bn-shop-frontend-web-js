@@ -32,7 +32,7 @@ interface DetailOutput {
 }
 
 export default function CreateOutput() {
-  const [stocksFinished, setStocksFinished] = useState<Stock[]>([]);
+  const [stocksFinisheds, setStocksFinished] = useState<Stock[]>([]);
   const [stocksFinishedTemp, setStocksFinishedTemp] = useState<Stock[]>([]);
   const [outputs, setOutputs] = useState<Output[]>([]);
 
@@ -221,7 +221,6 @@ export default function CreateOutput() {
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60 bg-white"
                   value={"OUT" + (lastIdOutput + 1).toString().padStart(4, "0")}
                   disabled
-                  // onChange={(e) => setNoOutputProduct(e.target.value)}
                 />
               </div>
             </div>
@@ -260,11 +259,12 @@ export default function CreateOutput() {
                   </p>
                 </td>
                 <td className="px-4 py-2">
-                  <select
-                    className="rounded-md py-1 px-3 text-center"
+                  <input
+                    list="items"
+                    className="border border-dark_green rounded-md py-1 px-3 text-center"
                     onChange={(e) => {
-                      const stock = stocksFinished.find(
-                        (stock) => stock.ID === parseInt(e.target.value)
+                      const stock = stocksFinisheds.find(
+                        (stock) => stock.name_product === e.target.value
                       );
                       if (!stock) return;
                       stockRawT.code_product = stock.code_product;
@@ -277,16 +277,18 @@ export default function CreateOutput() {
                       setMaxTotals([...maxTotals, stock.total_product]);
                       handleTotalPrice();
                     }}
+                  />
+                  <datalist
+                    id="items"
+                    className="rounded-md py-1 px-3 text-center"
                   >
                     <option disabled selected>
                       Pilih Barang
                     </option>
-                    {stocksFinished.map((stockRaw) => (
-                      <option value={stockRaw.ID}>
-                        {stockRaw.name_product}
-                      </option>
+                    {stocksFinisheds.map((stockFinsihed) => (
+                      <option value={stockFinsihed.name_product} />
                     ))}
-                  </select>
+                  </datalist>
                 </td>
                 <td className="px-4 py-2">
                   <p className="py-1 px-3 w-full text-center">
