@@ -32,7 +32,7 @@ interface Supplier {
   address: string;
 }
 
-export default function CreateOrder() {
+export default function CreateOrderPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [detailOrdersTemp, setDetailOrdersTemp] = useState<DetailOrder[]>([]);

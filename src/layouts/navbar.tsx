@@ -21,10 +21,11 @@ export default function Navbar() {
           </div>
         </nav>
         {navSide ? (
-          <div className="bg-dark_green/75 w-max text-white py-6 px-10 space-y-4 h-screen pr-24">
-            <h1>MAIN NAVIGATION</h1>
+          <div className="bg-dark_green/75 w-max text-white py-6 space-y-4 h-screen">
+            {/* hover */}
+            <h1 className="cursor-pointer px-10 pr-24">MAIN NAVIGATION</h1>
             <p
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"
               onClick={() => {
                 window.location.href = "/dashboard";
               }}
@@ -32,7 +33,7 @@ export default function Navbar() {
               Dashboard
             </p>
             <p
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"
               onClick={() => {
                 window.location.href = "/order";
               }}
@@ -40,7 +41,7 @@ export default function Navbar() {
               Pemesanan Barang
             </p>
             <p
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"
               onClick={() => {
                 window.location.href = "/stock";
               }}
@@ -48,7 +49,7 @@ export default function Navbar() {
               Data Barang
             </p>
             <p
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"
               onClick={() => {
                 window.location.href = "/supplier";
               }}
@@ -56,7 +57,7 @@ export default function Navbar() {
               Data Supplier
             </p>
             <p
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"
               onClick={() => {
                 window.location.href = "/print-order";
               }}
@@ -64,7 +65,7 @@ export default function Navbar() {
               Laporan Pemesanan Barang
             </p>
             <p
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"
               onClick={() => {
                 window.location.href = "/print-stock";
               }}
@@ -72,7 +73,7 @@ export default function Navbar() {
               Laporan Stok Barang
             </p>
             <p
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"
               onClick={() => {
                 window.location.href = "/print-input";
               }}
@@ -80,7 +81,7 @@ export default function Navbar() {
               Laporan Barang Masuk
             </p>
             <p
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"
               onClick={() => {
                 window.location.href = "/print-output";
               }}
@@ -88,7 +89,7 @@ export default function Navbar() {
               Laporan Barang Keluar
             </p>
             <p
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"
               onClick={() => {
                 window.location.href = "/print-opname";
               }}
