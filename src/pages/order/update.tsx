@@ -15,7 +15,7 @@ interface Order {
 }
 
 interface DetailOrder {
-  ID: number;
+  ID: number | null;
   code_product: string;
   id_order: number;
   order: Order;
@@ -71,6 +71,9 @@ export default function UpdateOrderPage() {
   };
 
   const createMultipleStock = async () => {
+    detailOrders?.forEach(async (detailOrder) => {
+      detailOrder.ID = null;
+    });
     await axios
       .post("http://localhost:8080/api/stocks", detailOrders)
       .then((res) => {
@@ -105,7 +108,7 @@ export default function UpdateOrderPage() {
       .catch((err) => {
         alert("Status gagal diubah");
       });
-    window.location.href = "/order";
+    // window.location.href = "/order";
   };
 
   const handleTotalPrice = () => {
