@@ -69,7 +69,7 @@ export default function ReportOutputPage() {
   return (
     <BaseLayout padding={12} text_color="stone_5">
       <div id="printTable" ref={conponentPDF}>
-        <HeaderPage>LAPORAN BARANG KELUAR</HeaderPage>
+        <HeaderPage withLogo={true}>LAPORAN BARANG KELUAR</HeaderPage>
         <div className="h-16" />
         <table className="table-auto text-center text-white bg-green shadow-md w-full">
           <thead>

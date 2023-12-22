@@ -73,7 +73,7 @@ export default function ReportInputPage() {
   return (
     <BaseLayout padding={12} text_color="stone_5">
       <div id="printTable" ref={conponentPDF}>
-        <HeaderPage>LAPORAN STOK BARANG</HeaderPage>
+        <HeaderPage withLogo={true}>LAPORAN STOK BARANG</HeaderPage>
 
         <div className="h-12" />
 
