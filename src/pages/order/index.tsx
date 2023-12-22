@@ -94,7 +94,7 @@ export default function OrderPage() {
 
   return (
     <BaseLayout padding={12} text_color="stone_5">
-      <HeaderPage>TRANSAKSI PEMESANAN</HeaderPage>
+      <HeaderPage>TRANSAKSI PEMESANAN BAHAN BAKU</HeaderPage>
       <div className="h-12" />
       <div className="bg-white p-8 rounded-md shadow-md">
         <div className="flex justify-between items-center">

@@ -80,7 +80,7 @@ export default function ReportOrderPage() {
   return (
     <BaseLayout padding={12} text_color="stone_5">
       <div id="printTable" ref={conponentPDF}>
-        <HeaderPage>LAPORAN PEMESANAN MASUK</HeaderPage>
+        <HeaderPage>LAPORAN PEMESANAN BAHAN BAKU</HeaderPage>
         <div className="h-16" />
         <table className="table-auto text-center text-white bg-green shadow-md w-full">
           <thead>

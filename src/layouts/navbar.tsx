@@ -38,7 +38,7 @@ export default function Navbar() {
                 window.location.href = "/order";
               }}
             >
-              Pemesanan Barang
+              Pemesanan Bahan Baku
             </p>
             <p
               className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"
@@ -62,7 +62,7 @@ export default function Navbar() {
                 window.location.href = "/print-order";
               }}
             >
-              Laporan Pemesanan Barang
+              Laporan Pemesanan Bahan Baku
             </p>
             <p
               className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"

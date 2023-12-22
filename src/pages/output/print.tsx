@@ -14,7 +14,7 @@ export default function PrintOutputPage() {
 
   return (
     <BaseLayout padding={12} text_color="stone_5">
-      <HeaderPage>CETAK BARANG KELUAR</HeaderPage>
+      <HeaderPage>CETAK LAPORAN BARANG KELUAR</HeaderPage>
       <div className="h-12" />
       <div className="flex">
         <div className="flex-1 flex space-x-8 justify-center">

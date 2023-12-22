@@ -164,7 +164,7 @@ export default function UpdateOrderPage() {
       <table className="table-fixed text-center text-white bg-green shadow-md">
         <thead className="border-y w-full border-neutral-500">
           <tr>
-            <th className="px-4 py-2">Kode Barang</th>
+            <th className="px-4 py-2">Kode Bahan</th>
             <th className="px-4 py-2">Nama</th>
             <th className="px-4 py-2">Satuan</th>
             <th className="px-4 py-2">Jumlah</th>

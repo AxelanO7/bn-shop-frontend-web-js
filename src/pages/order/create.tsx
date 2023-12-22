@@ -176,7 +176,7 @@ export default function CreateOrderPage() {
 
   return (
     <BaseLayout padding={12}>
-      <HeaderPage>FORM PEMESANAN</HeaderPage>
+      <HeaderPage>FORM PEMESANAN BAHAN BAKU</HeaderPage>
       <div className="h-12" />
       <div className=" rounded-md w-full p-8 bg-white shadow-md">
         <div className="flex flex-col">

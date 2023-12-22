@@ -41,7 +41,7 @@ export default function PrintOpnamePage() {
 
   return (
     <BaseLayout padding={12} text_color="stone_5">
-      <HeaderPage>CETAK STOCK OPNAME</HeaderPage>
+      <HeaderPage>CETAK LAPORAN STOCK OPNAME</HeaderPage>
       <div className="h-28" />
       <div className="flex d-block items-center mx-auto">
         <p>Tanggal Perhitungan</p>

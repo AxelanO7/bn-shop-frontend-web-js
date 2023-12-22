@@ -14,7 +14,7 @@ export default function PrintStockPage() {
 
   return (
     <BaseLayout padding={12} text_color="stone_5">
-      <HeaderPage>CETAK STOK BARANG</HeaderPage>
+      <HeaderPage>CETAK LAPORAN STOK BARANG</HeaderPage>
       <div className="h-12" />
       <div className="flex">
         <div className="flex-1 flex space-x-8 justify-center">

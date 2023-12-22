@@ -19,7 +19,7 @@ export default function DashboardPage() {
           }}
         >
           <p className="text-xl bg-dark_green rounded-xl py-4">
-            PEMESANAN BARANG
+            PEMESANAN BAHAN BAKU
           </p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
