@@ -181,8 +181,7 @@ export default function UpdateOrderPage() {
               <td className="px-4 py-2">{detailOrder.code_product}</td>
               <td className="px-4 py-2">{detailOrder.name_product}</td>
               <td className="px-4 py-2">{detailOrder.unit_product}</td>
-              <td className="px-4 py-2">{detailOrder.total_product}</td>
-              <td className="px-4 py-2">{detailOrder.price_product}</td>
+              {/* <td className="px-4 py-2">{detailOrder.total_product}</td> */}
               <td>
                 <input
                   type="number"
@@ -193,6 +192,20 @@ export default function UpdateOrderPage() {
                     handleTotalPrice();
                   }}
                 />
+              </td>
+              <td className="px-4 py-2">{detailOrder.price_product}</td>
+              <td>
+                Rp.
+                {detailOrder.price_product * detailOrder.total_product}
+                {/* <input
+                  type="number"
+                  className="border border-dark_green rounded-md py-1 px-3 text-center"
+                  defaultValue={detailOrder.total_product.toString()}
+                  onChange={(e) => {
+                    detailOrder.total_product = parseFloat(e.target.value);
+                    handleTotalPrice();
+                  }}
+                /> */}
               </td>
             </tr>
           ))}
