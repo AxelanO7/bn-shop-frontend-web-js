@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface Stock {
   ID: number | null;
@@ -251,21 +253,25 @@ export default function CreateOpname() {
           <div className="flex space-x-4  text-stone_5">
             <div className="flex-1 flex-col items-center space-y-6">
               <div className="flex items-center">
-                <div className="w-44">
-                  <label>Tanggal Penghitungan</label>
-                </div>
-                <input
+                <label>Tanggal Penghitungan</label>
+                {/* <input
                   type="date"
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
                   onChange={(e) => setDateTransaction(e.target.value)}
+                /> */}
+                <DatePicker
+                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
+                  selected={new Date(dateTransaction || Date.now())}
+                  onChange={(date) =>
+                    setDateTransaction(date?.toString().split("T")[0])
+                  }
+                  dateFormat="dd-MM-yyyy"
                 />
               </div>
             </div>
             <div className="flex-1 flex-col items-center space-y-6">
               <div className="flex items-center">
-                <div className="w-44">
-                  <label>Kode Stok Opname</label>
-                </div>
+                <label>Kode Stok Opname</label>
                 <input
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60 bg-white"
                   value={"OP" + (lastIdOpname + 1).toString().padStart(4, "0")}

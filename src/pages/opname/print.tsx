@@ -4,8 +4,8 @@ import HeaderPage from "../../components/header_page";
 import axios from "axios";
 
 export default function PrintOpnamePage() {
-  const [date, setDate] = useState<string>();
-  const [dateSelect, setDateSelect] = useState<string[]>([]);
+  const [date, setDate] = useState<Date | null>(null);
+  const [dateSelect, setDateSelect] = useState<Date[]>([]);
 
   useEffect(() => {
     fetchOpname();
@@ -21,8 +21,23 @@ export default function PrintOpnamePage() {
           for (let index = 0; index < listOpnames.length; index++) {
             const element = listOpnames[index];
             const dateElement = element.date_calculate;
-            if (!dateOptions.includes(dateElement)) {
-              dateOptions.push(dateElement);
+            const formattedDate = new Date(dateElement).toLocaleDateString(
+              "id-ID",
+              {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              }
+            );
+            const dateElementFormatted = new Date(formattedDate);
+            const dateElementFormattedFinal = dateElementFormatted
+              .toISOString()
+              .split("T")[0];
+            // if (!dateOptions.includes(dateElement)) {
+            //   dateOptions.push(dateElement);
+            // }
+            if (!dateOptions.includes(dateElementFormattedFinal)) {
+              dateOptions.push(dateElementFormattedFinal);
             }
           }
         }
@@ -30,12 +45,13 @@ export default function PrintOpnamePage() {
       .catch((err) => {
         console.log(err);
       });
-    setDateSelect(dateOptions);
+    setDateSelect(dateOptions.map((date) => new Date(date)));
   };
 
   const handlePreview = () => {
     if (date) {
-      window.open(`/report-opname/${date}`, "_blank");
+      const formattedDate = date.toISOString().split("T")[0];
+      window.open(`/report-opname/${formattedDate}`, "_blank");
     }
   };
 
@@ -48,12 +64,16 @@ export default function PrintOpnamePage() {
         <div className="w-8" />
         <select
           className="border border-neutral-500 rounded-md p-2 w-60"
-          onChange={(e) => setDate(e.target.value)}
+          onChange={(e) => setDate(new Date(e.target.value))}
         >
           <option value="">Pilih tanggal</option>
           {dateSelect.map((date, index) => (
-            <option key={index} value={date}>
-              {date}
+            <option key={index} value={date.toString()}>
+              {date.toLocaleDateString("id-ID", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
             </option>
           ))}
         </select>

@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function PrintStockPage() {
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   const handlePreview = () => {
     if (startDate && endDate) {
-      window.open(`/report-stock/${startDate}/${endDate}`, "_blank");
+      const formattedStartDate = startDate.toISOString().split("T")[0];
+      const formattedEndDate = endDate.toISOString().split("T")[0];
+      window.open(
+        `/report-stock/${formattedStartDate}/${formattedEndDate}`,
+        "_blank"
+      );
     }
   };
 
@@ -19,18 +26,20 @@ export default function PrintStockPage() {
       <div className="flex">
         <div className="flex-1 flex space-x-8 justify-center">
           <p>Tanggal</p>
-          <input
-            type="date"
+          <DatePicker
             className="border border-neutral-500 rounded px-2"
-            onChange={(e) => setStartDate(e.target.value)}
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            dateFormat="dd-MM-yyyy"
           />
         </div>
         <div className="flex-1 flex space-x-8 justify-center">
           <p>s/d</p>
-          <input
-            type="date"
+          <DatePicker
             className="border border-neutral-500 rounded px-2"
-            onChange={(e) => setEndDate(e.target.value)}
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            dateFormat="dd-MM-yyyy"
           />
         </div>
       </div>

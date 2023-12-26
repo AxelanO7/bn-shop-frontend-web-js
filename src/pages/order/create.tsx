@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface DetailOrder {
   ID: number | null;
@@ -186,11 +188,19 @@ export default function CreateOrderPage() {
                 <div className="w-36">
                   <label>Tanggal Transaksi</label>
                 </div>
-                <input
+                {/* <input
                   type="date"
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
                   value={dateTransaction!}
                   onChange={(e) => setDateTransaction(e.target.value)}
+                /> */}
+                <DatePicker
+                  className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
+                  selected={new Date(dateTransaction || Date.now())}
+                  onChange={(date) =>
+                    setDateTransaction(date?.toString().split("T")[0])
+                  }
+                  dateFormat="dd/MM/yyyy"
                 />
               </div>
               <div className="flex items-center">
