@@ -22,7 +22,6 @@ export default function Navbar() {
         </nav>
         {navSide ? (
           <div className="bg-dark_green/75 w-max text-white py-6 space-y-4 h-screen">
-            {/* hover */}
             <h1 className="cursor-pointer px-10 pr-24">MAIN NAVIGATION</h1>
             <p
               className="cursor-pointer hover:bg-white hover:text-dark_green px-10 pr-24 py-2 rounded-md"

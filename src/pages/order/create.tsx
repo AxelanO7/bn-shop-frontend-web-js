@@ -198,9 +198,11 @@ export default function CreateOrderPage() {
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
                   selected={new Date(dateTransaction || Date.now())}
                   onChange={(date) =>
-                    setDateTransaction(date?.toString().split("T")[0])
+                    setDateTransaction(
+                      date?.toISOString().split("T")[0] || Date.now().toString()
+                    )
                   }
-                  dateFormat="dd/MM/yyyy"
+                  dateFormat="dd-MM-yyyy"
                 />
               </div>
               <div className="flex items-center">

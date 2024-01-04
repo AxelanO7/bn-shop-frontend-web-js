@@ -263,7 +263,9 @@ export default function CreateOpname() {
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
                   selected={new Date(dateTransaction || Date.now())}
                   onChange={(date) =>
-                    setDateTransaction(date?.toString().split("T")[0])
+                    setDateTransaction(
+                      date?.toISOString().substr(0, 10) || Date.now().toString()
+                    )
                   }
                   dateFormat="dd-MM-yyyy"
                 />
