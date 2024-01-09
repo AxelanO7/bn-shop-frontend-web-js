@@ -21,23 +21,8 @@ export default function PrintOpnamePage() {
           for (let index = 0; index < listOpnames.length; index++) {
             const element = listOpnames[index];
             const dateElement = element.date_calculate;
-            const formattedDate = new Date(dateElement).toLocaleDateString(
-              "id-ID",
-              {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-              }
-            );
-            const dateElementFormatted = new Date(formattedDate);
-            const dateElementFormattedFinal = dateElementFormatted
-              .toISOString()
-              .split("T")[0];
-            // if (!dateOptions.includes(dateElement)) {
-            //   dateOptions.push(dateElement);
-            // }
-            if (!dateOptions.includes(dateElementFormattedFinal)) {
-              dateOptions.push(dateElementFormattedFinal);
+            if (!dateOptions.includes(dateElement)) {
+              dateOptions.push(dateElement);
             }
           }
         }
@@ -69,11 +54,7 @@ export default function PrintOpnamePage() {
           <option value="">Pilih tanggal</option>
           {dateSelect.map((date, index) => (
             <option key={index} value={date.toString()}>
-              {date.toLocaleDateString("id-ID", {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-              })}
+              {date.toLocaleDateString().replace(/\//g, "-")}
             </option>
           ))}
         </select>

@@ -59,7 +59,9 @@ export default function CreateOpname() {
   const [opnames, setOpnames] = useState<Opname[]>([]);
 
   // order
-  const [dateTransaction, setDateTransaction] = useState<string>();
+  const [dateTransaction, setDateTransaction] = useState<string>(
+    new Date().toISOString().substr(0, 10)
+  );
   const [codeStockOpname, setCodeStockOpname] = useState<string>();
 
   const [lastIdOpname, setLastIdOpname] = useState<number>(0);
@@ -87,12 +89,18 @@ export default function CreateOpname() {
       .get("http://localhost:8080/api/stock-opname")
       .then((response) => {
         setLastIdOpname(response.data.data[response.data.data.length - 1].ID);
+        setCodeStockOpname(
+          "OP" +
+            (response.data.data[response.data.data.length - 1].ID + 1)
+              .toString()
+              .padStart(4, "0")
+        );
       })
       .catch((error) => {
         console.log(error);
         alert("Gagal mendapatkan data");
       });
-    setCodeStockOpname("OP" + (lastIdOpname + 1).toString().padStart(4, "0"));
+    setDateTransaction(new Date().toISOString().substr(0, 10));
   };
 
   const validateOpname = () => {
