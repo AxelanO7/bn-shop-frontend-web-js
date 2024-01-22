@@ -11,6 +11,15 @@ interface Stock {
   total_product: number;
   type_product: string;
   price_product: number;
+  id_supplier: number;
+  supplier: Supplier;
+}
+
+interface Supplier {
+  ID: number;
+  name_supplier: string;
+  phone: number;
+  address: string;
 }
 
 export default function StockPage() {
@@ -133,6 +142,7 @@ export default function StockPage() {
               <th className="px-4 py-2 border border-dark_green">
                 Jenis Barang
               </th>
+              <th className="px-4 py-2 border border-dark_green">Supplier</th>
               <th className="px-4 py-2 border border-dark_green">Stok</th>
               <th className="px-4 py-2 border border-dark_green">Harga</th>
             </tr>
@@ -155,6 +165,9 @@ export default function StockPage() {
                 </td>
                 <td className="px-4 py-2 border border-dark_green">
                   {stock.type_product}
+                </td>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.supplier.name_supplier}
                 </td>
                 <td className="px-4 py-2 border border-dark_green">
                   {stock.total_product}
@@ -192,15 +205,16 @@ export default function StockPage() {
         <table className="table-auto text-center text-white bg-green shadow-md w-full">
           <thead>
             <tr>
-              <th className="px-4 py-2 border border-dark_green py-4">
+              <th className="px-4 border border-dark_green py-4">
                 Kode Barang
               </th>
-              <th className="px-4 py-2 border border-dark_green py-4">Nama</th>
-              <th className="px-4 py-2 border border-dark_green py-4">
+              <th className="px-4 border border-dark_green py-4">Nama</th>
+              <th className="px-4 border border-dark_green py-4">
                 Jenis Barang
               </th>
-              <th className="px-4 py-2 border border-dark_green py-4">Stok</th>
-              <th className="px-4 py-2 border border-dark_green py-4">Harga</th>
+              <th className="px-4 border border-dark_green py-4">Supplier</th>
+              <th className="px-4 border border-dark_green py-4">Stok</th>
+              <th className="px-4 border border-dark_green py-4">Harga</th>
             </tr>
           </thead>
           <tbody className="border border-dark_green bg-white text-stone_5">
@@ -221,6 +235,9 @@ export default function StockPage() {
                 </td>
                 <td className="px-4 py-2 border border-dark_green">
                   {stock.type_product}
+                </td>
+                <td className="px-4 py-2 border border-dark_green">
+                  {stock.supplier.name_supplier}
                 </td>
                 <td className="px-4 py-2 border border-dark_green">
                   {stock.total_product}

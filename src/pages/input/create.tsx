@@ -13,6 +13,15 @@ interface Stock {
   total_product: number;
   type_product: string;
   price_product: number;
+  id_supplier: number;
+  supplier: Supplier;
+}
+
+interface Supplier {
+  ID: number;
+  name_supplier: string;
+  phone: number;
+  address: string;
 }
 
 interface Input {
@@ -86,7 +95,8 @@ export default function CreateInputPage() {
 
   const [maxTotals, setMaxTotals] = useState<number[]>([]);
 
-  //
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [supplierSelected, setSupplierSelected] = useState<Supplier>();
 
   useEffect(() => {
     fetchStock();
@@ -118,6 +128,7 @@ export default function CreateInputPage() {
       });
     setNoInputProduct("IN" + (lastIdInput + 1).toString().padStart(4, "0"));
     setTypeProduct("Barang Jadi");
+    getSupplier();
   };
 
   const validateInput = () => {
@@ -129,8 +140,19 @@ export default function CreateInputPage() {
       !totalProduction ||
       !noInputProduct ||
       !price
-    )
+    ) {
+      console.log(
+        dateTransaction,
+        codeProduct,
+        nameProduct,
+        typeProduct,
+        totalProduction,
+        noInputProduct,
+        price
+      );
       return false;
+    }
+
     return true;
   };
 
@@ -213,9 +235,11 @@ export default function CreateInputPage() {
       code_product: codeProduct,
       name_product: nameProduct,
       unit_product: "pcs",
-      type_product: "Barang Jadi",
+      type_product: typeProduct,
       price_product: price,
       total_product: totalProduction,
+      id_supplier: supplierSelected?.ID,
+      supplier: supplierSelected,
     });
 
     if (resAddStock.data.status !== "success") {
@@ -257,6 +281,13 @@ export default function CreateInputPage() {
         total_product: 0,
         type_product: "",
         price_product: 0,
+        id_supplier: 0,
+        supplier: {
+          ID: 0,
+          name_supplier: "",
+          phone: 0,
+          address: "",
+        },
       },
     ]);
   };
@@ -278,6 +309,12 @@ export default function CreateInputPage() {
         0
       )
     );
+  };
+
+  const getSupplier = async () => {
+    const response = await axios.get("http://localhost:8080/api/supplier");
+    if (response.status === 200) setSuppliers(response.data.data);
+    else alert("Supplier gagal diambil");
   };
 
   return (
@@ -366,6 +403,31 @@ export default function CreateInputPage() {
                   type="number"
                   onChange={(e) => setTotalProduction(parseInt(e.target.value))}
                 />
+              </div>
+              <div className="w-full flex items-center">
+                <div className="w-36">
+                  <label>Nama Supplier</label>
+                </div>
+
+                <select
+                  className="border border-dark_green rounded-md py-1.5 px-3 ml-4 w-60 bg-white"
+                  onChange={(e) => {
+                    setSupplierSelected(
+                      suppliers.find(
+                        (supplier) => supplier.ID === parseInt(e.target.value)
+                      )
+                    );
+                  }}
+                >
+                  <option disabled selected>
+                    Pilih Supplier
+                  </option>
+                  {suppliers.map((supplier) => (
+                    <option key={supplier.ID} value={supplier.ID}>
+                      {supplier.name_supplier}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>

@@ -13,6 +13,15 @@ interface Stock {
   total_product: number;
   type_product: string;
   price_product: number;
+  id_supplier: number;
+  supplier: Supplier;
+}
+
+interface Supplier {
+  ID: number;
+  name_supplier: string;
+  phone: number;
+  address: string;
 }
 
 interface Opname {
@@ -55,10 +64,10 @@ interface DetailOutput {
 
 export default function CreateOpname() {
   const [stocksOpnames, setStocksOpname] = useState<Stock[]>([]);
+
   const [stocksOpnameTemp, setStocksOpnameTemp] = useState<Stock[]>([]);
   const [opnames, setOpnames] = useState<Opname[]>([]);
 
-  // order
   const [dateTransaction, setDateTransaction] = useState<string>(
     new Date().toISOString().substr(0, 10)
   );
@@ -66,13 +75,44 @@ export default function CreateOpname() {
 
   const [lastIdOpname, setLastIdOpname] = useState<number>(0);
 
-  // const [totalPrice, setTotalPrice] = useState<number>();
-
   const [maxTotals, setMaxTotals] = useState<number[]>([]);
 
   useEffect(() => {
     fetchStock();
+    add20Rows();
   }, []);
+
+  // make async
+  const add20Rows = async () => {
+    const stocks = [];
+    for (let i = 0; i < 20; i++) {
+      // console.log(
+      //   "i",
+      //   i,
+      //   "length",
+      //   stocksOpnameTemp.length,
+      //   "max",
+      //   maxTotals.length
+      // );
+      stocks.push({
+        ID: i,
+        code_product: "",
+        name_product: "",
+        unit_product: "",
+        total_product: i,
+        type_product: "",
+        price_product: 0,
+        id_supplier: 0,
+        supplier: {
+          ID: 0,
+          name_supplier: "",
+          phone: 0,
+          address: "",
+        },
+      });
+    }
+    setStocksOpnameTemp([...stocksOpnameTemp, ...stocks]);
+  };
 
   const fetchStock = async () => {
     await axios
@@ -109,30 +149,18 @@ export default function CreateOpname() {
   };
 
   const createOpname = async () => {
-    // console.log(
-    //   "stocksOpnameTemp",
-    //   stocksOpnameTemp.map(
-    //     (stockFinishedT): DetailOpname => ({
-    //       ID: null,
-    //       id_output: 0,
-    //       output: {
-    //         ID: 0,
-    //         code_stock_opname: codeStockOpname || "",
-    //         date_calculate: dateTransaction || "",
-    //       },
-    //       code_product: stockFinishedT.code_product,
-    //       name_finished: stockFinishedT.name_product,
-    //       unit_product: stockFinishedT.unit_product,
-    //       stock_real: stockFinishedT.total_product,
-    //       stock_system: maxTotals[stocksOpnameTemp.indexOf(stockFinishedT)],
-    //       total_diff:
-    //         maxTotals[stocksOpnameTemp.indexOf(stockFinishedT)] -
-    //         stockFinishedT.total_product,
-    //       type_product: stockFinishedT.type_product,
-    //       price_unit: stockFinishedT.price_product,
-    //     })
-    //   )
-    // );
+    // remove stocks opnames with null value
+    for (let i = 0; i < stocksOpnameTemp.length; i++) {
+      if (stocksOpnameTemp[i].code_product === "") {
+        stocksOpnameTemp.splice(i, 1);
+        i--;
+      }
+    }
+
+    if (!validateOpname()) {
+      alert("Silahkan isi form stok opname terlebih dahulu");
+      return;
+    }
 
     const resOpname = await axios.post(
       "http://localhost:8080/api/stock-opname",
@@ -142,6 +170,7 @@ export default function CreateOpname() {
         date_calculate: dateTransaction || "",
       }
     );
+
     if (resOpname.status !== 201) {
       alert("Order gagal ditambahkan");
       return;
@@ -171,6 +200,7 @@ export default function CreateOpname() {
         })
       )
     );
+
     if (resDetail.status !== 201) {
       alert("Detail order gagal ditambahkan");
       return;
@@ -210,6 +240,7 @@ export default function CreateOpname() {
       alert("Silahkan isi form stok opname terlebih dahulu");
       return;
     }
+
     setOpnames([
       ...opnames,
       {
@@ -229,6 +260,13 @@ export default function CreateOpname() {
         total_product: 0,
         type_product: "",
         price_product: 0,
+        id_supplier: 0,
+        supplier: {
+          ID: 0,
+          name_supplier: "",
+          phone: 0,
+          address: "",
+        },
       },
     ]);
   };
@@ -243,14 +281,9 @@ export default function CreateOpname() {
     // handleTotalPrice();
   };
 
-  // const handleTotalPrice = () => {
-  //   setTotalPrice(
-  //     stocksOpnameTemp.reduce(
-  //       (total, item) => total + item.total_product * item.price_product,
-  //       0
-  //     )
-  //   );
-  // };
+  const scrollToBottom = () => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
+  };
 
   return (
     <BaseLayout padding={12}>
@@ -300,6 +333,7 @@ export default function CreateOpname() {
           <thead className="border-b border-dark_green">
             <tr>
               <th className="px-4 py-2">Nama Barang</th>
+              <th className="px-4 py-2">Jenis Barang</th>
               <th className="px-4 py-2">Stok Real</th>
               <th className="px-4 py-2">Stok Sistem</th>
               <th className="px-4 py-2">Selisih</th>
@@ -348,6 +382,21 @@ export default function CreateOpname() {
                     ))}
                   </datalist>
                 </td>
+
+                <td className="px-4 py-2">
+                  <select
+                    className="border border-dark_green rounded-md py-1 px-3 text-center"
+                    onChange={(e) => {
+                      const type = e.target.value;
+                      stockRawT.type_product = type;
+                      setStocksOpnameTemp([...stocksOpnameTemp]);
+                    }}
+                  >
+                    <option value="Bahan Baku">Bahan Baku</option>
+                    <option value="Barang Jadi">Barang Jadi</option>
+                  </select>
+                </td>
+
                 <td className="px-4 py-2">
                   <input
                     className="border border-dark_green rounded-md py-1 px-3 text-center"
@@ -407,6 +456,25 @@ export default function CreateOpname() {
         >
           Ajukan
         </button>
+      </div>
+      {/* if position scroll bottom */}
+
+      <div className="fixed bottom-4 right-4 bg-white rounded-full shadow-md cursor-pointer p-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-7 h-7"
+          onClick={scrollToBottom}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"
+          />
+        </svg>
       </div>
     </BaseLayout>
   );

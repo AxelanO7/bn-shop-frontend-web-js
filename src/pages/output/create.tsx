@@ -13,6 +13,15 @@ interface Stock {
   total_product: number;
   type_product: string;
   price_product: number;
+  id_supplier: number;
+  supplier: Supplier;
+}
+
+interface Supplier {
+  ID: number;
+  name_supplier: string;
+  phone: number;
+  address: string;
 }
 
 interface Output {
@@ -172,6 +181,13 @@ export default function CreateOutput() {
         total_product: 0,
         type_product: "",
         price_product: 0,
+        id_supplier: 0,
+        supplier: {
+          ID: 0,
+          name_supplier: "",
+          phone: 0,
+          address: "",
+        },
       },
     ]);
   };

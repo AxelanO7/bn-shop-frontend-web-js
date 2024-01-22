@@ -67,6 +67,15 @@ export default function ReportInputPage() {
       <div id="printTable" ref={conponentPDF}>
         <HeaderPage withLogo={true}>LAPORAN BARANG MASUK</HeaderPage>
         <div className="h-16" />
+        <div className="flex justify-end">
+          <button
+            className="border border-dark_green w-max px-12 bg-white"
+            onClick={handlePrint}
+          >
+            Print
+          </button>
+        </div>
+        <div className="h-8" />
         <table className="table-auto text-center text-white bg-green shadow-md w-full">
           <thead>
             <tr>
@@ -116,12 +125,12 @@ export default function ReportInputPage() {
               return total + input.total_product;
             }, 0)}
           </p>
-          <button
-            className="border border-dark_green w-max px-4 bg-white"
-            onClick={handlePrint}
-          >
-            Print
-          </button>
+          <p className="border border-dark_green w-max px-4 bg-white">
+            Total Harga :{" "}
+            {inputs.reduce((total, input) => {
+              return total + input.price_product * input.total_product;
+            }, 0)}
+          </p>
         </div>
       </div>
     </BaseLayout>

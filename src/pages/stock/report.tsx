@@ -12,6 +12,15 @@ interface Stock {
   total_product: number;
   type_product: string;
   price_product: number;
+  id_supplier: number;
+  supplier: Supplier;
+}
+
+interface Supplier {
+  ID: number;
+  name_supplier: string;
+  phone: number;
+  address: string;
 }
 
 export default function ReportInputPage() {

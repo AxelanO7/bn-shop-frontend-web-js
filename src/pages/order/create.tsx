@@ -81,7 +81,7 @@ export default function CreateOrderPage() {
     else alert("Supplier gagal diambil");
   };
 
-  const validateOrder = () => {
+  const validateOrder = async () => {
     if (!purchaseOrder || !dateTransaction || !idSupplier || !typeTransaction) {
       return false;
     }
@@ -188,12 +188,14 @@ export default function CreateOrderPage() {
                 <div className="w-36">
                   <label>Tanggal Transaksi</label>
                 </div>
+
                 {/* <input
                   type="date"
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
                   value={dateTransaction!}
                   onChange={(e) => setDateTransaction(e.target.value)}
                 /> */}
+
                 <DatePicker
                   className="border border-dark_green rounded-md py-1 px-3 ml-4 w-60"
                   selected={new Date(dateTransaction || Date.now())}
@@ -320,7 +322,7 @@ export default function CreateOrderPage() {
                   />
                 </td>
                 <td className="px-4 py-2">
-                  <input
+                  {/* <input
                     type="text"
                     className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
                     onChange={(e) =>
@@ -328,7 +330,11 @@ export default function CreateOrderPage() {
                     }
                     value={"Bahan Baku"}
                     disabled
-                  />
+                  /> */}
+                  <select className="border border-dark_green rounded-md py-1 px-3 w-full text-center">
+                    <option value="Bahan Baku">Bahan Baku</option>
+                    <option value="Barang Jadi">Barang Jadi</option>
+                  </select>
                 </td>
                 <td className="px-4 py-2">
                   <input

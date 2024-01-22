@@ -82,6 +82,15 @@ export default function ReportOrderPage() {
       <div id="printTable" ref={conponentPDF}>
         <HeaderPage withLogo={true}>LAPORAN PEMESANAN BAHAN BAKU</HeaderPage>
         <div className="h-16" />
+        <div className="flex justify-end">
+          <button
+            className="border border-dark_green w-max px-12 bg-white"
+            onClick={handlePrint}
+          >
+            Print
+          </button>
+        </div>
+        <div className="h-8" />
         <table className="table-auto text-center text-white bg-green shadow-md w-full">
           <thead>
             <tr>
@@ -134,12 +143,6 @@ export default function ReportOrderPage() {
               0
             )}
           </p>
-          <button
-            className="border border-dark_green w-max px-4 bg-white"
-            onClick={handlePrint}
-          >
-            Print PDF
-          </button>
         </div>
       </div>
     </BaseLayout>
