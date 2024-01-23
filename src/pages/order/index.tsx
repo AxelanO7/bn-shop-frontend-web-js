@@ -2,23 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
-
-interface Order {
-  ID: number;
-  purchase_order: string;
-  date_transaction: string;
-  id_supplier: number;
-  type_transaction: string;
-  supplier: Supplier;
-  status: number;
-}
-
-interface Supplier {
-  ID: number;
-  name_supplier: string;
-  phone: number;
-  address: string;
-}
+import { Order } from "../../interface/interface";
 
 export default function OrderPage() {
   const [orders, setOrders] = useState<Order[]>([]);

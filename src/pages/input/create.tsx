@@ -4,77 +4,13 @@ import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-interface Stock {
-  ID: number | null;
-  code_product: string;
-  name_product: string;
-  unit_product: string;
-  total_product: number;
-  type_product: string;
-  price_product: number;
-  id_supplier: number;
-  supplier: Supplier;
-}
-
-interface Supplier {
-  ID: number;
-  name_supplier: string;
-  phone: number;
-  address: string;
-}
-
-interface Input {
-  ID: number | null;
-  no_input: string;
-  date_input: string;
-  code_product: string;
-  name_product: string;
-  type_product: string;
-  total_product: number;
-  price_product: number;
-}
-
-interface DetailInput {
-  ID: number | null;
-  id_input: number;
-  input: Input;
-  code_product: string;
-  name_raw: string;
-  unit_product: string;
-  total_used: number;
-  type_product: string;
-  price_unit: number;
-}
-
-interface DetailOrder {
-  ID: number | null;
-  code_product: string;
-  id_order: number;
-  order: Order;
-  name_product: string;
-  unit_product: string;
-  type_product: string;
-  price_product: number;
-  total_product: number;
-}
-
-interface Order {
-  ID: number;
-  purchase_order: string;
-  date_transaction: string;
-  id_supplier: number;
-  supplier: Supplier;
-  type_transaction: string;
-  status: number;
-}
-
-interface Supplier {
-  ID: number;
-  name_supplier: string;
-  phone: number;
-  address: string;
-}
+import {
+  DetailInput,
+  Input,
+  Stock,
+  Supplier,
+  User,
+} from "../../interface/interface";
 
 export default function CreateInputPage() {
   const [stocksRaw, setStocksRaw] = useState<Stock[]>([]);
@@ -82,7 +18,7 @@ export default function CreateInputPage() {
   const [inputs, setInputs] = useState<Input[]>([]);
 
   const [lastIdInput, setLastIdInput] = useState<number>(0);
-  // order
+
   const [dateTransaction, setDateTransaction] = useState<string>();
   const [codeProduct, setCodeProduct] = useState<string>();
   const [nameProduct, setNameProduct] = useState<string>();
@@ -97,10 +33,21 @@ export default function CreateInputPage() {
 
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [supplierSelected, setSupplierSelected] = useState<Supplier>();
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     fetchStock();
+    fetchUser();
   }, []);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user-login");
+      if (res.status === 200) setUser(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchStock = async () => {
     await axios
@@ -186,6 +133,15 @@ export default function CreateInputPage() {
             type_product: typeProduct || "",
             total_product: totalProduction || 0,
             price_product: price || 0,
+            id_user: user?.ID || 0,
+            user: user || {
+              ID: 0,
+              name_user: "",
+              username: "",
+              password: "",
+              position: "",
+              status: 0,
+            },
           },
           code_product: stockRawT.code_product,
           name_raw: stockRawT.name_product,
@@ -216,6 +172,15 @@ export default function CreateInputPage() {
             type_product: typeProduct || "",
             total_product: totalProduction || 0,
             price_product: price || 0,
+            id_user: user?.ID || 0,
+            user: user || {
+              ID: 0,
+              name_user: "",
+              username: "",
+              password: "",
+              position: "",
+              status: 0,
+            },
           },
           code_product: stockRawT.code_product,
           name_raw: stockRawT.name_product,
@@ -268,6 +233,15 @@ export default function CreateInputPage() {
         type_product: typeProduct || "",
         total_product: totalProduction || 0,
         price_product: price || 0,
+        id_user: 0,
+        user: {
+          ID: 0,
+          name_user: "",
+          username: "",
+          password: "",
+          position: "",
+          status: 0,
+        },
       },
     ]);
 
@@ -287,6 +261,15 @@ export default function CreateInputPage() {
           name_supplier: "",
           phone: 0,
           address: "",
+        },
+        id_user: 0,
+        user: {
+          ID: 0,
+          name_user: "",
+          username: "",
+          password: "",
+          position: "",
+          status: 0,
         },
       },
     ]);

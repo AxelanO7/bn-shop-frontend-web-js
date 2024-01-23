@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-interface Login {
-  username: string;
-  password: string;
-}
-
 export default function LoginPage() {
   const [failedLoginPopup, setFailedLoginPopup] = useState<boolean>(false);
   const [username, setUsername] = useState<string>();

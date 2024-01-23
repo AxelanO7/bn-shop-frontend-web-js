@@ -3,28 +3,12 @@ import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
 import { useReactToPrint } from "react-to-print";
-
-interface Output {
-  ID: number;
-  no_output: string;
-  date_output: string;
-}
-
-interface DetailOutput {
-  ID: number;
-  id_output: number;
-  output: Output;
-  code_product: string;
-  name_finished: string;
-  unit_product: string;
-  total_used: number;
-  type_product: string;
-  price_unit: number;
-}
+import { DetailOutput, User } from "../../interface/interface";
 
 export default function ReportOutputPage() {
   const [detailOutputs, setDetailOutputs] = useState<DetailOutput[]>([]);
   const conponentPDF = React.useRef<HTMLTableElement>(null);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const startDate = window.location.pathname.split("/")[2];
@@ -33,7 +17,17 @@ export default function ReportOutputPage() {
       startDate ? startDate : "2021-09-01",
       endDate ? endDate : "2021-09-30"
     );
+    // fetchUser();
   }, []);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user-login");
+      if (res.status === 200) setUser(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getDetailOutputs = async (startDate: string, endDate: string) => {
     await axios
@@ -89,13 +83,14 @@ export default function ReportOutputPage() {
                 Jenis Barang
               </th>
               <th className="px-4 py-2 border border-dark_green">Stok</th>
+              <th className="px-4 py-2 border border-dark_green">User</th>
               <th className="px-4 py-2 border border-dark_green">Harga</th>
             </tr>
           </thead>
           <tbody className="border border-dark_green bg-white text-stone_5">
             {detailOutputs.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-2 border border-dark_green">
+                <td colSpan={6} className="px-4 py-2 border border-dark_green">
                   Tidak ada data
                 </td>
               </tr>
@@ -113,6 +108,9 @@ export default function ReportOutputPage() {
                 </td>
                 <td className="border border-dark_green px-4 py-2">
                   {detailOutput.total_used}
+                </td>
+                <td className="border border-dark_green px-4 py-2">
+                  {detailOutput.output.user.name_user}
                 </td>
                 <td className="border border-dark_green px-4 py-2">
                   {detailOutput.price_unit}

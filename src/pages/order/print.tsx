@@ -4,23 +4,6 @@ import HeaderPage from "../../components/header_page";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-interface Order {
-  ID: number;
-  created_at: string;
-  date_transaction: string;
-  id_supplier: number;
-  type_transaction: string;
-  supplier: Supplier;
-  status: number;
-}
-
-interface Supplier {
-  ID: number;
-  name_supplier: string;
-  phone: number;
-  address: string;
-}
-
 export default function PrintOrderPage() {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);

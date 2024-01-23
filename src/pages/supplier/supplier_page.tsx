@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
-
-interface Supplier {
-  ID: number;
-  name_supplier: string;
-  phone: number;
-  address: string;
-}
+import { Supplier } from "../../interface/interface";
 
 export default function SupplierPage() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
@@ -179,8 +173,8 @@ export default function SupplierPage() {
             {manage === "add"
               ? "Tambah Supplier"
               : manage === "edit"
-                ? "Ubah Supplier"
-                : "Supplier"}
+              ? "Ubah Supplier"
+              : "Supplier"}
           </label>
           {manage === "add" ? null : (
             <>
@@ -234,8 +228,8 @@ export default function SupplierPage() {
             {manage === "add"
               ? "Tambah"
               : manage === "edit"
-                ? "Ubah"
-                : "Simpan"}
+              ? "Ubah"
+              : "Simpan"}
           </button>
         </div>
       ) : null}

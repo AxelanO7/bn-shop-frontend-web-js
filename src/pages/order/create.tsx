@@ -4,35 +4,7 @@ import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-interface DetailOrder {
-  ID: number | null;
-  code_product: string;
-  id_order: number;
-  order: Order;
-  name_product: string;
-  unit_product: string;
-  type_product: string;
-  price_product: number;
-  total_product: number;
-}
-
-interface Order {
-  ID: number;
-  purchase_order: string;
-  date_transaction: string;
-  id_supplier: number;
-  supplier: Supplier;
-  type_transaction: string;
-  status: number;
-}
-
-interface Supplier {
-  ID: number;
-  name_supplier: string;
-  phone: number;
-  address: string;
-}
+import { DetailOrder, Order, Supplier, User } from "../../interface/interface";
 
 export default function CreateOrderPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -47,11 +19,24 @@ export default function CreateOrderPage() {
   const [typeTransaction, setTypeTransaction] = useState<string>();
 
   const [totalPrice, setTotalPrice] = useState<number>();
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     getSupplier();
     getOrder();
+    fetchUser();
   }, []);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user-login");
+      if (res.status === 200) setUser(res.data.data);
+    } catch (error) {
+      alert("Silahkan Login Terlebih Dahulu");
+      window.location.href = "/";
+      console.log(error);
+    }
+  };
 
   const getOrder = async () => {
     await axios
@@ -149,6 +134,15 @@ export default function CreateOrderPage() {
           supplier: findSupplier(idSupplier || 0),
           type_transaction: "Bahan Baku",
           status: 0,
+          id_user: user?.ID || 0,
+          user: user || {
+            ID: 0,
+            name_user: "",
+            username: "",
+            password: "",
+            position: "",
+            status: 0,
+          },
         },
         code_product: "",
         name_product: "",

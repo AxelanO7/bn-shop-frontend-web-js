@@ -3,31 +3,14 @@ import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
 import { useReactToPrint } from "react-to-print";
-
-interface Stock {
-  ID: number;
-  code_product: string;
-  name_product: string;
-  unit_product: string;
-  total_product: number;
-  type_product: string;
-  price_product: number;
-  id_supplier: number;
-  supplier: Supplier;
-}
-
-interface Supplier {
-  ID: number;
-  name_supplier: string;
-  phone: number;
-  address: string;
-}
+import { Stock, User } from "../../interface/interface";
 
 export default function ReportInputPage() {
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [stockRaw, setStockRaw] = useState<Stock[]>([]);
   const [stockFinished, setStockFinished] = useState<Stock[]>([]);
   const conponentPDF = React.useRef<HTMLTableElement>(null);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const startDate = window.location.pathname.split("/")[2];
@@ -36,7 +19,17 @@ export default function ReportInputPage() {
       startDate ? startDate : "2021-09-01",
       endDate ? endDate : "2021-09-30"
     );
+    // fetchUser();
   }, []);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user-login");
+      if (res.status === 200) setUser(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getStocks = async (startDate: string, endDate: string) => {
     await axios
@@ -98,6 +91,7 @@ export default function ReportInputPage() {
                   Jenis Barang
                 </th>
                 <th className="px-4 py-2 border border-dark_green">Stok</th>
+                <th className="px-4 py-2 border border-dark_green">User</th>
                 <th className="px-4 py-2 border border-dark_green">Harga</th>
               </tr>
             </thead>
@@ -105,7 +99,7 @@ export default function ReportInputPage() {
               {stockFinished.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={5}
+                    colSpan={6}
                     className="px-4 py-2 border border-dark_green"
                   >
                     Tidak ada data
@@ -125,6 +119,9 @@ export default function ReportInputPage() {
                   </td>
                   <td className="px-4 py-2 border border-dark_green">
                     {stock.total_product}
+                  </td>
+                  <td className="px-4 py-2 border border-dark_green">
+                    {stock.user.name_user}
                   </td>
                   <td className="px-4 py-2 border border-dark_green">
                     {stock.price_product}
@@ -157,6 +154,7 @@ export default function ReportInputPage() {
                   Jenis Barang
                 </th>
                 <th className="px-4 py-2 border border-dark_green">Stok</th>
+                <th className="px-4 py-2 border border-dark_green">User</th>
                 <th className="px-4 py-2 border border-dark_green">Harga</th>
               </tr>
             </thead>
@@ -185,6 +183,9 @@ export default function ReportInputPage() {
                   </td>
                   <td className="px-4 py-2 border border-dark_green">
                     {stock.total_product}
+                  </td>
+                  <td className="px-4 py-2 border border-dark_green">
+                    {stock.user.name_user}
                   </td>
                   <td className="px-4 py-2 border border-dark_green">
                     {stock.price_product}

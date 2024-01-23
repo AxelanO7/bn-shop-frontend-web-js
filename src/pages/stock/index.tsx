@@ -2,25 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
-
-interface Stock {
-  ID: number;
-  code_product: string;
-  name_product: string;
-  unit_product: string;
-  total_product: number;
-  type_product: string;
-  price_product: number;
-  id_supplier: number;
-  supplier: Supplier;
-}
-
-interface Supplier {
-  ID: number;
-  name_supplier: string;
-  phone: number;
-  address: string;
-}
+import { Stock } from "../../interface/interface";
 
 export default function StockPage() {
   const [stocksRaw, setStocksRaw] = useState<Stock[]>([]);

@@ -1,13 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
-interface User {
-  name_user: string;
-  position: string;
-  username: string;
-  password: string;
-  status: number;
-}
+import { User } from "../interface/interface";
 
 export default function Navbar() {
   const [navSide, setNavSide] = useState(false);
@@ -22,6 +15,8 @@ export default function Navbar() {
       const res = await axios.get("http://localhost:8080/api/user-login");
       if (res.status === 200) setUser(res.data.data);
     } catch (error) {
+      alert("Silahkan Login Terlebih Dahulu");
+      window.location.href = "/";
       console.log(error);
     }
   };

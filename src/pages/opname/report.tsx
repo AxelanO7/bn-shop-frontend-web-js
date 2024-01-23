@@ -3,35 +3,27 @@ import axios from "axios";
 import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
 import { useReactToPrint } from "react-to-print";
-
-interface Opname {
-  ID: number;
-  date_calculate: string;
-  code_stock_opname: string;
-}
-
-interface DetailOpname {
-  ID: number;
-  id_opname: number;
-  opname: Opname;
-  code_product: string;
-  name_finished: string;
-  unit_product: string;
-  type_product: string;
-  price_unit: number;
-  stock_system: number;
-  stock_real: number;
-  total_diff: number;
-}
+import { DetailOpname, User } from "../../interface/interface";
 
 export default function ReportInputPage() {
   const [opnames, setOpnames] = useState<DetailOpname[]>([]);
   const conponentPDF = React.useRef<HTMLTableElement>(null);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const date = window.location.pathname.split("/")[2];
     getDetailOpnames(date ? date : "2021-09-01");
+    // fetchUser();
   }, []);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user-login");
+      if (res.status === 200) setUser(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getDetailOpnames = async (date: string) => {
     await axios
@@ -83,6 +75,7 @@ export default function ReportInputPage() {
               <th className="px-4 py-2 border border-dark_green">
                 Nama Barang
               </th>
+              <th className="px-4 py-2 border border-dark_green">User</th>
               <th className="px-4 py-2 border border-dark_green">Stok Real</th>
               <th className="px-4 py-2 border border-dark_green">
                 Stok Sistem
@@ -93,7 +86,7 @@ export default function ReportInputPage() {
           <tbody className="border border-dark_green bg-white text-stone_5">
             {opnames.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-2 border border-dark_green">
+                <td colSpan={6} className="px-4 py-2 border border-dark_green">
                   Tidak ada data
                 </td>
               </tr>
@@ -105,6 +98,9 @@ export default function ReportInputPage() {
                 </td>
                 <td className="px-4 py-2 border border-dark_green">
                   {opname.name_finished}
+                </td>
+                <td className="px-4 py-2 border border-dark_green">
+                  {opname.opname.user.name_user}
                 </td>
                 <td className="px-4 py-2 border border-dark_green">
                   {opname.stock_real}

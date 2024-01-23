@@ -4,63 +4,13 @@ import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-interface Stock {
-  ID: number | null;
-  code_product: string;
-  name_product: string;
-  unit_product: string;
-  total_product: number;
-  type_product: string;
-  price_product: number;
-  id_supplier: number;
-  supplier: Supplier;
-}
-
-interface Supplier {
-  ID: number;
-  name_supplier: string;
-  phone: number;
-  address: string;
-}
-
-interface Opname {
-  ID: number | null;
-  code_stock_opname: string;
-  date_calculate: string;
-}
-
-interface DetailOpname {
-  ID: number | null;
-  id_opname: number;
-  opname: Opname;
-  code_product: string;
-  name_finished: string;
-  unit_product: string;
-  type_product: string;
-  price_unit: number;
-  stock_real: number;
-  stock_system: number;
-  total_diff: number;
-}
-
-interface Output {
-  ID: number | null;
-  no_output: string;
-  date_output: string;
-}
-
-interface DetailOutput {
-  ID: number | null;
-  id_output: number;
-  output: Output;
-  code_product: string;
-  name_finished: string;
-  unit_product: string;
-  total_used: number;
-  type_product: string;
-  price_unit: number;
-}
+import {
+  Stock,
+  Opname,
+  DetailOpname,
+  DetailOutput,
+  User,
+} from "../../interface/interface";
 
 export default function CreateOpname() {
   const [stocksOpnames, setStocksOpname] = useState<Stock[]>([]);
@@ -77,23 +27,26 @@ export default function CreateOpname() {
 
   const [maxTotals, setMaxTotals] = useState<number[]>([]);
 
+  const [user, setUser] = useState<User>();
+
   useEffect(() => {
     fetchStock();
     add20Rows();
+    fetchUser();
   }, []);
 
-  // make async
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user-login");
+      if (res.status === 200) setUser(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const add20Rows = async () => {
     const stocks = [];
     for (let i = 0; i < 20; i++) {
-      // console.log(
-      //   "i",
-      //   i,
-      //   "length",
-      //   stocksOpnameTemp.length,
-      //   "max",
-      //   maxTotals.length
-      // );
       stocks.push({
         ID: i,
         code_product: "",
@@ -108,6 +61,15 @@ export default function CreateOpname() {
           name_supplier: "",
           phone: 0,
           address: "",
+        },
+        id_user: 0,
+        user: {
+          ID: 0,
+          name_user: "",
+          username: "",
+          password: "",
+          position: "",
+          status: 0,
         },
       });
     }
@@ -149,7 +111,6 @@ export default function CreateOpname() {
   };
 
   const createOpname = async () => {
-    // remove stocks opnames with null value
     for (let i = 0; i < stocksOpnameTemp.length; i++) {
       if (stocksOpnameTemp[i].code_product === "") {
         stocksOpnameTemp.splice(i, 1);
@@ -186,6 +147,15 @@ export default function CreateOpname() {
             ID: resOpname.data.data.ID,
             code_stock_opname: codeStockOpname || "",
             date_calculate: dateTransaction || "",
+            id_user: user?.ID || 0,
+            user: {
+              ID: user?.ID || 0,
+              name_user: user?.name_user || "",
+              username: user?.username || "",
+              password: user?.password || "",
+              position: user?.position || "",
+              status: user?.status || 0,
+            },
           },
           code_product: stockFinishedT.code_product,
           name_finished: stockFinishedT.name_product,
@@ -216,6 +186,15 @@ export default function CreateOpname() {
             ID: resOpname.data.data.ID,
             date_output: dateTransaction || "",
             no_output: codeStockOpname || "",
+            id_user: user?.ID || 0,
+            user: {
+              ID: user?.ID || 0,
+              name_user: user?.name_user || "",
+              username: user?.username || "",
+              password: user?.password || "",
+              position: user?.position || "",
+              status: user?.status || 0,
+            },
           },
           code_product: stockFinishedT.code_product,
           name_finished: stockFinishedT.name_product,
@@ -247,6 +226,15 @@ export default function CreateOpname() {
         ID: null,
         code_stock_opname: codeStockOpname || "",
         date_calculate: dateTransaction || "",
+        id_user: user?.ID || 0,
+        user: {
+          ID: user?.ID || 0,
+          name_user: user?.name_user || "",
+          username: user?.username || "",
+          password: user?.password || "",
+          position: user?.position || "",
+          status: user?.status || 0,
+        },
       },
     ]);
 
@@ -266,6 +254,15 @@ export default function CreateOpname() {
           name_supplier: "",
           phone: 0,
           address: "",
+        },
+        id_user: 0,
+        user: {
+          ID: 0,
+          name_user: "",
+          username: "",
+          password: "",
+          position: "",
+          status: 0,
         },
       },
     ]);

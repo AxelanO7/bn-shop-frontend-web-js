@@ -4,43 +4,7 @@ import BaseLayout from "../../layouts/base";
 import HeaderPage from "../../components/header_page";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-interface Stock {
-  ID: number;
-  code_product: string;
-  name_product: string;
-  unit_product: string;
-  total_product: number;
-  type_product: string;
-  price_product: number;
-  id_supplier: number;
-  supplier: Supplier;
-}
-
-interface Supplier {
-  ID: number;
-  name_supplier: string;
-  phone: number;
-  address: string;
-}
-
-interface Output {
-  ID: number | null;
-  no_output: string;
-  date_output: string;
-}
-
-interface DetailOutput {
-  ID: number | null;
-  id_output: number;
-  output: Output;
-  code_product: string;
-  name_finished: string;
-  unit_product: string;
-  total_used: number;
-  type_product: string;
-  price_unit: number;
-}
+import { Stock, Output, DetailOutput, User } from "../../interface/interface";
 
 export default function CreateOutput() {
   const [stocksFinisheds, setStocksFinished] = useState<Stock[]>([]);
@@ -56,10 +20,21 @@ export default function CreateOutput() {
   const [totalPrice, setTotalPrice] = useState<number>();
 
   const [maxTotals, setMaxTotals] = useState<number[]>([]);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     fetchStock();
+    fetchUser();
   }, []);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user-login");
+      if (res.status === 200) setUser(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchStock = async () => {
     await axios
@@ -113,6 +88,15 @@ export default function CreateOutput() {
             ID: resOutput.data.data.ID,
             no_output: noOutputProduct || "",
             date_output: dateTransaction || "",
+            id_user: user?.ID || 0,
+            user: {
+              ID: user?.ID || 0,
+              name_user: user?.name_user || "",
+              username: user?.username || "",
+              password: user?.password || "",
+              position: user?.position || "",
+              status: user?.status || 0,
+            },
           },
           code_product: stockRawT.code_product,
           name_finished: stockRawT.name_product,
@@ -138,6 +122,15 @@ export default function CreateOutput() {
             ID: resOutput.data.data.ID,
             no_output: noOutputProduct || "",
             date_output: dateTransaction || "",
+            id_user: user?.ID || 0,
+            user: {
+              ID: user?.ID || 0,
+              name_user: user?.name_user || "",
+              username: user?.username || "",
+              password: user?.password || "",
+              position: user?.position || "",
+              status: user?.status || 0,
+            },
           },
           code_product: stockFinishedT.code_product,
           name_finished: stockFinishedT.name_product,
@@ -168,6 +161,15 @@ export default function CreateOutput() {
         ID: null,
         no_output: noOutputProduct || "",
         date_output: dateTransaction || "",
+        id_user: user?.ID || 0,
+        user: {
+          ID: user?.ID || 0,
+          name_user: user?.name_user || "",
+          username: user?.username || "",
+          password: user?.password || "",
+          position: user?.position || "",
+          status: user?.status || 0,
+        },
       },
     ]);
 
@@ -187,6 +189,15 @@ export default function CreateOutput() {
           name_supplier: "",
           phone: 0,
           address: "",
+        },
+        id_user: 0,
+        user: {
+          ID: 0,
+          name_user: "",
+          username: "",
+          password: "",
+          position: "",
+          status: 0,
         },
       },
     ]);

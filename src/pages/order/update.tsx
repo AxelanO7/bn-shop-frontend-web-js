@@ -2,36 +2,7 @@ import React from "react";
 import BaseLayout from "../../layouts/base";
 import axios from "axios";
 import { useState, useEffect } from "react";
-
-interface Order {
-  ID: number;
-  date_transaction: string;
-  id_supplier: number;
-  supplier: Supplier;
-  type_transaction: string;
-  status: number;
-  purchase_order: string;
-  is_confirm: boolean;
-}
-
-interface DetailOrder {
-  ID: number | null;
-  code_product: string;
-  id_order: number;
-  order: Order;
-  name_product: string;
-  unit_product: string;
-  type_product: string;
-  price_product: number;
-  total_product: number;
-}
-
-interface Supplier {
-  ID: number;
-  name_supplier: string;
-  phone: number;
-  address: string;
-}
+import { Order, DetailOrder, Supplier } from "../../interface/interface";
 
 export default function UpdateOrderPage() {
   const [order, setOrder] = useState<Order>();
