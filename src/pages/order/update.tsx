@@ -2,7 +2,7 @@ import React from "react";
 import BaseLayout from "../../layouts/base";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Order, DetailOrder, Supplier } from "../../interface/interface";
+import { Order, DetailOrder, Supplier, Stock } from "../../interface/interface";
 
 export default function UpdateOrderPage() {
   const [order, setOrder] = useState<Order>();
@@ -42,11 +42,26 @@ export default function UpdateOrderPage() {
   };
 
   const createMultipleStock = async () => {
-    detailOrders?.forEach(async (detailOrder) => {
-      detailOrder.ID = null;
+    const stocks: Stock[] = [];
+    detailOrders?.forEach((detailOrder) => {
+      const stock: Stock = {
+        ID: null,
+        code_product: detailOrder.code_product,
+        name_product: detailOrder.name_product,
+        unit_product: detailOrder.unit_product,
+        total_product: detailOrder.total_product,
+        price_product: detailOrder.price_product,
+        type_product: detailOrder.type_product,
+        id_supplier: detailOrder.order!.supplier.ID,
+        supplier: detailOrder.order!.supplier,
+        id_user: detailOrder.order!.user.ID,
+        user: detailOrder.order!.user,
+      };
+      stocks.push(stock);
     });
+
     await axios
-      .post("http://localhost:8080/api/stocks", detailOrders)
+      .post("http://localhost:8080/api/stocks", stocks)
       .then((res) => {
         alert("Stock berhasil ditambahkan");
         window.location.href = "/order";
