@@ -75,15 +75,34 @@ export default function CreateOrderPage() {
 
   const createDetailOrder = async () => {
     getOrder();
-    await axios
-      .post("http://localhost:8080/api/order", {
-        purchase_order: purchaseOrder,
-        date_transaction: dateTransaction,
-        id_supplier: idSupplier,
-        supplier: findSupplier(idSupplier || 0),
-        type_transaction: typeTransaction,
+    const order: Order = {
+      ID: 0,
+      purchase_order: purchaseOrder || "",
+      date_transaction: dateTransaction || "",
+      id_supplier: idSupplier || 0,
+      supplier: findSupplier(idSupplier || 0),
+      type_transaction: typeTransaction || "",
+      status: 0,
+      id_user: user?.ID || 0,
+      user: user || {
+        ID: 0,
+        name_user: "",
+        username: "",
+        password: "",
+        position: "",
         status: 0,
-      })
+      },
+    };
+    await axios
+      .post("http://localhost:8080/api/order", order)
+      // {
+      //   purchase_order: purchaseOrder,
+      //   date_transaction: dateTransaction,
+      //   id_supplier: idSupplier,
+      //   supplier: findSupplier(idSupplier || 0),
+      //   type_transaction: typeTransaction,
+      //   status: 0,
+      // })
       .then((response) => {
         if (response.status === 201) {
           alert("Order berhasil ditambahkan");
