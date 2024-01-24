@@ -93,6 +93,7 @@ export default function CreateOrderPage() {
         status: 0,
       },
     };
+
     await axios
       .post("http://localhost:8080/api/order", order)
       // {
@@ -344,7 +345,12 @@ export default function CreateOrderPage() {
                     value={"Bahan Baku"}
                     disabled
                   /> */}
-                  <select className="border border-dark_green rounded-md py-1 px-3 w-full text-center">
+                  <select
+                    className="border border-dark_green rounded-md py-1 px-3 w-full text-center"
+                    onChange={(e) =>
+                      (detailOrder.type_product = e.target.value)
+                    }
+                  >
                     <option value="Bahan Baku">Bahan Baku</option>
                     <option value="Barang Jadi">Barang Jadi</option>
                   </select>
