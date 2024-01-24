@@ -76,6 +76,10 @@ export default function StockPage() {
     setStocksRaw(filtered);
   };
 
+  const handleAddStock = () => {
+    window.location.href = "add-stock";
+  };
+
   return (
     <BaseLayout text_color="stone_5" padding={12}>
       <HeaderPage>DATA STOK BARANG</HeaderPage>
@@ -182,6 +186,12 @@ export default function StockPage() {
               onChange={handleSearchRaw}
             />
           </div>
+          <button
+            className="border border-dark_green py-1 px-3 hover:bg-dark_green/25 hover:text-white"
+            onClick={handleAddStock}
+          >
+            Tambah Stock
+          </button>
         </div>
         <div className="h-4" />
         <table className="table-auto text-center text-white bg-green shadow-md w-full">

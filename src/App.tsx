@@ -3,6 +3,7 @@ import LoginPage from "./pages/login_page";
 import DashboardPage from "./pages/dashboard_page";
 
 import StockPage from "./pages/stock";
+import CreateStockPage from "./pages/stock/create";
 import PrintStockPage from "./pages/stock/print";
 import ReportStockPage from "./pages/stock/report";
 
@@ -39,6 +40,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
 
         <Route path="/stock" element={<StockPage />} />
+        <Route path="/add-stock" element={<CreateStockPage />} />
         <Route path="/print-stock" element={<PrintStockPage />} />
         <Route
           path="/report-stock/:startDate/:endDate"
