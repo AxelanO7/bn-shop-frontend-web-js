@@ -78,7 +78,8 @@ export default function CreateOpname() {
 
   const fetchStock = async () => {
     await axios
-      .get("http://localhost:8080/api/paid/finished")
+      // .get("http://localhost:8080/api/paid/finished")
+      .get("http://localhost:8080/api/stock")
       .then((response) => {
         setStocksOpname(response.data.data);
       })
@@ -345,8 +346,8 @@ export default function CreateOpname() {
                 </td>
               </tr>
             )}
-            {stocksOpnameTemp.map((stockRawT, index) => (
-              <tr key={stockRawT.ID} className="border-b border-dark_green">
+            {stocksOpnameTemp.map((stockT, index) => (
+              <tr key={stockT.ID} className="border-b border-dark_green">
                 <td className="px-4 py-2">
                   <input
                     list="items"
@@ -356,12 +357,12 @@ export default function CreateOpname() {
                         (stock) => stock.name_product === e.target.value
                       );
                       if (!stock) return;
-                      stockRawT.code_product = stock.code_product;
-                      stockRawT.name_product = stock.name_product;
-                      stockRawT.unit_product = stock.unit_product;
-                      stockRawT.type_product = stock.type_product;
-                      stockRawT.price_product = stock.price_product;
-                      stockRawT.total_product = stock.total_product;
+                      stockT.code_product = stock.code_product;
+                      stockT.name_product = stock.name_product;
+                      stockT.unit_product = stock.unit_product;
+                      stockT.type_product = stock.type_product;
+                      stockT.price_product = stock.price_product;
+                      stockT.total_product = stock.total_product;
                       setStocksOpnameTemp([...stocksOpnameTemp]);
                       setMaxTotals([...maxTotals, stock.total_product]);
                       // handleTotalPrice();
@@ -383,9 +384,10 @@ export default function CreateOpname() {
                 <td className="px-4 py-2">
                   <select
                     className="border border-dark_green rounded-md py-1 px-3 text-center"
+                    // value={stockT.type_product}
                     onChange={(e) => {
                       const type = e.target.value;
-                      stockRawT.type_product = type;
+                      stockT.type_product = type;
                       setStocksOpnameTemp([...stocksOpnameTemp]);
                     }}
                   >
@@ -401,7 +403,7 @@ export default function CreateOpname() {
                     min={0}
                     onChange={(e) => {
                       const totalItem: number = parseFloat(e.target.value);
-                      stockRawT.total_product = totalItem;
+                      stockT.total_product = totalItem;
                       setStocksOpnameTemp([...stocksOpnameTemp]);
                     }}
                   />
@@ -414,7 +416,7 @@ export default function CreateOpname() {
                 </td>
                 <td className="px-4 py-2">
                   <p className="py-1 px-3 w-full text-center">
-                    {maxTotals[index] - stockRawT.total_product || "-"}
+                    {maxTotals[index] - stockT.total_product || "-"}
                   </p>
                 </td>
                 <td className="pr-2">
