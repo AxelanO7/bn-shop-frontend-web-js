@@ -104,53 +104,70 @@ export default function CreateInputPage() {
   };
 
   const createInput = async () => {
-    const resInput = await axios.post("http://localhost:8080/api/input", {
-      no_input: noInputProduct,
-      data_input: dateTransaction,
-      code_product: codeProduct,
-      name_product: nameProduct,
-      type_product: typeProduct,
-      total_product: totalProduction,
-      price_product: price,
-    });
+    const payloadMasterInput: Input = {
+      ID: null,
+      no_input: noInputProduct || "",
+      date_input: dateTransaction || "",
+      code_product: codeProduct || "",
+      name_product: nameProduct || "",
+      type_product: typeProduct || "",
+      total_product: totalProduction || 0,
+      price_product: price || 0,
+      id_user: user?.ID || 0,
+      user: user || {
+        ID: 0,
+        name_user: "",
+        username: "",
+        password: "",
+        position: "",
+        status: 0,
+      },
+    };
+
+    const resInput = await axios.post(
+      "http://localhost:8080/api/input",
+      payloadMasterInput
+    );
     if (resInput.data.status !== "success") {
       alert("Order gagal ditambahkan");
       return;
     }
 
+    const payloadDetailInputs: DetailInput[] = stocksRawTemp.map(
+      (stockRawT): DetailInput => ({
+        ID: null,
+        id_input: resInput.data.data.ID,
+        input: {
+          ID: resInput.data.data.ID,
+          no_input: noInputProduct || "",
+          date_input: dateTransaction || "",
+          code_product: codeProduct || "",
+          name_product: nameProduct || "",
+          type_product: typeProduct || "",
+          total_product: totalProduction || 0,
+          price_product: price || 0,
+          id_user: user?.ID || 0,
+          user: user || {
+            ID: 0,
+            name_user: "",
+            username: "",
+            password: "",
+            position: "",
+            status: 0,
+          },
+        },
+        code_product: stockRawT.code_product,
+        name_raw: stockRawT.name_product,
+        unit_product: stockRawT.unit_product,
+        total_used: stockRawT.total_product,
+        type_product: stockRawT.type_product,
+        price_unit: stockRawT.price_product,
+      })
+    );
+
     const resDetail = await axios.post(
       "http://localhost:8080/api/detail-inputs",
-      stocksRawTemp.map(
-        (stockRawT): DetailInput => ({
-          ID: null,
-          id_input: resInput.data.data.ID,
-          input: {
-            ID: resInput.data.data.ID,
-            no_input: noInputProduct || "",
-            date_input: dateTransaction || "",
-            code_product: codeProduct || "",
-            name_product: nameProduct || "",
-            type_product: typeProduct || "",
-            total_product: totalProduction || 0,
-            price_product: price || 0,
-            id_user: user?.ID || 0,
-            user: user || {
-              ID: 0,
-              name_user: "",
-              username: "",
-              password: "",
-              position: "",
-              status: 0,
-            },
-          },
-          code_product: stockRawT.code_product,
-          name_raw: stockRawT.name_product,
-          unit_product: stockRawT.unit_product,
-          total_used: stockRawT.total_product,
-          type_product: stockRawT.type_product,
-          price_unit: stockRawT.price_product,
-        })
-      )
+      payloadDetailInputs
     );
     if (resDetail.data.status !== "success") {
       alert("Order gagal ditambahkan");
@@ -159,54 +176,43 @@ export default function CreateInputPage() {
 
     const resReduceStock = await axios.put(
       "http://localhost:8080/api/detail-inputs",
-      stocksRawTemp.map(
-        (stockRawT): DetailInput => ({
-          ID: null,
-          id_input: resInput.data.data.ID,
-          input: {
-            ID: resInput.data.data.ID,
-            no_input: noInputProduct || "",
-            date_input: dateTransaction || "",
-            code_product: codeProduct || "",
-            name_product: nameProduct || "",
-            type_product: typeProduct || "",
-            total_product: totalProduction || 0,
-            price_product: price || 0,
-            id_user: user?.ID || 0,
-            user: user || {
-              ID: 0,
-              name_user: "",
-              username: "",
-              password: "",
-              position: "",
-              status: 0,
-            },
-          },
-          code_product: stockRawT.code_product,
-          name_raw: stockRawT.name_product,
-          unit_product: stockRawT.unit_product,
-          total_used: stockRawT.total_product,
-          type_product: stockRawT.type_product,
-          price_unit: stockRawT.price_product,
-        })
-      )
+      payloadDetailInputs
     );
     if (resReduceStock.data.status !== "success") {
       alert("Order gagal ditambahkan");
       return;
     }
 
-    const resAddStock = await axios.post("http://localhost:8080/api/stock", {
-      code_product: codeProduct,
-      name_product: nameProduct,
+    const payloadStock: Stock = {
+      ID: null,
+      code_product: codeProduct || "",
+      name_product: nameProduct || "",
       unit_product: "pcs",
-      type_product: typeProduct,
-      price_product: price,
-      total_product: totalProduction,
-      id_supplier: supplierSelected?.ID,
-      supplier: supplierSelected,
-    });
+      type_product: typeProduct || "",
+      total_product: totalProduction || 0,
+      price_product: price || 0,
+      id_supplier: supplierSelected?.ID || 0,
+      supplier: supplierSelected || {
+        ID: 0,
+        name_supplier: "",
+        phone: 0,
+        address: "",
+      },
+      id_user: user?.ID || 0,
+      user: user || {
+        ID: 0,
+        name_user: "",
+        username: "",
+        password: "",
+        position: "",
+        status: 0,
+      },
+    };
 
+    const resAddStock = await axios.post(
+      "http://localhost:8080/api/stock",
+      payloadStock
+    );
     if (resAddStock.data.status !== "success") {
       alert("Order gagal ditambahkan");
       return;
